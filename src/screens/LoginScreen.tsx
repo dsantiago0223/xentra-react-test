@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Image
 } from 'react-native';
 import PasswordTextEntry from '../components/PasswordTextEntry';
 
@@ -24,9 +25,15 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back</Text>
-
-      <TextInput
+        <View style={styles.logoContainer}>
+            <Image
+            source={require('../../assets/jetwaytrade_logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+            />
+        </View>
+        
+        <TextInput
         style={styles.input}
         placeholder="Email"
         placeholderTextColor="#888"
@@ -34,17 +41,17 @@ const LoginScreen: React.FC = () => {
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
-      />
+        />
 
-      <PasswordTextEntry value={password} onChangeText={setPassword} />
+        <PasswordTextEntry value={password} onChangeText={setPassword} />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.footerText}>
+        <Text style={styles.footerText}>
         Don’t have an account? <Text style={styles.link}>Sign up</Text>
-      </Text>
+        </Text>
     </View>
   );
 };
@@ -55,15 +62,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
     paddingHorizontal: 30,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#333',
+  logoContainer: {
+    alignItems: 'center',
     marginBottom: 40,
-    textAlign: 'center',
+    marginTop: 20,
+  },
+  logo: {
+    width: 150,
+    height: 150,
   },
   input: {
     height: 50,
