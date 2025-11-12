@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   Alert,
   Image
 } from 'react-native';
-import PasswordTextEntry from '../components/PasswordTextEntry';
+import TextEntryControl from '../components/TextEntryControl';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -33,17 +32,21 @@ const LoginScreen: React.FC = () => {
             />
         </View>
         
-        <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#888"
+        <TextEntryControl
         keyboardType="email-address"
         autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
+        value={email} 
+        onChangeText={setEmail} 
+        placeholder='Email'
+        iconName='email'
         />
 
-        <PasswordTextEntry value={password} onChangeText={setPassword} />
+        <TextEntryControl
+        value={password} 
+        onChangeText={setPassword} 
+        placeholder='Password'
+        isPassword
+        />
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
@@ -72,16 +75,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 150,
-  },
-  input: {
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    color: '#000',
   },
   button: {
     backgroundColor: '#4A90E2',
