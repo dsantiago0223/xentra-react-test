@@ -2,59 +2,121 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
-  StyleSheet,
-  Alert,
+  StyleSheet, 
   Image
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/AppNavigator';
 import TextEntryControl from '../components/TextEntryControl';
 
-const LoginScreen: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password.');
-      return;
-    }
-    
-    Alert.alert('Login', `Email: ${email}\nPassword: ${password}`);
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+});
+
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleLogin = (values: { email: string; password: string }) => {
+    // Simulate successful login
+    navigation.replace('Home');
   };
 
   return (
     <View style={styles.container}>
-        <View style={styles.logoContainer}>
+      <View style={styles.logoContainer}>
             <Image
             source={require('../../assets/jetwaytrade_logo.png')}
             style={styles.logo}
             resizeMode="contain"
             />
         </View>
-        
-        <TextEntryControl
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email} 
-        onChangeText={setEmail} 
-        placeholder='Email'
-        iconName='email'
-        />
 
-        <TextEntryControl
-        value={password} 
-        onChangeText={setPassword} 
-        placeholder='Password'
-        isPassword
-        />
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={LoginSchema}
+        onSubmit={handleLogin}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+          <>
+            
+            {/*<TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="#888"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
+            />*/}
+            <TextEntryControl
+            placeholder='Email'
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={values.email}
+            onChangeText={handleChange('email')}
+            onBlur={handleBlur('email')}
+            iconName='email'
+            />
+            {touched.email && errors.email && (
+              <Text style={styles.errorText}>{errors.email}</Text>
+            )}
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+            {/*<View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder="Password"
+                placeholderTextColor="#888"
+                secureTextEntry={!showPassword}
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.iconContainer}
+              >
+                <Icon
+                  name={showPassword ? 'eye-off' : 'eye'}
+                  size={22}
+                  color="#4A90E2"
+                />
+              </TouchableOpacity>
+            </View>*/}
+            <TextEntryControl
+            placeholder='Password'
+            value={values.password}
+            onChangeText={handleChange('password')}
+            onBlur={handleBlur('password')}
+            isPassword
+            />
+            {touched.password && errors.password && (
+              <Text style={styles.errorText}>{errors.password}</Text>
+            )}
 
-        <Text style={styles.footerText}>
+            {/* Login Button */}
+            <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </Formik>
+
+      <Text style={styles.footerText}>
         Don’t have an account? <Text style={styles.link}>Sign up</Text>
-        </Text>
+      </Text>
     </View>
   );
 };
@@ -76,6 +138,42 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
   },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 40,
+    textAlign: 'center',
+  },
+  input: {
+    height: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    color: '#000',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  passwordInput: {
+    flex: 1,
+    height: 50,
+    color: '#000',
+    fontSize: 16,
+  },
+  iconContainer: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
   button: {
     backgroundColor: '#4A90E2',
     paddingVertical: 14,
@@ -96,5 +194,11 @@ const styles = StyleSheet.create({
   link: {
     color: '#4A90E2',
     fontWeight: '600',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 13,
+    marginBottom: 5,
+    marginLeft: 5,
   },
 });
