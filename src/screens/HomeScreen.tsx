@@ -12,7 +12,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.replace('Login')}  // 👈 Go back to Login
+        onPress={() => navigation.replace('Login')}
       >
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>

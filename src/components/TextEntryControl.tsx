@@ -46,11 +46,13 @@ const TextEntryControl: React.FC<TextEntryControlProps> = ({
       )}
 
       {iconName !== "" && (
-        <MaterialIcons
-        name={iconName}
-        size={22}
-        color="#4A90E2"
-        />
+        <View style={styles.iconContainer}>
+          <MaterialIcons
+          name={iconName}
+          size={22}
+          color="#4A90E2"
+          />
+        </View>
       )}
     </View>
   );
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   input: {
     flex: 1,

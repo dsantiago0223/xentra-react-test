@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet, 
   Image
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -26,8 +24,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  
   const handleLogin = (values: { email: string; password: string }) => {
     // Simulate successful login
     navigation.replace('Home');
@@ -50,17 +47,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <>
-            
-            {/*<TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor="#888"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={values.email}
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-            />*/}
             <TextEntryControl
             placeholder='Email'
             keyboardType="email-address"
@@ -74,27 +60,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.errorText}>{errors.email}</Text>
             )}
 
-            {/*<View style={styles.passwordContainer}>
-              <TextInput
-                style={styles.passwordInput}
-                placeholder="Password"
-                placeholderTextColor="#888"
-                secureTextEntry={!showPassword}
-                value={values.password}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.iconContainer}
-              >
-                <Icon
-                  name={showPassword ? 'eye-off' : 'eye'}
-                  size={22}
-                  color="#4A90E2"
-                />
-              </TouchableOpacity>
-            </View>*/}
             <TextEntryControl
             placeholder='Password'
             value={values.password}
