@@ -32,7 +32,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const handleLogin = async (values: { email: string; password: string }) => {
     setLoading(true);
 
-    try { //TODO: create reusable API Request 
+    try { //TODO: create reusable API Request, parsing and saving of response data
       const response = await axios.post('https://dd438db4-d024-4e90-a7c0-5168d4cbe765.mock.pstmn.io/login', 
         {
           username: values.email,
