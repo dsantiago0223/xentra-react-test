@@ -10,11 +10,11 @@ import TextEntryControl from '../components/TextEntryControl';
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
 const SignupSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().min(6, 'Min 6 characters').required('Required'),
+  email: Yup.string().email('Invalid email').required('Email required'),
+  password: Yup.string().min(6, 'Min 6 characters').required('Psssword required'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
-    .required('Required'),
+    .required('Confirm Password required'),
 });
 
 const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
@@ -108,7 +108,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
         </>
         )}
       </Formik>
-    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+    <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={styles.footerText}>Already have an account? <Text style={styles.link}>Login</Text> </Text>
     </TouchableOpacity>
 
