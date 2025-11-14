@@ -8,7 +8,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>🎉 Welcome to the Home Screen!</Text>
+      <Text style={styles.text}>Welcome Dave</Text>
 
       <TouchableOpacity
         style={styles.button}

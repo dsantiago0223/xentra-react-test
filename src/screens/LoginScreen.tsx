@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet, 
-  Image
+  Image,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import TextEntryControl from '../components/TextEntryControl';
+import axios from 'axios';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -24,10 +27,37 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  
-  const handleLogin = (values: { email: string; password: string }) => {
-    // Simulate successful login
-    navigation.replace('Home');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (values: { email: string; password: string }) => {
+    setLoading(true);
+
+    try { //TODO: create reusable API Request 
+      const response = await axios.post('https://dd438db4-d024-4e90-a7c0-5168d4cbe765.mock.pstmn.io/login', 
+        {
+          username: values.email,
+          password: values.password,
+        }, 
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-mock-match-request-body"': true,
+          }
+        }
+      );
+
+      console.log(response.data);
+
+      if (response.status === 200) {
+        navigation.replace('Home')
+      }
+    } catch (error: any) {
+      console.error(error);
+      Alert.alert('Login Failed', 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -71,9 +101,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
 
-            {/* Login Button */}
-            <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
-              <Text style={styles.buttonText}>Login</Text>
+            <TouchableOpacity style={styles.button} onPress={() => handleSubmit()} disabled={loading}>
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>Login</Text>
+              )}
             </TouchableOpacity>
           </>
         )}
