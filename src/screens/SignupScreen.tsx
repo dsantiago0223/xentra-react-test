@@ -11,7 +11,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email required'),
-  password: Yup.string().min(6, 'Min 6 characters').required('Psssword required'),
+  password: Yup.string().min(6, 'Min 6 characters').required('Password required'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Confirm Password required'),
@@ -140,14 +140,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 150,
-  },
-  input: {
-    width: '100%',
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#CCC',
-    borderRadius: 10,
-    marginTop: 10,
   },
   errorText: {
     color: 'red',
