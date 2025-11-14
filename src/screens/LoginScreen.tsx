@@ -63,12 +63,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-            <Image
-            source={require('../../assets/jetwaytrade_logo.png')}
-            style={styles.logo}
-            resizeMode="contain"
-            />
-        </View>
+        <Image
+        source={require('../../assets/logo.png')}
+        style={styles.logo}
+        resizeMode="contain"
+        />
+      </View>
 
       <Formik
         initialValues={{ email: '', password: '' }}
@@ -112,9 +112,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         )}
       </Formik>
 
-      <Text style={styles.footerText}>
-        Don’t have an account? <Text style={styles.link}>Sign up</Text>
-      </Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.footerText}>Don’t have an account? <Text style={styles.link}>Sign up</Text>
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -128,9 +129,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   logoContainer: {
-    alignItems: 'center',
     marginBottom: 40,
     marginTop: 20,
+    alignItems: "center"
   },
   logo: {
     width: 150,
