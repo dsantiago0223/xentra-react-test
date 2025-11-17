@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import TextEntryControl from '../components/TextEntryControl';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -28,6 +29,24 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  const [checkingLogin, setCheckingLogin] = useState(true);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        if (token) {
+          navigation.replace('Home');
+        }
+      } catch (error) {
+        console.error('error checking login:', error);
+      } finally {
+        setCheckingLogin(false);
+      }
+    };
+
+    checkLoginStatus();
+  }, [navigation]);
 
   const handleLogin = async (values: { email: string; password: string }) => {
     setLoading(true);
@@ -49,7 +68,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
       console.log(response.data);
 
-      if (response.status === 200) {
+      if (response.status === 200 && response.data.success) {
+        console.error(response.data.user.access_token);
+        await AsyncStorage.setItem('userToken', response.data.user.access_token);
         navigation.replace('Home')
       }
     } catch (error: any) {
@@ -59,6 +80,15 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  if (checkingLogin) {
+    // Show splash loader while checking AsyncStorage
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#4A90E2" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -127,6 +157,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 30,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   logoContainer: {
     marginBottom: 40,

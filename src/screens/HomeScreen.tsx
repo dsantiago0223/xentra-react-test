@@ -2,17 +2,24 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('userToken');
+    navigation.replace('Login');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Welcome Dave</Text>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.replace('Login')}
+        onPress={handleLogout}
       >
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
