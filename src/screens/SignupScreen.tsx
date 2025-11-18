@@ -44,8 +44,8 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
       if (response.status === 200 && response.data.success) {
         console.log(response.data.user.access_token);
         await AsyncStorage.setItem('userToken', response.data.user.access_token);
-        Alert.alert('Success!', 'Account created successfully', [{ text: 'Login', onPress: () => 
-          navigation.navigate('Login') }]);  
+        Alert.alert('Success!', 'Account created successfully', [{ text: 'OK', onPress: () => 
+          navigation.navigate('Home') }]);  
       }
     } catch (error: any) {
       console.error(error);
