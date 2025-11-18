@@ -75,9 +75,21 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       }
     } catch (error: any) {
       console.error(error);
-      Alert.alert('Login Failed', 'Invalid email or password');
+      let errorMessage = "Invalid username or password"
+      if (error.response) {
+        console.error('Error Status:', error.response.status);
+        console.error('Error Data:', error.response.data); 
+        console.error('Error Headers:', error.response.headers);
+        errorMessage = error.response.data.error.message
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+        errorMessage = error.message;
+      }
+      Alert.alert('Login Failed', errorMessage);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   };
 
