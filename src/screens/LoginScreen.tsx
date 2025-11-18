@@ -69,7 +69,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       console.log(response.data);
 
       if (response.status === 200 && response.data.success) {
-        console.error(response.data.user.access_token);
+        console.log(response.data.user.access_token);
         await AsyncStorage.setItem('userToken', response.data.user.access_token);
         navigation.replace('Home')
       }
@@ -82,7 +82,6 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   if (checkingLogin) {
-    // Show splash loader while checking AsyncStorage
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="#4A90E2" />

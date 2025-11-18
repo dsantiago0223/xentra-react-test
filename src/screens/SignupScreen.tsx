@@ -6,6 +6,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import * as Yup from 'yup';
 import axios from 'axios';
 import TextEntryControl from '../components/TextEntryControl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -40,10 +41,11 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
 
       console.log(response.data);
 
-      if (response.status === 200) {
-        Alert.alert('Success!', 'Account created successfully', [
-        { text: 'Login', onPress: () => navigation.navigate('Login') },
-      ]);
+      if (response.status === 200 && response.data.success) {
+        console.log(response.data.user.access_token);
+        await AsyncStorage.setItem('userToken', response.data.user.access_token);
+        Alert.alert('Success!', 'Account created successfully', [{ text: 'Login', onPress: () => 
+          navigation.navigate('Login') }]);  
       }
     } catch (error: any) {
       console.error(error);
