@@ -13,8 +13,8 @@ import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import TextEntryControl from '../components/TextEntryControl';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { login } from '../api/user/User';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -50,46 +50,20 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleLogin = async (values: { email: string; password: string }) => {
     setLoading(true);
-
-    try { //TODO: create reusable API Request, parsing and saving of response data
-      const response = await axios.post('https://dd438db4-d024-4e90-a7c0-5168d4cbe765.mock.pstmn.io/login', 
-        {
-          username: values.email,
+    const { data, error } = await login({
+          email: values.email,
           password: values.password,
-        }, 
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'x-mock-match-request-body"': true,
-          }
-        }
-      );
+        });
 
-      console.log(response.data);
-
-      if (response.status === 200 && response.data.success) {
-        console.log(response.data.user.access_token);
-        await AsyncStorage.setItem('userToken', response.data.user.access_token);
-        navigation.replace('Home')
-      }
-    } catch (error: any) {
-      console.error(error);
-      let errorMessage = "Invalid username or password"
-      if (error.response) {
-        console.error('Error Status:', error.response.status);
-        console.error('Error Data:', error.response.data); 
-        console.error('Error Headers:', error.response.headers);
-        errorMessage = error.response.data.error.message
-      } else if (error.request) {
-        console.error('No response received:', error.request);
-      } else {
-        console.error('Error message:', error.message);
-        errorMessage = error.message;
-      }
-      Alert.alert('Login Failed', errorMessage);
-    } finally {
-        setLoading(false);
+    if (error) {
+      setLoading(false);
+      console.log("Error:", error.message);
+      Alert.alert('Login Failed', error.message);
+    } else {
+      setLoading(false);
+      console.log("User:", data);
+      await AsyncStorage.setItem('userToken', data.user.access_token);
+      navigation.replace('Home')
     }
   };
 
