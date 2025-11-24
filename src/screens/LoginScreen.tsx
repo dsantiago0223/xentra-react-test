@@ -51,9 +51,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const handleLogin = async (values: { email: string; password: string }) => {
     setLoading(true);
     const { data, error } = await login({
-          email: values.email,
-          password: values.password,
-        });
+      email: values.email,
+      password: values.password,
+    });
 
     if (data) {
       setLoading(false);

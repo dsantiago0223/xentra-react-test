@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import * as Yup from 'yup';
-import axios from 'axios';
+import { register } from '../api/user/User'
 import TextEntryControl from '../components/TextEntryControl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -23,35 +23,20 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
   
   const handleSignup = async (values: { email: string; password: string }) => {
     setLoading(true);
+    const { data, error } = await register({
+      email: values.email,
+      password: values.password,
+    });
 
-    try { //TODO: create reusable API Request, parsing and saving of response data
-      const response = await axios.post('https://dd438db4-d024-4e90-a7c0-5168d4cbe765.mock.pstmn.io/register', 
-        {
-          username: values.email,
-          password: values.password,
-        }, 
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'x-mock-match-request-body"': true,
-          }
-        }
-      );
-
-      console.log(response.data);
-
-      if (response.status === 200 && response.data.success) {
-        console.log(response.data.user.access_token);
-        await AsyncStorage.setItem('userToken', response.data.user.access_token);
-        Alert.alert('Success!', 'Account created successfully', [{ text: 'OK', onPress: () => 
-          navigation.navigate('Home') }]);  
-      }
-    } catch (error: any) {
-      console.error(error);
-      Alert.alert('Signup Failed', 'Unable to create account.');
-    } finally {
+    if (data) {
       setLoading(false);
+      await AsyncStorage.setItem('userToken', data.user.access_token);
+      Alert.alert('Success!', 'Account created successfully', [{ text: 'OK', onPress: () => 
+          navigation.replace('Home') }]);  
+    } else {
+      setLoading(false);
+      console.log("Error:", error.message);
+      Alert.alert('Failed', error.message);
     }
   };
 
