@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ApiError } from "./ApiError";
 import { buildQueryString } from "../utils/queryString";
-import { API_BASE_URL } from "../constants/constants"
+import { API_BASE_URL, LOG_API_RESPONSE } from "../constants/constants"
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Axios instance
@@ -28,11 +28,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response) {
-      console.log("API ERROR:", error.response.status, error.response.data);
+    /*if (error.response) {
+      console.log("API Error: ", error.response.status, error.response.data);
     } else {
-      console.log("NETWORK ERROR:", error.message);
-    }
+      console.log("Network Error: ", error.message);
+    }*/
     return Promise.reject(error);
   }
 );
@@ -62,11 +62,19 @@ const request = async <T>(
       signal: options.signal,
     });
 
+    if (LOG_API_RESPONSE) {
+      console.log("Response Data: " + JSON.stringify(response.data, null, "\t"))
+    }
+  
     return response.data;
   } catch (err: any) {
     if (err.response) {
       const apiError = err.response.data;
       if (apiError) {
+        //error from API
+        if (LOG_API_RESPONSE) {
+          console.log("Response Data: " + JSON.stringify(err.response.data, null, "\t"))
+        }
         let errorMessage = apiError.error.message
         throw new ApiError(errorMessage, null);  
       } else {

@@ -13,9 +13,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     navigation.replace('Login');
   };
 
+  const name = "Dave"
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome Dave</Text>
+      <Text style={styles.text}>Welcome {name}</Text>
 
       <TouchableOpacity
         style={styles.button}

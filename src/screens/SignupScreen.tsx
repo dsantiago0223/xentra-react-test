@@ -35,7 +35,6 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
           navigation.replace('Home') }]);  
     } else {
       setLoading(false);
-      console.log("Error:", error.message);
       Alert.alert('Failed', error.message);
     }
   };

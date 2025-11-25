@@ -57,12 +57,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
     if (data) {
       setLoading(false);
-      console.log("User:", data);
       await AsyncStorage.setItem('userToken', data.user.access_token);
       navigation.replace('Home')
     } else {
       setLoading(false);
-      console.log("Error:", error.message);
       Alert.alert('Login Failed', error.message);
     }
   };
