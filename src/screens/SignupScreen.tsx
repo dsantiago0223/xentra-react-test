@@ -28,13 +28,12 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
     });
 
     if (data) {
-      setLoading(false);
       Alert.alert('Success!', 'Account created successfully', [{ text: 'OK', onPress: () => 
           navigation.replace('Home') }]);  
     } else {
-      setLoading(false);
       Alert.alert('Failed', error.message);
     }
+    setLoading(false);
   };
 
   return (
