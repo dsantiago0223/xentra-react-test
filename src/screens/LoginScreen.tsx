@@ -13,8 +13,8 @@ import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import TextEntryControl from '../components/TextEntryControl';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../api/user/User';
+import { getAccessToken } from '../api/user/userDataStore'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -34,7 +34,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const token = await AsyncStorage.getItem('userToken');
+        const token = await getAccessToken()
         if (token) {
           navigation.replace('Home');
         }
@@ -57,7 +57,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
     if (data) {
       setLoading(false);
-      await AsyncStorage.setItem('userToken', data.user.access_token);
+      //await AsyncStorage.setItem('userToken', data.user.access_token);
       navigation.replace('Home')
     } else {
       setLoading(false);
