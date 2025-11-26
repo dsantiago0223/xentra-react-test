@@ -10,7 +10,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleLogout = async () => {
     await removeAccessToken();
-    navigation.replace('Login');
+    navigation.reset({index: 0, routes: [{ name: "Login" }]});
   };
 
   const name = "Dave"

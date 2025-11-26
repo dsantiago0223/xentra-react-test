@@ -56,7 +56,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     });
 
     if (data) {
-      navigation.replace('Home')
+      navigation.reset({index: 0, routes: [{ name: "Home" }]});
     } else {
       Alert.alert('Login Failed', error.message);
     }

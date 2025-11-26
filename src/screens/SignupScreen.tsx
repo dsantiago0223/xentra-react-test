@@ -28,8 +28,9 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
     });
 
     if (data) {
-      Alert.alert('Success!', 'Account created successfully', [{ text: 'OK', onPress: () => 
-          navigation.replace('Home') }]);  
+      Alert.alert('Success!', 'Account created successfully', [{ text: 'OK', onPress: () => {
+        navigation.reset({index: 0, routes: [{ name: "Home" }]});
+      }}]);  
     } else {
       Alert.alert('Failed', error.message);
     }
