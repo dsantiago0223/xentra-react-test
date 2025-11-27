@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet, 
-  Image,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import TextEntryControl from '../components/TextEntryControl';
-import { login } from '../api/user/User';
-import { getAccessToken } from '../api/user/userDataStore'
+import { AuthContext } from '../context/AuthContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -29,47 +20,17 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [checkingLogin, setCheckingLogin] = useState(true);
+  const { loginUser } = useContext(AuthContext);
 
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const token = await getAccessToken()
-        if (token) {
-          navigation.replace('Home');
-        }
-      } catch (error) {
-        console.error('error checking login:', error);
-      } finally {
-        setCheckingLogin(false);
-      }
-    };
-
-    checkLoginStatus();
-  }, [navigation]);
-
-  const handleLogin = async (values: { email: string; password: string }) => {
+  const handleLogin = async (values: { email: string, password: string }) => {
     setLoading(true);
-    const { data, error } = await login({
+    const { error } = await loginUser({
       email: values.email,
       password: values.password,
     });
-
-    if (data) {
-      navigation.reset({index: 0, routes: [{ name: "Home" }]});
-    } else {
-      Alert.alert('Login Failed', error.message);
-    }
+    if (error) Alert.alert('Login Failed', error.message);
     setLoading(false);
   };
-
-  if (checkingLogin) {
-    return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#4A90E2" />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>

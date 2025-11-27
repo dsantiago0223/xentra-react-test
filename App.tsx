@@ -11,6 +11,7 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
+import { AuthProvider } from './src/context/AuthContext';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -28,7 +29,9 @@ function AppContent() {
 
   return (
     <View style={[styles.container, {paddingTop: safeAreaInsets.top, paddingBottom: safeAreaInsets.bottom}]}>
-      <AppNavigator />
+      <AuthProvider>
+        <AppNavigator />
+      </AuthProvider>
     </View>
   );
 }

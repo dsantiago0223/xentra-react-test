@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import * as Yup from 'yup';
-import { register } from '../api/user/User'
 import TextEntryControl from '../components/TextEntryControl';
+import { AuthContext } from '../context/AuthContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -19,21 +19,15 @@ const SignupSchema = Yup.object().shape({
 
 const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false);
+  const { registerUser } = useContext(AuthContext);
   
-  const handleSignup = async (values: { email: string; password: string }) => {
+  const handleSignup = async (values: { email: string, password: string }) => {
     setLoading(true);
-    const { data, error } = await register({
+    const { error } = await registerUser({
       email: values.email,
       password: values.password,
     });
-
-    if (data) {
-      Alert.alert('Success!', 'Account created successfully', [{ text: 'OK', onPress: () => {
-        navigation.reset({index: 0, routes: [{ name: "Home" }]});
-      }}]);  
-    } else {
-      Alert.alert('Failed', error.message);
-    }
+    if (error) Alert.alert('Failed', error.message);
     setLoading(false);
   };
 

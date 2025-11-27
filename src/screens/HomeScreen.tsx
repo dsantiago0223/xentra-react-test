@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { removeAccessToken } from '../api/user/userDataStore'
+import { AuthContext } from '../context/AuthContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
-  const handleLogout = async () => {
-    await removeAccessToken();
-    navigation.reset({index: 0, routes: [{ name: "Login" }]});
-  };
+  useEffect(() => {
+  }, [navigation]);
 
+  const { logoutUser } = useContext(AuthContext);
   const name = "Dave"
 
   return (
@@ -21,7 +20,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={handleLogout}
+        onPress={logoutUser}
       >
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
