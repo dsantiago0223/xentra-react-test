@@ -90,7 +90,7 @@ const request = async <T>(
   }
 };
 
-export const ApiClient = {
+export const ApiRequest = {
   request,
   get: <T>(url: string, options?: ApiOptions) =>
     request<T>("GET", url, options),

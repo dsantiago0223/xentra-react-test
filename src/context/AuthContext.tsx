@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { login, register } from '../api/user/User';
-import { getAccessToken, removeAccessToken } from '../api/user/UserDataStore'
+import { getAccessToken, removeAccessToken } from '../api/user/UserStorage'
 
 type AuthContextType = {
   accessToken: string | null;

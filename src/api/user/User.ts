@@ -1,5 +1,5 @@
-import { ApiClient } from '../ApiClient';
-import { saveAccessToken } from './UserDataStore'
+import { ApiRequest } from '../ApiRequest';
+import { saveAccessToken } from './UserStorage'
 
 type UserResponse =  {
   success: boolean;
@@ -14,7 +14,7 @@ type UserResponse =  {
 
 export const login = async (params: { email: string, password: string }) => {
   try {
-    const data = await ApiClient.post<UserResponse>("/login", params);
+    const data = await ApiRequest.post<UserResponse>("/login", params);
     await saveAccessToken(data.user.access_token)
     return { data, error: null };
   } catch (error: any) {
@@ -24,7 +24,7 @@ export const login = async (params: { email: string, password: string }) => {
 
 export const register = async (params: { email: string, password: string }) => {
   try {
-    const data = await ApiClient.post<UserResponse>("/register", params);
+    const data = await ApiRequest.post<UserResponse>("/register", params);
     await saveAccessToken(data.user.access_token)
     return { data, error: null };
   } catch (error: any) {
