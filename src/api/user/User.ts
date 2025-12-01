@@ -1,5 +1,5 @@
-import { apiClient } from '../apiClient';
-import { saveAccessToken } from '../user/userDataStore'
+import { apiClient } from '../ApiClient';
+import { saveAccessToken } from './UserDataStore'
 
 type UserResponse =  {
   success: boolean;
