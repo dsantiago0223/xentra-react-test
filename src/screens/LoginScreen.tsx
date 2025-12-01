@@ -6,6 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import TextEntryControl from '../components/TextEntryControl';
 import { AuthContext } from '../context/AuthContext';
+import { useLoading } from '../components/ActivityIndicator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -21,15 +22,18 @@ const LoginSchema = Yup.object().shape({
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const { loginUser } = useContext(AuthContext);
+  const { showLoading, hideLoading } = useLoading();
 
   const handleLogin = async (values: { email: string, password: string }) => {
     setLoading(true);
+    showLoading()
     const { error } = await loginUser({
       email: values.email,
       password: values.password,
     });
     if (error) Alert.alert('Login Failed', error.message);
     setLoading(false);
+    hideLoading();
   };
 
   return (
@@ -74,11 +78,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             )}
 
             <TouchableOpacity style={styles.button} onPress={() => handleSubmit()} disabled={loading}>
-              {loading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.buttonText}>Login</Text>
-              )}
+              <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </>
         )}

@@ -6,6 +6,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import * as Yup from 'yup';
 import TextEntryControl from '../components/TextEntryControl';
 import { AuthContext } from '../context/AuthContext';
+import { useLoading } from '../components/ActivityIndicator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -20,15 +21,18 @@ const SignupSchema = Yup.object().shape({
 const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false);
   const { registerUser } = useContext(AuthContext);
+  const { showLoading, hideLoading } = useLoading();
   
   const handleSignup = async (values: { email: string, password: string }) => {
     setLoading(true);
+    showLoading();
     const { error } = await registerUser({
       email: values.email,
       password: values.password,
     });
     if (error) Alert.alert('Failed', error.message);
     setLoading(false);
+    hideLoading()
   };
 
   return (
@@ -80,8 +84,8 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
               <Text style={styles.errorText}>{errors.confirmPassword}</Text>
             )}
 
-            <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
-              <Text style={styles.buttonText}>{loading ? 'Signing up...' : 'Sign Up'}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => handleSubmit()} disabled={loading}>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
         </>
         )}
