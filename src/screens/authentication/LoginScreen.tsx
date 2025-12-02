@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import TextEntryControl from '../components/TextEntryControl';
-import { AuthContext } from '../context/AuthContext';
-import { useLoading } from '../components/ActivityIndicator';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import TextEntryControl from '../../components/TextEntryControl';
+import { AuthContext } from '../../context/AuthContext';
+import { useLoading } from '../../components/ActivityIndicator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -40,7 +40,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-        source={require('../../assets/logo.png')}
+        source={require('../../../assets/logo.png')}
         style={styles.logo}
         resizeMode="contain"
         />

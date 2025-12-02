@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
-import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from '../screens/authentication/LoginScreen';
+import SignupScreen from '../screens/authentication/SignupScreen';
+import HomeScreen from '../screens/main/HomeScreen';
 import { AuthContext } from '../context/AuthContext';
 
 export type RootStackParamList = {
