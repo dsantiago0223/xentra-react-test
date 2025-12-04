@@ -15,7 +15,7 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function RootNavigator() {
+const RootNavigator = () => {
   const { accessToken, loading } = useContext(AuthContext);
 
   if (loading) return (
@@ -39,6 +39,8 @@ export default function RootNavigator() {
     </NavigationContainer>
   );
 }
+
+export default RootNavigator
 
 const styles = StyleSheet.create({
   loaderContainer: {
