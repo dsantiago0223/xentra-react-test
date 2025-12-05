@@ -14,7 +14,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <NavigationHeader title="Jetway Trades" onBack={onBackPressed} onRightPress={onRightPressed} />
+      <NavigationHeader titleLogo onBack={onBackPressed} onRightPress={onRightPressed} />
       <HomeTabs />
     </View>
     

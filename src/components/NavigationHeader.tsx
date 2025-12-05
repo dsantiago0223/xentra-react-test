@@ -1,15 +1,17 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 type Props = {
   title?: string;
+  titleLogo?: boolean;
   onBack?: () => void;
   onRightPress?: () => void;
 };
 
 const NavigationHeader: React.FC<Props> = ({
   title = "",
+  titleLogo,
   onBack,
   onRightPress,
 }) => {
@@ -25,13 +27,20 @@ const NavigationHeader: React.FC<Props> = ({
       )}
 
       {/* Title */}
-      <Text style={styles.title}>
-        {title}
-      </Text>
-
+      {titleLogo ? (
+        <View style={styles.logoContainer}>
+            <Image
+            source={require('../../assets/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+            />
+        </View>
+      ) : (
+        <Text style={styles.title}>{title}</Text>
+      )}
       {/* Right Button */}
       {onRightPress ? (
-        <TouchableOpacity onPress={onRightPress}>
+        <TouchableOpacity onPress={onRightPress} style={styles.rightButton}>
           <Ionicons name="close-circle" size={22} color="#222" />
         </TouchableOpacity>
       ) : (
@@ -59,16 +68,29 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: "#222",
-    textAlign: 'center'
+    textAlign: 'center',
+    backgroundColor: "blue"
   },
   leftButton : {
     marginRight: 16
+  },
+  rightButton : {
+    marginLeft: 16
   },
   leftEmptyButton: {
     width: 24,
     marginRight: 16
   },
   rightEmptyButton: {
-    width: 24
-  }
+    width: 24,
+    marginLeft: 16
+  },
+  logoContainer: {
+    flex: 1,
+    alignItems: "center"
+  },
+  logo: {
+    width: 46,
+    height: 46,
+  },
 });
