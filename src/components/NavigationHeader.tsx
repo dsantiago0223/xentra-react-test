@@ -27,7 +27,7 @@ const NavigationHeader: React.FC<Props> = ({
       )}
       {/* Title */}
       {titleLogo ? (
-        <View style={styles.logoContainer}>
+        <View style={styles.titleContainer}>
             <Image
             source={require('../../assets/logo.png')}
             style={styles.logo}
@@ -35,14 +35,13 @@ const NavigationHeader: React.FC<Props> = ({
             />
         </View>
       ) : (
-        null
-      )}
-      {titleText ? (
-        <View style={styles.logoContainer}>
+        titleText ? (
+          <View style={styles.titleContainer}>
             <Text style={styles.title}>{titleText}</Text>
-        </View>
-      ) : (
-        null
+          </View>
+        ) : (
+          null
+        )
       )}
       {/* Right Button */}
       {onRightPressed ? (
@@ -68,12 +67,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#eee"
   },
-  title : {
+  titleContainer: {
     width: "50%",
+    alignItems: "center"
+  },
+  title : {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "700",
     color: "#222",
-    textAlign: "center",
+  },
+  logo: {
+    width: 100,
+    height: 46,
   },
   leftButton: {
     width: "25%",
@@ -84,13 +89,5 @@ const styles = StyleSheet.create({
     width: "25%",
     justifyContent: "center",
     alignItems: "flex-end",
-  },
-  logoContainer: {
-    width: "50%",
-    alignItems: "center"
-  },
-  logo: {
-    width: 100,
-    height: 46,
   }
 });
