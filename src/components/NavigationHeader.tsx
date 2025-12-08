@@ -3,29 +3,28 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 type Props = {
-  title?: string;
+  titleText?: string;
   titleLogo?: boolean;
-  onBack?: () => void;
-  onRightPress?: () => void;
+  onLeftPressed?: () => void;
+  onRightPressed?: () => void;
 };
 
 const NavigationHeader: React.FC<Props> = ({
-  title = "",
+  titleText = "",
   titleLogo,
-  onBack,
-  onRightPress,
+  onLeftPressed,
+  onRightPressed,
 }) => {
   return (
     <View style={styles.container}>
       {/* Left Button */}
-      {onBack ? (
-        <TouchableOpacity onPress={onBack} style={styles.leftButton}>
+      {onLeftPressed ? (
+        <TouchableOpacity onPress={onLeftPressed} style={styles.leftButton}>
           <Ionicons name="chevron-back" size={24} color="#222" />
         </TouchableOpacity>
       ) : (
-        <View style={styles.leftEmptyButton} />
+        null
       )}
-
       {/* Title */}
       {titleLogo ? (
         <View style={styles.logoContainer}>
@@ -36,15 +35,22 @@ const NavigationHeader: React.FC<Props> = ({
             />
         </View>
       ) : (
-        <Text style={styles.title}>{title}</Text>
+        null
+      )}
+      {titleText ? (
+        <View style={styles.logoContainer}>
+            <Text style={styles.title}>{titleText}</Text>
+        </View>
+      ) : (
+        null
       )}
       {/* Right Button */}
-      {onRightPress ? (
-        <TouchableOpacity onPress={onRightPress} style={styles.rightButton}>
+      {onRightPressed ? (
+        <TouchableOpacity onPress={onRightPressed} style={styles.rightButton}>
           <Ionicons name="close-circle" size={22} color="#222" />
         </TouchableOpacity>
       ) : (
-        <View style={styles.rightEmptyButton} />
+        null
       )}
     </View>
   );
@@ -54,43 +60,37 @@ export default NavigationHeader;
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: 56,
-    backgroundColor: "#fff",
+    height: 60,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: "#eee"
   },
   title : {
-    flex: 1,
+    width: "50%",
     fontSize: 18,
     fontWeight: "600",
     color: "#222",
-    textAlign: 'center',
-    backgroundColor: "blue"
+    textAlign: "center",
   },
-  leftButton : {
-    marginRight: 16
+  leftButton: {
+    width: "25%",
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
-  rightButton : {
-    marginLeft: 16
-  },
-  leftEmptyButton: {
-    width: 24,
-    marginRight: 16
-  },
-  rightEmptyButton: {
-    width: 24,
-    marginLeft: 16
+  rightButton: {
+    width: "25%",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   logoContainer: {
-    flex: 1,
+    width: "50%",
     alignItems: "center"
   },
   logo: {
-    width: 46,
+    width: 100,
     height: 46,
-  },
+  }
 });

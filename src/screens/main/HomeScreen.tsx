@@ -14,13 +14,13 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <NavigationHeader titleLogo onBack={onBackPressed} onRightPress={onRightPressed} />
+      <NavigationHeader titleLogo onLeftPressed={onLeftPressed} onRightPressed={onRightPressed} />
       <HomeTabs />
     </View>
     
   );
 
-  function onBackPressed() {}
+  function onLeftPressed() {}
 
   function onRightPressed() {}
 
