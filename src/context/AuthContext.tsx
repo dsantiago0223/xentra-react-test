@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { login, register } from '../api/user/User';
-import { getAccessToken, removeAccessToken } from '../api/user/UserStorage'
+import { save, get, remove } from '../utils/AppStorage'
 
 type AuthContextType = {
   accessToken: string | null;
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Load token when app starts
   useEffect(() => {
     const loadToken = async () => {
-      const token = await getAccessToken();
+      const token = await get("accessToken");
       if (token) setAccessToken(token);
       setLoading(false);
     };
@@ -36,8 +36,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 const loginUser = async (params: { email: string, password: string }) => {
     const { data, error } = await login(params);
     if (data) {
-        setAccessToken(data.user.access_token);
-        return { data, error: null };
+      const token = data.user.access_token;
+      await save("accessToken", token);  
+      setAccessToken(token);
+      return { data, error: null };
     } else {
         return { data: null, error };
     }
@@ -47,16 +49,18 @@ const loginUser = async (params: { email: string, password: string }) => {
   const registerUser = async (params: { email: string, password: string }) => {
     const { data, error } = await register(params);
     if (data) {
-        setAccessToken(data.user.access_token);
-        return { data, error: null };
+      const token = data.user.access_token;
+      await save("accessToken", token);  
+      setAccessToken(token);
+      return { data, error: null };
     } else {
-        return { data: null, error };
+      return { data: null, error };
     }
   };
 
   // Logout
   const logoutUser = async () => {
-    await removeAccessToken()
+    await remove("accessToken");
     setAccessToken(null);
   };
 
