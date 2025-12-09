@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import TextEntryControl from '../../components/TextEntryControl';
 import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/ActivityIndicator';
+import NavigationHeader from '../../components/NavigationHeader';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -37,13 +38,18 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.logoContainer}>
-            <Image
-            source={require('../../../assets/logo.png')}
-            style={styles.logo}
-            resizeMode="contain"
-            />
-        </View>
+      <NavigationHeader 
+      titleText='Sign Up'
+      onLeftPressed={() => navigation.goBack()} 
+      leftIsImage
+      />
+      <View style={styles.logoContainer}>
+        <Image
+        source={require('../../../assets/logo.png')}
+        style={styles.logo}
+        resizeMode="contain"
+        />
+      </View>
       <Text style={styles.title}>Create Jetway Trades Account</Text>
 
       <Formik
@@ -52,7 +58,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
         onSubmit={handleSignup}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <>
+          <View style={styles.inputContainer}>
             <TextEntryControl
             placeholder='Email'
             keyboardType="email-address"
@@ -87,7 +93,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
             <TouchableOpacity style={styles.button} onPress={() => handleSubmit()} disabled={loading}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
-        </>
+        </View>
         )}
       </Formik>
     <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -104,7 +110,10 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 30,
+    backgroundColor: '#FFF',
+  },
+  inputContainer: {
+    paddingHorizontal: 20,
     backgroundColor: '#FFF',
   },
   title: {
@@ -116,12 +125,12 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     marginBottom: 12,
-    marginTop: 20,
+    marginTop: 8,
     alignItems: 'center'
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
   },
   errorText: {
     color: 'red',
