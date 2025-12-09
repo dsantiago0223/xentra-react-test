@@ -1,22 +1,12 @@
-import React, { useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { AuthContext } from '../../context/AuthContext';
+import React from "react";
+import { View, Text, StyleSheet } from 'react-native';
 
 export default function DashboardScreen() {
-  const { logoutUser } = useContext(AuthContext);
-    const name = "Dave"
-  
-    return (
-      <View style={styles.container}>
-        <Text>Dashboard</Text>
-        
-        <Text style={styles.text}>Welcome {name}</Text>
-        
-        <TouchableOpacity style={styles.button} onPress={logoutUser}>
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Text>Dashboard</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -32,16 +22,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginBottom: 30,
-  },
-  button: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 14,
-    paddingHorizontal: 25,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  }
 });

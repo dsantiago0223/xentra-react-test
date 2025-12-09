@@ -7,6 +7,11 @@ type Props = {
   titleLogo?: boolean;
   onLeftPressed?: () => void;
   onRightPressed?: () => void;
+  leftText?: string;
+  rightText?: string;
+  leftIsImage?: boolean
+  rightIsImage?: boolean
+  
 };
 
 const NavigationHeader: React.FC<Props> = ({
@@ -14,17 +19,18 @@ const NavigationHeader: React.FC<Props> = ({
   titleLogo,
   onLeftPressed,
   onRightPressed,
+  leftText,
+  rightText, 
+  leftIsImage,
+  rightIsImage
 }) => {
   return (
     <View style={styles.container}>
       {/* Left Button */}
-      {onLeftPressed ? (
-        <TouchableOpacity onPress={onLeftPressed} style={styles.leftButton}>
-          <Ionicons name="chevron-back" size={24} color="#222" />
-        </TouchableOpacity>
-      ) : (
-        null
-      )}
+      <TouchableOpacity onPress={onLeftPressed} style={styles.leftButton}>
+        {leftText ? <Text style={styles.sideText}>{leftText}</Text> :  null}
+        {leftIsImage ? <Ionicons name="chevron-back" size={24} color="#222"/> :  null}
+      </TouchableOpacity>
       {/* Title */}
       {titleLogo ? (
         <View style={styles.titleContainer}>
@@ -44,13 +50,10 @@ const NavigationHeader: React.FC<Props> = ({
         )
       )}
       {/* Right Button */}
-      {onRightPressed ? (
-        <TouchableOpacity onPress={onRightPressed} style={styles.rightButton}>
-          <Ionicons name="close-circle" size={22} color="#222" />
-        </TouchableOpacity>
-      ) : (
-        null
-      )}
+      <TouchableOpacity onPress={onRightPressed} style={styles.rightButton}>
+        {rightText ? <Text style={styles.sideText}>{rightText}</Text> :  null}
+        {rightIsImage ? <Ionicons name="close-circle" size={24} color="#222"/> :  null}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -89,5 +92,9 @@ const styles = StyleSheet.create({
     width: "25%",
     justifyContent: "center",
     alignItems: "flex-end",
-  }
+  },
+  sideText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
 });

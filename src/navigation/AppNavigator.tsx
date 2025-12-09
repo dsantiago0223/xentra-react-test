@@ -19,10 +19,10 @@ const RootNavigator = () => {
   const { accessToken, loading } = useContext(AuthContext);
 
   if (loading) return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#4A90E2" />
-      </View>
-    );
+    <View style={styles.loaderContainer}>
+      <ActivityIndicator size="large" color="#4A90E2" />
+    </View>
+  );
 
   return (
     <NavigationContainer>
