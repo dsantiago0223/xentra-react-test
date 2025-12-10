@@ -12,8 +12,8 @@ export default function DashboardScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text style={styles.text}>Dashboard</Text>
       <Button
-      title="Go to Settings"
-      onPress={() => navigation.navigate("Settings")}
+      title="Go to Profile"
+      onPress={() => navigation.navigate("Profile")}
       />
     </View>
   );
