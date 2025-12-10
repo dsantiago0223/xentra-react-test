@@ -1,10 +1,20 @@
 import React from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { HomeTabsParamList } from "../main/HomeTabs";
 
-export default function DashboardScreen() {
+type Props = {
+  navigation: BottomTabNavigationProp<HomeTabsParamList>;
+};
+
+export default function DashboardScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text>Dashboard</Text>
+      <Text style={styles.text}>Dashboard</Text>
+      <Button
+      title="Go to Settings"
+      onPress={() => navigation.navigate("Settings")}
+      />
     </View>
   );
 }

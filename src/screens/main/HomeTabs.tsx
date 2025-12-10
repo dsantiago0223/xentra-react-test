@@ -5,7 +5,13 @@ import DashboardScreen from "./DashboardScreen";
 import ProfileScreen from "./ProfileScreen";
 import SettingsScreen from "./SettingsScreen";
 
-const Tab = createBottomTabNavigator();
+export type HomeTabsParamList = {
+  Dashboard: undefined;
+  Profile: undefined;
+  Settings: undefined;
+};
+
+const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
 const screenOptions = ({ route }) => ({
   headerShown: false,
