@@ -7,7 +7,7 @@ type Props = {
   navigation: BottomTabNavigationProp<HomeTabsParamList>;
 };
 
-function DashboardScreen({ navigation }: Props ) {
+export default function DashboardScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Dashboard</Text>
@@ -17,9 +17,7 @@ function DashboardScreen({ navigation }: Props ) {
       />
     </View>
   );
-};
-
-export default DashboardScreen
+}
 
 const styles = StyleSheet.create({
   container: {
