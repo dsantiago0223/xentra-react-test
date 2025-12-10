@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import DashboardScreen from "./DashboardScreen";
-import ProfileScreen from "./ProfileScreen";
-import SettingsScreen from "./SettingsScreen";
+import DashboardScreen from "../screens/main/DashboardScreen";
+import ProfileScreen from "../screens/main/ProfileScreen";
+import SettingsScreen from "../screens/main/SettingsScreen";
 
 export type HomeTabsParamList = {
   Dashboard: undefined;

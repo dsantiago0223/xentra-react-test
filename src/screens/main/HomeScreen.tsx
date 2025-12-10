@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
-import HomeTabs from './HomeTabs';
+import HomeTabs from '../../navigation/HomeTabs';
 import NavigationHeader from '../../components/NavigationHeader';
 import { AuthContext } from '../../context/AuthContext';
 
