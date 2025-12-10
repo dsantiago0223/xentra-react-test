@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
+import { RootStackParamList } from '../../navigation/RootNavigator';
 import * as Yup from 'yup';
 import TextEntryControl from '../../components/TextEntryControl';
 import { AuthContext } from '../../context/AuthContext';

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-na
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/AppNavigator';
+import { RootStackParamList } from '../../navigation/RootNavigator';
 import TextEntryControl from '../../components/TextEntryControl';
 import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/ActivityIndicator';

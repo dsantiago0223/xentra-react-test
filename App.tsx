@@ -10,7 +10,7 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import AppNavigator from './src/navigation/AppNavigator';
+import RootNavigator from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/context/AuthContext';
 import { ActivityIndicatorProvider } from './src/components/ActivityIndicator'
 
@@ -32,7 +32,7 @@ function AppContent() {
     <View style={[styles.container, {paddingTop: safeAreaInsets.top, paddingBottom: safeAreaInsets.bottom}]}>
       <AuthProvider>
         <ActivityIndicatorProvider>
-          <AppNavigator />
+          <RootNavigator />
         </ActivityIndicatorProvider>
       </AuthProvider>
     </View>
