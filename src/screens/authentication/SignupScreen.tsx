@@ -19,7 +19,7 @@ const SignupSchema = Yup.object().shape({
     .required('Confirm Password required'),
 });
 
-const SignupScreen: React.FC<Props> = ({ navigation }: any) => {
+const SignupScreen = ({ navigation }: Props) => {
   const [loading, setLoading] = useState(false);
   const { registerUser } = useContext(AuthContext);
   const { showLoading, hideLoading } = useLoading();

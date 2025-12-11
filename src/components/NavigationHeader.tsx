@@ -14,7 +14,7 @@ type Props = {
   
 };
 
-const NavigationHeader: React.FC<Props> = ({
+const NavigationHeader = ({
   titleText = "",
   titleLogo,
   onLeftPressed,
@@ -23,7 +23,7 @@ const NavigationHeader: React.FC<Props> = ({
   rightText, 
   leftIsImage,
   rightIsImage
-}) => {
+}: Props) => {
   return (
     <View style={styles.container}>
       {/* Left Button */}

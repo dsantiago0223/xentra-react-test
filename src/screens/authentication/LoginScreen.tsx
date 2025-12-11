@@ -19,7 +19,7 @@ const LoginSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
-const LoginScreen: React.FC<Props> = ({ navigation }) => {
+const LoginScreen = ({ navigation }: Props) => {
   const [loading, setLoading] = useState(false);
   const { loginUser } = useContext(AuthContext);
   const { showLoading, hideLoading } = useLoading();

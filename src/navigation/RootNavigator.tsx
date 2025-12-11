@@ -7,6 +7,7 @@ import SignupScreen from '../screens/authentication/SignupScreen';
 import HomeScreen from '../screens/main/HomeScreen';
 import { AuthContext } from '../context/AuthContext';
 
+
 export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
@@ -27,7 +28,7 @@ const RootNavigator = () => {
   return (
     <NavigationContainer>
       {accessToken ? (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       ) : (

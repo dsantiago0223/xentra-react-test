@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { HomeTabsParamList } from "../../../navigation/HomeTabs";
+import { HomeScreenParamList } from "../HomeScreen";
 
 type Props = {
-  navigation: BottomTabNavigationProp<HomeTabsParamList>;
+  navigation: BottomTabNavigationProp<HomeScreenParamList>;
 };
 
 export default function DashboardScreen({ navigation }: Props) {

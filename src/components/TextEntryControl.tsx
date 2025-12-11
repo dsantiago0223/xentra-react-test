@@ -11,14 +11,14 @@ interface TextEntryControlProps extends TextInputProps  {
   iconName?: string;
 }
 
-const TextEntryControl: React.FC<TextEntryControlProps> = ({
+const TextEntryControl = ({
   value,
   onChangeText,
   placeholder = '',
   isPassword = false,
   iconName = "",
   ...props
-}) => {
+}: TextEntryControlProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
