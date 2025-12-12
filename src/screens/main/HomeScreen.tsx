@@ -71,7 +71,7 @@ const HomeScreen = ({ navigation }: Props) => {
   );
 
   function onLeftPressed() {
-    console.log("left text pressed")
+    navigation.navigate("MyInformation")
   }
 
   function onRightPressed() {

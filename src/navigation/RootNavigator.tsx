@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/authentication/LoginScreen';
 import SignupScreen from '../screens/authentication/SignupScreen';
 import HomeScreen from '../screens/main/HomeScreen';
+import MyInformationScreen from '../screens/main/profile/MyInformationScreen';
 import { AuthContext } from '../context/AuthContext';
 
 
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   Home: undefined;
+  MyInformation: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,6 +32,7 @@ const RootNavigator = () => {
       {accessToken ? (
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="MyInformation" component={MyInformationScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator initialRouteName="Login">
