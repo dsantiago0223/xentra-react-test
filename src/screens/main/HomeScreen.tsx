@@ -8,7 +8,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import DashboardScreen from "./dashboard/DashboardScreen";
 import ActivityFeedScreen from "./activity/ActivityFeedScreen";
 import WalletScreen from "./wallet/WalletScreen";
-import ProfileScreen from "./profile/ProfileScreen";
+import ProfileNavigator from "../../navigation/ProfileNavigator";
 import NavigationHeader from '../../components/NavigationHeader';
 
 export type HomeScreenParamList = {
@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }: Props) => {
         <Tab.Screen name="Dashboard" component={DashboardScreen} />
         <Tab.Screen name="Activity" component={ActivityFeedScreen} />
         <Tab.Screen name="Wallet" component={WalletScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Profile" component={ProfileNavigator} />
       </Tab.Navigator>
     </View>
   );
