@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/authentication/LoginScreen';
 import SignupScreen from '../screens/authentication/SignupScreen';
-import HomeScreen from '../screens/main/HomeScreen';
+import HomeTabsNavigator from './HomeTabsNavigator';
 import MyInformationScreen from '../screens/main/profile/MyInformationScreen';
 import { AuthContext } from '../context/AuthContext';
-
 
 export type RootStackParamList = {
   Login: undefined;
@@ -31,7 +30,7 @@ const RootNavigator = () => {
     <NavigationContainer>
       {accessToken ? (
         <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Home" component={HomeTabsNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="MyInformation" component={MyInformationScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       ) : (

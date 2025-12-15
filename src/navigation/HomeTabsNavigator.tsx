@@ -2,23 +2,23 @@ import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/RootNavigator';
-import { AuthContext } from '../../context/AuthContext';
+import { RootStackParamList } from './RootNavigator';
+import { AuthContext } from '../context/AuthContext';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import DashboardScreen from "./dashboard/DashboardScreen";
-import ActivityFeedScreen from "./activity/ActivityFeedScreen";
-import WalletScreen from "./wallet/WalletScreen";
-import ProfileNavigator from "../../navigation/ProfileNavigator";
-import NavigationHeader from '../../components/NavigationHeader';
+import DashboardScreen from "../screens/main/dashboard/DashboardScreen";
+import ActivityFeedScreen from "../screens/main/activity/ActivityFeedScreen";
+import WalletScreen from "../screens/main/wallet/WalletScreen";
+import ProfileScreen from "../screens/main/profile/ProfileScreen";
+import NavigationHeader from '../components/NavigationHeader';
 
-export type HomeScreenParamList = {
+export type HomeTabsNavigatorParamList = {
   Dashboard: undefined;
   Activity: undefined;
   Wallet: undefined;
   Profile: undefined;
 };
 
-const Tab = createBottomTabNavigator<HomeScreenParamList>();
+const Tab = createBottomTabNavigator<HomeTabsNavigatorParamList>();
 
 const screenOptions = ({ route }) => ({
   headerShown: false,
@@ -47,7 +47,7 @@ const screenOptions = ({ route }) => ({
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-const HomeScreen = ({ navigation }: Props) => {
+const HomeTabsNavigator = ({ navigation }: Props) => {
 
   const { logoutUser } = useContext(AuthContext);
 
@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }: Props) => {
         <Tab.Screen name="Dashboard" component={DashboardScreen} />
         <Tab.Screen name="Activity" component={ActivityFeedScreen} />
         <Tab.Screen name="Wallet" component={WalletScreen} />
-        <Tab.Screen name="Profile" component={ProfileNavigator} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </View>
   );
@@ -80,7 +80,7 @@ const HomeScreen = ({ navigation }: Props) => {
 
 }
 
-export default HomeScreen
+export default HomeTabsNavigator
 
 const styles = StyleSheet.create({
   container: {

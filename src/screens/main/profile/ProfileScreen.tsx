@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ProfileStackParamList } from '../../../navigation/ProfileNavigator';
+import { useNavigation } from '@react-navigation/native'; 
 
-type Props = NativeStackScreenProps<ProfileStackParamList, 'Profile'>;
+export default function ProfileScreen() {
 
-export default function ProfileScreen({navigation}: Props) {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text>Profile</Text>

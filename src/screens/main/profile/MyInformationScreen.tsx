@@ -24,6 +24,6 @@ export default MyInformationScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#eff2f4ff',
+    backgroundColor: '#ffffff',
   }
 });
