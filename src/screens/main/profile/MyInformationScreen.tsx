@@ -1,13 +1,15 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import NavigationHeader from "../../../components/NavigationHeader";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/RootNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MyInformation'>;
 
+const MyInformationScreen = ({navigation, route}: Props) => {
 
-const MyInformationScreen = ({navigation}: Props) => {
+  const { id, name } = route.params || {};
+
   return (
     <View style={styles.container}>
       <NavigationHeader 
@@ -15,6 +17,9 @@ const MyInformationScreen = ({navigation}: Props) => {
       leftIsImage
       onLeftPressed={() => navigation.goBack()}
       />
+      <Text>Details:</Text>
+      <Text>id: {id}</Text>  
+      <Text>name: {name}</Text>
     </View>
   );
 }

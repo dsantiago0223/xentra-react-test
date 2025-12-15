@@ -71,7 +71,7 @@ const HomeTabsNavigator = ({ navigation }: Props) => {
   );
 
   function onLeftPressed() {
-    navigation.navigate("MyInformation")
+    navigation.navigate("MyInformation", { id: '252525', name: 'Test Name' })
   }
 
   function onRightPressed() {

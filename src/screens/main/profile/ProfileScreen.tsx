@@ -14,7 +14,7 @@ export default function ProfileScreen() {
 
       <Button
         title="My Information"
-        onPress={() => navigation.navigate("MyInformation")}
+        onPress={() => navigation.navigate('MyInformation', { id: '232323', name: 'Clark' }) }
       />
     </View>
   );

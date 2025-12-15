@@ -12,7 +12,7 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   Home: undefined;
-  MyInformation: undefined;
+  MyInformation: {id: string, name: string};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
