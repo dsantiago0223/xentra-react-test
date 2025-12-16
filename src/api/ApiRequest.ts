@@ -2,7 +2,7 @@ import axios from "axios";
 import { ApiError } from "./ApiError";
 import { buildQueryString } from "../utils/StringUtils";
 import { API_BASE_URL, LOG_API_RESPONSE } from "../constants/Constants"
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Axios instance
 const api = axios.create({
@@ -17,8 +17,8 @@ const api = axios.create({
 //Request Interceptor
 api.interceptors.request.use(
   async (config) => {
-    //const token = await AsyncStorage.getItem('accessToken');
-    //if (token) config.headers.Authorization = `Bearer ${token}`;
+    const token = await AsyncStorage.getItem('accessToken');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => Promise.reject(error)
@@ -63,7 +63,11 @@ const request = async <T>(
     });
 
     if (LOG_API_RESPONSE) {
-      console.log("Response Data: " + JSON.stringify(response.data, null, "\t"))
+      if (options.body) {
+        console.log(`For Endpoint: ${url}`);
+        console.log("Request Data: " + JSON.stringify(options.body, null, "\t"));
+      }
+      console.log("Response Data: " + JSON.stringify(response.data, null, "\t"));
     }
   
     return response.data;

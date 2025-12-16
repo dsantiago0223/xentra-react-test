@@ -28,3 +28,21 @@ export const register = async (params: { email: string, password: string }) => {
     return { data: null, error };
   }
 };
+
+export const logout = async () => {
+  try {
+    const data = await ApiRequest.post<UserResponse>("/logout", {});
+    return { data, error: null };
+  } catch (error: any) {
+    return { data: null, error };
+  }
+};
+
+export const getUser = async () => {
+  try {
+    const data = await ApiRequest.get<UserResponse>("/user");
+    return { data, error: null };
+  } catch (error: any) {
+    return { data: null, error };
+  }
+};

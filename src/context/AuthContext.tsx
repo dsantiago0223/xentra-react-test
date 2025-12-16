@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { login, register } from '../api/user/User';
+import { login, register, logout } from '../api/user/User';
 import { save, get, remove } from '../utils/AppStorage'
 
 type AuthContextType = {
@@ -60,6 +60,7 @@ const loginUser = async (params: { email: string, password: string }) => {
 
   // Logout
   const logoutUser = async () => {
+    await logout();
     await remove("accessToken");
     setAccessToken(null);
   };
