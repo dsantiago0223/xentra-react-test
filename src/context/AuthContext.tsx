@@ -60,9 +60,9 @@ const loginUser = async (params: { email: string, password: string }) => {
 
   // Logout
   const logoutUser = async () => {
-    await logout();
-    await remove("accessToken");
     setAccessToken(null);
+    await remove("accessToken");
+    await logout();
   };
 
   return (
