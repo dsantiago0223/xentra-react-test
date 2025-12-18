@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from '@react-navigation/native'; 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/RootNavigator';
+import useGetUser from "../../../hooks/useGetUser";
 
 const menuArray = [
   { id: "1", title: "My Information" },
@@ -14,15 +15,16 @@ const menuArray = [
   { id: "7", title: "Referrals" },
   { id: "8", title: "FAQs" },
   { id: "9", title: "Terms and Privacy Policy" },
-  { id: "10", title: "Log Out" }
 ];
 
 export default function ProfileScreen() {
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { user } = useGetUser();
 
   return (
     <View style={styles.container}>
+      <Text>{user.first_name} {user.last_name}</Text>
       <FlatList
       data={menuArray}
       keyExtractor={(item) => item.id}

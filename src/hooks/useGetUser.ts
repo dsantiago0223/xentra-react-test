@@ -16,7 +16,8 @@ const useGetUser = () => {
       last_name: '', 
       phone_number: '', 
       access_token: '' 
-    });
+    }
+  );
   const [loading, setLoading] = useState(true);
   const [responseError, setResponseError] = useState(null);
 
