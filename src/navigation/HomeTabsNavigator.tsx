@@ -1,16 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from './RootNavigator';
 import { AuthContext } from '../context/AuthContext';
-import { getUser } from '../api/user/User';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DashboardScreen from "../screens/main/dashboard/DashboardScreen";
 import ActivityFeedScreen from "../screens/main/activity/ActivityFeedScreen";
 import WalletScreen from "../screens/main/wallet/WalletScreen";
 import ProfileScreen from "../screens/main/profile/ProfileScreen";
 import NavigationHeader from '../components/NavigationHeader';
+import useGetUser from "../hooks/useGetUser";
 
 export type HomeTabsNavigatorParamList = {
   Dashboard: undefined;
@@ -48,26 +48,10 @@ const screenOptions = ({ route }) => ({
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-interface UserState {
-  id: string;
-  first_name: string;
-}
-
 const HomeTabsNavigator = ({ navigation }: Props) => {
 
   const { logoutUser } = useContext(AuthContext);
-  const [user, setUser] = useState<UserState>({ id: '', first_name: ''});
-
-  useEffect(() => {
-    const getUserData = async () => {
-      const { data } = await getUser();
-        if (data) {
-          setUser(data.user)
-        }
-    };
-
-    getUserData();
-  }, []);
+  const { user } = useGetUser();
 
   return (
     <View style={styles.container}>
@@ -76,7 +60,7 @@ const HomeTabsNavigator = ({ navigation }: Props) => {
       titleLogo
       onLeftPressed={onLeftPressed}
       onRightPressed={onRightPressed} 
-      leftText={`Hello ${user.first_name}`}
+      leftText={`Hello ${user?.first_name}`}
       rightText='Logout'
       />
       <Tab.Navigator screenOptions={screenOptions}>
@@ -89,7 +73,7 @@ const HomeTabsNavigator = ({ navigation }: Props) => {
   );
 
   function onLeftPressed() {
-    navigation.navigate("MyInformation", { id: user.id, name: user.first_name })
+    navigation.navigate("MyInformation", { id: user.id, name: `${user.first_name} ${user.last_name}` })
   }
 
   function onRightPressed() {

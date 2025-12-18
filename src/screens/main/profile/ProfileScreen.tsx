@@ -14,7 +14,7 @@ const menuArray = [
   { id: "7", title: "Referrals" },
   { id: "8", title: "FAQs" },
   { id: "9", title: "Terms and Privacy Policy" },
-  { id: "10", title: "Log Out" },
+  { id: "10", title: "Log Out" }
 ];
 
 export default function ProfileScreen() {
