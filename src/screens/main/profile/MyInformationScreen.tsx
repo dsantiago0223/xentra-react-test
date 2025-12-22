@@ -17,9 +17,11 @@ const MyInformationScreen = ({navigation, route}: Props) => {
       leftIsImage
       onLeftPressed={() => navigation.goBack()}
       />
-      <Text>Details:</Text>
-      <Text>id: {id}</Text>  
-      <Text>name: {name}</Text>
+      <View style={styles.contentContainer}>
+        <Text>Details:</Text>
+        <Text>id: {id}</Text>  
+        <Text>name: {name}</Text>
+      </View>
     </View>
   );
 }
@@ -30,5 +32,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
+  }, 
+  contentContainer: {
+    padding: 16
   }
 });

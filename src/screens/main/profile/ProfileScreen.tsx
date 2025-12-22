@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native'; 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/RootNavigator';
@@ -24,16 +24,29 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>{user.first_name} {user.last_name}</Text>
+      <View style={styles.profileImageContainer}>
+        <Image
+        source={{ uri: 'https://i.pravatar.cc/150' }}
+        style={styles.profileImage}
+        />
+    </View>
+      <Text style={styles.userName}>{user.first_name} {user.last_name}</Text>
       <FlatList
       data={menuArray}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <View style={styles.item}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => {
+              if (item.title === 'My Information') {
+                  navigation.navigate('MyInformation', { id: user.id, name: `${user.first_name} ${user.last_name}` })
+              }
+          }
+        }>
           <Text style={styles.text}>{item.title}</Text>
-        </View>
+        </TouchableOpacity>
       )}
-      />
+      showsVerticalScrollIndicator={false}/>
     </View>
   );
 }
@@ -41,15 +54,34 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    padding: 20 
-  },
-  item: {
-    padding: 16,
-    marginBottom: 10,
-    backgroundColor: "#f1f1f1",
-    borderRadius: 8,
+    padding: 20, 
+    backgroundColor: '#ffffff'
   },
   text: { 
-    fontSize: 16 
+    fontSize: 16,
+    fontWeight: '400'
+  },
+  card: {
+    padding: 16,
+    backgroundColor: '#f4f4f4',
+    borderRadius: 12,
+    marginBottom: 12
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign:'center',
+    marginBottom: 16
+  },
+  profileImageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8
+    
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50, //half of width/height
   }
 });
