@@ -12,7 +12,7 @@ import {
 } from 'react-native-safe-area-context';
 import RootNavigator from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/context/AuthContext';
-import { ActivityIndicatorProvider } from './src/components/ActivityIndicator'
+import { ActivityIndicatorProvider } from './src/components/AppActivityIndicator'
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';

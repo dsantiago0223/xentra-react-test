@@ -14,7 +14,7 @@ type Props = {
   
 };
 
-const NavigationHeader = ({
+const AppNavigationHeader = ({
   titleText = "",
   titleLogo,
   onLeftPressed,
@@ -58,7 +58,7 @@ const NavigationHeader = ({
   );
 };
 
-export default NavigationHeader;
+export default AppNavigationHeader;
 
 const styles = StyleSheet.create({
   container: {
@@ -96,5 +96,5 @@ const styles = StyleSheet.create({
   sideText: {
     fontSize: 16,
     fontWeight: "600",
-  },
+  }
 });

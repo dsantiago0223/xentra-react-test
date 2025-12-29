@@ -1,13 +1,13 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 
-interface ActivityIndicatorContextType {
+interface AppActivityIndicatorContextType {
   isLoading: boolean;
   showLoading: () => void;
   hideLoading: () => void;
 }
 
-const ActivityIndicatorContext = createContext<ActivityIndicatorContextType | undefined>(undefined);
+const  AppActivityIndicatorContext = createContext< AppActivityIndicatorContextType | undefined>(undefined);
 
 export const ActivityIndicatorProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,19 +16,19 @@ export const ActivityIndicatorProvider = ({ children }: { children: ReactNode })
   const hideLoading = () => setIsLoading(false);
 
   return (
-    <ActivityIndicatorContext.Provider value={{ isLoading, showLoading, hideLoading }}>
+    <AppActivityIndicatorContext.Provider value={{ isLoading, showLoading, hideLoading }}>
       {children}
       {isLoading && (
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#4A90E2" />
         </View>
       )}
-    </ActivityIndicatorContext.Provider>
+    </AppActivityIndicatorContext.Provider>
   );
 };
 
 export const useLoading = () => {
-  const context = useContext(ActivityIndicatorContext);
+  const context = useContext(AppActivityIndicatorContext);
   if (context === undefined) {
     throw new Error('useLoading must be used within a LoadingProvider');
   }

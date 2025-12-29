@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import NavigationHeader from "../../../components/NavigationHeader";
+import AppNavigationHeader from "../../../components/AppNavigationHeader";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/RootNavigator';
 
@@ -12,7 +12,7 @@ const MyInformationScreen = ({navigation, route}: Props) => {
 
   return (
     <View style={styles.container}>
-      <NavigationHeader 
+      <AppNavigationHeader 
       titleText="My Information"
       leftIsImage
       onLeftPressed={() => navigation.goBack()}

@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { HomeTabsNavigatorParamList } from "../../../navigation/HomeTabsNavigator";
+import AppButton from "../../../components/AppButton";
 
 type Props = {
   navigation: BottomTabNavigationProp<HomeTabsNavigatorParamList>;
@@ -11,10 +12,7 @@ export default function DashboardScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Dashboard</Text>
-      <Button
-      title="Go to Profile"
-      onPress={() => navigation.navigate("Profile")}
-      />
+      <AppButton titleText="Go to Profile" onPressed={() => navigation.navigate("Profile")} />
     </View>
   );
 }

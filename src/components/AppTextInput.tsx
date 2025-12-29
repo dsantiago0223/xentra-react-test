@@ -3,7 +3,7 @@ import { View, TextInput, TextInputProps, TouchableOpacity, StyleSheet } from 'r
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-interface TextEntryControlProps extends TextInputProps  {
+interface Props extends TextInputProps  {
   value: string;
   onChangeText?: (text: string) => void;
   placeholder?: string;
@@ -18,7 +18,7 @@ const TextEntryControl = ({
   isPassword = false,
   iconName = "",
   ...props
-}: TextEntryControlProps) => {
+}: Props) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
@@ -68,16 +68,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 16,
+    marginBottom: 16
   },
   input: {
     flex: 1,
     height: 50,
     color: '#000',
-    fontSize: 16,
+    fontSize: 16
   },
   iconContainer: {
     paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingVertical: 4
   },
 });

@@ -4,9 +4,10 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import TextEntryControl from '../../components/TextEntryControl';
+import AppTextInput from '../../components/AppTextInput';
+import AppButton from '../../components/AppButton';
 import { AuthContext } from '../../context/AuthContext';
-import { useLoading } from '../../components/ActivityIndicator';
+import { useLoading } from '../../components/AppActivityIndicator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -47,13 +48,12 @@ const LoginScreen = ({ navigation }: Props) => {
       </View>
 
       <Formik
-        initialValues={{ email: '', password: '' }}
-        validationSchema={LoginSchema}
-        onSubmit={handleLogin}
-      >
+      initialValues={{ email: '', password: '' }}
+      validationSchema={LoginSchema}
+      onSubmit={handleLogin}>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <>
-            <TextEntryControl
+            <AppTextInput
             placeholder='Email'
             keyboardType="email-address"
             autoCapitalize="none"
@@ -66,7 +66,7 @@ const LoginScreen = ({ navigation }: Props) => {
               <Text style={styles.errorText}>{errors.email}</Text>
             )}
 
-            <TextEntryControl
+            <AppTextInput
             placeholder='Password'
             value={values.password}
             onChangeText={handleChange('password')}
@@ -77,9 +77,7 @@ const LoginScreen = ({ navigation }: Props) => {
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
 
-            <TouchableOpacity style={styles.button} onPress={() => handleSubmit()} disabled={loading}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+            <AppButton titleText='Login' onPressed={handleSubmit} disabled={loading} />
           </>
         )}
       </Formik>
@@ -125,18 +123,6 @@ const styles = StyleSheet.create({
   iconContainer: {
     paddingHorizontal: 8,
     paddingVertical: 4,
-  },
-  button: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 17,
-    fontWeight: '600',
   },
   footerText: {
     textAlign: 'center',

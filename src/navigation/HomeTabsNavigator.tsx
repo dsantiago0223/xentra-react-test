@@ -9,7 +9,7 @@ import DashboardScreen from "../screens/main/dashboard/DashboardScreen";
 import ActivityFeedScreen from "../screens/main/activity/ActivityFeedScreen";
 import WalletScreen from "../screens/main/wallet/WalletScreen";
 import ProfileScreen from "../screens/main/profile/ProfileScreen";
-import NavigationHeader from '../components/NavigationHeader';
+import AppNavigationHeader from '../components/AppNavigationHeader';
 import useGetUser from "../hooks/useGetUser";
 
 export type HomeTabsNavigatorParamList = {
@@ -55,7 +55,7 @@ const HomeTabsNavigator = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <NavigationHeader 
+      <AppNavigationHeader 
       titleText='JetWay Trades'
       titleLogo
       onLeftPressed={onLeftPressed}

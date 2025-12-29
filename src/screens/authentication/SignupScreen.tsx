@@ -4,10 +4,11 @@ import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import * as Yup from 'yup';
-import TextEntryControl from '../../components/TextEntryControl';
+import AppTextInput from '../../components/AppTextInput';
+import AppButton from '../../components/AppButton';
 import { AuthContext } from '../../context/AuthContext';
-import { useLoading } from '../../components/ActivityIndicator';
-import NavigationHeader from '../../components/NavigationHeader';
+import { useLoading } from '../../components/AppActivityIndicator';
+import NavigationHeader from '../../components/AppNavigationHeader';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -59,7 +60,7 @@ const SignupScreen = ({ navigation }: Props) => {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View style={styles.inputContainer}>
-            <TextEntryControl
+            <AppTextInput
             placeholder='Email'
             keyboardType="email-address"
             autoCapitalize="none"
@@ -70,7 +71,7 @@ const SignupScreen = ({ navigation }: Props) => {
             />
             {touched.email && errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
-            <TextEntryControl
+            <AppTextInput
             placeholder='Password'
             value={values.password}
             onChangeText={handleChange('password')}
@@ -79,7 +80,7 @@ const SignupScreen = ({ navigation }: Props) => {
             />
             {touched.password && errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
 
-            <TextEntryControl
+            <AppTextInput
             placeholder="Confirm Password"
             value={values.confirmPassword}
             onChangeText={handleChange('confirmPassword')}
@@ -90,10 +91,8 @@ const SignupScreen = ({ navigation }: Props) => {
               <Text style={styles.errorText}>{errors.confirmPassword}</Text>
             )}
 
-            <TouchableOpacity style={styles.button} onPress={() => handleSubmit()} disabled={loading}>
-              <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
-        </View>
+            <AppButton titleText='Register' onPressed={handleSubmit} disabled={loading} />
+          </View>
         )}
       </Formik>
     <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -137,17 +136,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginBottom: 5,
     marginLeft: 5,
-  },
-  button: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#FFF',
-    fontSize: 16,
   },
   footerText: {
     textAlign: 'center',
