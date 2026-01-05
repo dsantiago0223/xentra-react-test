@@ -9,6 +9,7 @@ type Props = {
 };
 
 const { width } = Dimensions.get('window');
+const BANNER_WIDTH = width - 32;
 
 const banners = [
   { id: '1', image: 'https://picsum.photos/200/300' },
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     marginTop: 16,
-    width,
+    width: BANNER_WIDTH,
     height: 200,
     borderRadius: 12,
     marginRight: 16
