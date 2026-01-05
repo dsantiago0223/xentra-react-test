@@ -28,10 +28,13 @@ const SignupScreen = ({ navigation }: Props) => {
   const { registerUser } = useContext(AuthContext);
   const { showLoading, hideLoading } = useLoading();
   
-  const handleSignup = async (values: { email: string, password: string }) => {
+  const handleSignup = async (values: { firstName: string, lastName: string, phoneNumber: string, email: string, password: string }) => {
     setLoading(true);
     showLoading();
     const { error } = await registerUser({
+      firstName: values.firstName,
+      lastName: values.lastName,
+      phoneNumber: values.phoneNumber,
       email: values.email,
       password: values.password,
     });

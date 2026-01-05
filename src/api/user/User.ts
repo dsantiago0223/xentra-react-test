@@ -20,7 +20,7 @@ export const login = async (params: { email: string, password: string }) => {
   }
 };
 
-export const register = async (params: { email: string, password: string }) => {
+export const register = async (params: { firstName: string, lastName: string, phoneNumber: string, email: string, password: string }) => {
   try {
     const data = await ApiRequest.post<UserResponse>("/register", params);
     return { data, error: null };

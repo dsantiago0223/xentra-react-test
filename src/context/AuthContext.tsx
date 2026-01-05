@@ -6,7 +6,7 @@ type AuthContextType = {
   accessToken: string | null;
   loading: boolean;
   loginUser: (params: { email: string, password: string }) => Promise<any>;
-  registerUser: (params: { email: string, password: string }) => Promise<any>;
+  registerUser: (params: { firstName: string, lastName: string, phoneNumber: string, email: string, password: string }) => Promise<any>;
   logoutUser: () => Promise<void>;
 };
 
@@ -46,7 +46,7 @@ const loginUser = async (params: { email: string, password: string }) => {
 };
 
   // Signup
-  const registerUser = async (params: { email: string, password: string }) => {
+  const registerUser = async (params: { firstName: string, lastName: string, phoneNumber: string, email: string, password: string }) => {
     const { data, error } = await register(params);
     if (data) {
       const token = data.user.access_token;
