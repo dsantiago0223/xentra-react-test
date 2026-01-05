@@ -14,7 +14,7 @@ const BANNER_WIDTH = width - 32;
 const banners = [
   { id: '1', image: 'https://picsum.photos/200/300' },
   { id: '2', image: 'https://picsum.photos/200/300' },
-  { id: '3', image: 'https://picsum.photos/200/300' },
+  { id: '3', image: 'https://picsum.photos/200/300' }
 ];
 
 export default function DashboardScreen({ navigation }: Props) {

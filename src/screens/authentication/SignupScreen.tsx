@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -13,6 +13,9 @@ import NavigationHeader from '../../components/AppNavigationHeader';
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
 const SignupSchema = Yup.object().shape({
+  firstName: Yup.string().required('First Name required'),
+  lastName: Yup.string().required('Last Name required'),
+  phoneNumber: Yup.string().required('Phone Number required'),
   email: Yup.string().email('Invalid email').required('Email required'),
   password: Yup.string().min(6, 'Min 6 characters').required('Password required'),
   confirmPassword: Yup.string()
@@ -44,6 +47,7 @@ const SignupScreen = ({ navigation }: Props) => {
       onLeftPressed={() => navigation.goBack()} 
       leftIsImage
       />
+      <ScrollView showsVerticalScrollIndicator={false} automaticallyAdjustKeyboardInsets= {true}>
       <View style={styles.logoContainer}>
         <Image
         source={require('../../../assets/logo.png')}
@@ -54,16 +58,45 @@ const SignupScreen = ({ navigation }: Props) => {
       <Text style={styles.title}>Create Jetway Trades Account</Text>
 
       <Formik
-        initialValues={{ email: '', password: '', confirmPassword: '' }}
-        validationSchema={SignupSchema}
-        onSubmit={handleSignup}
-      >
+      initialValues={{ firstName: '', lastName: '', phoneNumber: '', email: '', password: '', confirmPassword: '' }}
+      validationSchema={SignupSchema}
+      onSubmit={handleSignup}>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View style={styles.inputContainer}>
             <AppTextInput
-            placeholder='Email'
-            keyboardType="email-address"
+            placeholder='First Name'
+            keyboardType='default'
+            autoCapitalize='words'
+            value={values.firstName}
+            onChangeText={handleChange('firstName')}
+            onBlur={handleBlur('firstName')}
+            />
+            {touched.firstName && errors.firstName && <Text style={styles.errorText}>{errors.firstName}</Text>}
+            
+            <AppTextInput
+            placeholder='Last Name'
+            keyboardType='default'
+            autoCapitalize='words'
+            value={values.lastName}
+            onChangeText={handleChange('lastName')}
+            onBlur={handleBlur('lastName')}
+            />
+            {touched.lastName && errors.lastName && <Text style={styles.errorText}>{errors.lastName}</Text>}
+
+            <AppTextInput
+            placeholder='Phone Number'
+            keyboardType='phone-pad'
             autoCapitalize="none"
+            value={values.phoneNumber}
+            onChangeText={handleChange('phoneNumber')}
+            onBlur={handleBlur('phoneNumber')}
+            />
+            {touched.phoneNumber && errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber}</Text>}
+
+            <AppTextInput
+            placeholder='Email'
+            keyboardType='email-address'
+            autoCapitalize='none'
             value={values.email}
             onChangeText={handleChange('email')}
             onBlur={handleBlur('email')}
@@ -98,7 +131,7 @@ const SignupScreen = ({ navigation }: Props) => {
     <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={styles.footerText}>Already have an account? <Text style={styles.link}>Login</Text> </Text>
     </TouchableOpacity>
-
+    </ScrollView>
     </View>
   );
 };
@@ -140,6 +173,7 @@ const styles = StyleSheet.create({
   footerText: {
     textAlign: 'center',
     marginTop: 20,
+    marginBottom: 20,
     color: '#555',
   },
   link: {
