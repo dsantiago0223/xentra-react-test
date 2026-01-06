@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
+import { Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView, View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -44,98 +44,106 @@ const SignupScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+    style={styles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
       <NavigationHeader 
       titleText='Sign Up'
       onLeftPressed={() => navigation.goBack()} 
       leftIsImage
       />
-      <ScrollView showsVerticalScrollIndicator={false} automaticallyAdjustKeyboardInsets= {true}>
-      <View style={styles.logoContainer}>
-        <Image
-        source={require('../../../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-        />
-      </View>
-      <Text style={styles.title}>Create Jetway Trades Account</Text>
-
-      <Formik
-      initialValues={{ firstName: '', lastName: '', phoneNumber: '', email: '', password: '', confirmPassword: '' }}
-      validationSchema={SignupSchema}
-      onSubmit={handleSignup}>
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <View style={styles.inputContainer}>
-            <AppTextInput
-            placeholder='First Name'
-            keyboardType='default'
-            autoCapitalize='words'
-            value={values.firstName}
-            onChangeText={handleChange('firstName')}
-            onBlur={handleBlur('firstName')}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
+          <View style={styles.logoContainer}>
+            <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
             />
-            {touched.firstName && errors.firstName && <Text style={styles.errorText}>{errors.firstName}</Text>}
-            
-            <AppTextInput
-            placeholder='Last Name'
-            keyboardType='default'
-            autoCapitalize='words'
-            value={values.lastName}
-            onChangeText={handleChange('lastName')}
-            onBlur={handleBlur('lastName')}
-            />
-            {touched.lastName && errors.lastName && <Text style={styles.errorText}>{errors.lastName}</Text>}
-
-            <AppTextInput
-            placeholder='Phone Number'
-            keyboardType='phone-pad'
-            autoCapitalize="none"
-            value={values.phoneNumber}
-            onChangeText={handleChange('phoneNumber')}
-            onBlur={handleBlur('phoneNumber')}
-            />
-            {touched.phoneNumber && errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber}</Text>}
-
-            <AppTextInput
-            placeholder='Email'
-            keyboardType='email-address'
-            autoCapitalize='none'
-            value={values.email}
-            onChangeText={handleChange('email')}
-            onBlur={handleBlur('email')}
-            iconName='email'
-            />
-            {touched.email && errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-
-            <AppTextInput
-            placeholder='Password'
-            value={values.password}
-            onChangeText={handleChange('password')}
-            onBlur={handleBlur('password')}
-            isPassword
-            />
-            {touched.password && errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-
-            <AppTextInput
-            placeholder="Confirm Password"
-            value={values.confirmPassword}
-            onChangeText={handleChange('confirmPassword')}
-            onBlur={handleBlur('confirmPassword')}
-            isPassword
-            />
-            {touched.confirmPassword && errors.confirmPassword && (
-              <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-            )}
-
-            <AppButton titleText='Register' onPressed={handleSubmit} disabled={loading} />
           </View>
-        )}
-      </Formik>
-    <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={styles.footerText}>Already have an account? <Text style={styles.link}>Login</Text> </Text>
-    </TouchableOpacity>
-    </ScrollView>
-    </View>
+          <Text style={styles.title}>Create Jetway Trades Account</Text>
+
+          <Formik
+          initialValues={{ firstName: '', lastName: '', phoneNumber: '', email: '', password: '', confirmPassword: '' }}
+          validationSchema={SignupSchema}
+          onSubmit={handleSignup}>
+            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+              <View style={styles.inputContainer}>
+                <AppTextInput
+                placeholder='First Name'
+                keyboardType='default'
+                autoCapitalize='words'
+                value={values.firstName}
+                onChangeText={handleChange('firstName')}
+                onBlur={handleBlur('firstName')}
+                />
+                {touched.firstName && errors.firstName && <Text style={styles.errorText}>{errors.firstName}</Text>}
+                
+                <AppTextInput
+                placeholder='Last Name'
+                keyboardType='default'
+                autoCapitalize='words'
+                value={values.lastName}
+                onChangeText={handleChange('lastName')}
+                onBlur={handleBlur('lastName')}
+                />
+                {touched.lastName && errors.lastName && <Text style={styles.errorText}>{errors.lastName}</Text>}
+
+                <AppTextInput
+                placeholder='Phone Number'
+                keyboardType='phone-pad'
+                autoCapitalize="none"
+                value={values.phoneNumber}
+                onChangeText={handleChange('phoneNumber')}
+                onBlur={handleBlur('phoneNumber')}
+                />
+                {touched.phoneNumber && errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber}</Text>}
+
+                <AppTextInput
+                placeholder='Email'
+                keyboardType='email-address'
+                autoCapitalize='none'
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                iconName='email'
+                />
+                {touched.email && errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
+                <AppTextInput
+                placeholder='Password'
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                isPassword
+                />
+                {touched.password && errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+
+                <AppTextInput
+                placeholder="Confirm Password"
+                value={values.confirmPassword}
+                onChangeText={handleChange('confirmPassword')}
+                onBlur={handleBlur('confirmPassword')}
+                isPassword
+                />
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+                )}
+
+                <AppButton titleText='Register' onPressed={handleSubmit} disabled={loading} />
+              </View>
+            )}
+          </Formik>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.footerText}>Already have an account? <Text style={styles.link}>Login</Text> </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -146,6 +154,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
+  },
+  scrollViewContent: {
+    flexGrow: 1
   },
   inputContainer: {
     paddingHorizontal: 20,
