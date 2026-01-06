@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView, View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -8,7 +8,8 @@ import AppTextInput from '../../components/AppTextInput';
 import AppButton from '../../components/AppButton';
 import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/AppActivityIndicator';
-import NavigationHeader from '../../components/AppNavigationHeader';
+import AppNavigationHeader from '../../components/AppNavigationHeader';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -44,20 +45,17 @@ const SignupScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView 
-    style={styles.container}
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
-      <NavigationHeader 
+    <View style={styles.container}>
+      <AppNavigationHeader 
       titleText='Sign Up'
       onLeftPressed={() => navigation.goBack()} 
       leftIsImage
       />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-        contentContainerStyle={styles.scrollViewContent}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}>
+        <KeyboardAwareScrollView
+        enableOnAndroid
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled">
           <View style={styles.logoContainer}>
             <Image
             source={require('../../../assets/logo.png')}
@@ -141,9 +139,9 @@ const SignupScreen = ({ navigation }: Props) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={styles.footerText}>Already have an account? <Text style={styles.link}>Login</Text> </Text>
           </TouchableOpacity>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
