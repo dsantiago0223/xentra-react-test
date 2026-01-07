@@ -147,7 +147,6 @@ const SignupScreen = ({ navigation }: Props) => {
 
 export default SignupScreen;
 
-// 🎨 Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
