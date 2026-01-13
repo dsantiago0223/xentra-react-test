@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, TouchableOpacity, TouchableWithoutFeedbackProps, StyleSheet } from "react-native";
+import { Colors } from '../constants/Constants';
 
 interface Props extends TouchableWithoutFeedbackProps {
   titleText?: string;
@@ -18,14 +19,14 @@ export default AppButton;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: Colors.greenDark,
     padding: 16,
-    borderRadius: 10,
+    borderRadius: 25,
     alignItems: 'center',
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: Colors.white,
     fontSize: 17,
     fontWeight: '600',
   }

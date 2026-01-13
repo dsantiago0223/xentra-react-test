@@ -3,6 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 import AppNavigationHeader from "../../../components/AppNavigationHeader";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/RootNavigator';
+import { Colors } from '../../../constants/Constants'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MyInformation'>;
 
@@ -31,7 +32,7 @@ export default MyInformationScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.white,
   }, 
   contentContainer: {
     padding: 16

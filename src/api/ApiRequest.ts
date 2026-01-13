@@ -1,12 +1,12 @@
 import axios from "axios";
 import { ApiError } from "./ApiError";
 import { buildQueryString } from "../utils/StringUtils";
-import { API_BASE_URL, LOG_API_RESPONSE } from "../constants/Constants"
+import { Api } from "../constants/Constants";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Axios instance
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: Api.API_BASE_URL,
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const request = async <T>(
       signal: options.signal,
     });
 
-    if (LOG_API_RESPONSE) {
+    if (Api.LOG_API_RESPONSE) {
       if (options.body) {
         console.log(`For Endpoint: ${url}`);
         console.log("Request Data: " + JSON.stringify(options.body, null, "\t"));

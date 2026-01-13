@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/RootNavigator';
 import useGetUser from "../../../hooks/useGetUser";
+import { Colors } from '../../../constants/Constants'
 
 const menuArray = [
   { id: "1", title: "My Information" },
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     padding: 20, 
-    backgroundColor: '#ffffff'
+    backgroundColor: Colors.white
   },
   text: { 
     fontSize: 16,

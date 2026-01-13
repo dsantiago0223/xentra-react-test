@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, TextInputProps, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Colors } from '../constants/Constants';
 
 interface Props extends TextInputProps  {
   value: string;
@@ -40,7 +41,7 @@ const TextEntryControl = ({
           <Ionicons
           name={showPassword ? 'eye-off' : 'eye'}
           size={22}
-          color="#4A90E2"
+          color={Colors.greenMedium}
           />
         </TouchableOpacity>
       )}
@@ -50,7 +51,7 @@ const TextEntryControl = ({
           <MaterialIcons
           name={iconName}
           size={22}
-          color="#4A90E2"
+          color={Colors.greenMedium}
           />
         </View>
       )}
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#ccc',
+    borderColor: Colors.grayDark,
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    color: '#000',
+    color: Colors.black,
     fontSize: 16
   },
   iconContainer: {

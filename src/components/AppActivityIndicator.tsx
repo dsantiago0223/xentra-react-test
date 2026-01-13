@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { Colors } from '../constants/Constants';
 
 interface AppActivityIndicatorContextType {
   isLoading: boolean;
@@ -20,7 +21,7 @@ export const ActivityIndicatorProvider = ({ children }: { children: ReactNode })
       {children}
       {isLoading && (
         <View style={styles.overlay}>
-          <ActivityIndicator size="large" color="#4A90E2" />
+          <ActivityIndicator size="large" color={Colors.grayDark}/>
         </View>
       )}
     </AppActivityIndicatorContext.Provider>

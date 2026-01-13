@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from './RootNavigator';
 import { AuthContext } from '../context/AuthContext';
-import Ionicons from "react-native-vector-icons/Ionicons";
-import DashboardScreen from "../screens/main/dashboard/DashboardScreen";
-import ActivityFeedScreen from "../screens/main/activity/ActivityFeedScreen";
-import WalletScreen from "../screens/main/wallet/WalletScreen";
-import ProfileScreen from "../screens/main/profile/ProfileScreen";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import DashboardScreen from '../screens/main/dashboard/DashboardScreen';
+import ActivityFeedScreen from '../screens/main/activity/ActivityFeedScreen';
+import WalletScreen from '../screens/main/wallet/WalletScreen';
+import ProfileScreen from '../screens/main/profile/ProfileScreen';
 import AppNavigationHeader from '../components/AppNavigationHeader';
-import useGetUser from "../hooks/useGetUser";
+import useGetUser from '../hooks/useGetUser';
+import { Colors } from '../constants/Constants';
 
 export type HomeTabsNavigatorParamList = {
   Dashboard: undefined;
@@ -35,10 +36,10 @@ const screenOptions = ({ route }) => ({
     } else if (route.name === "Profile") {
       iconName = focused ? "person" : "person-outline";
     }
-    return <Ionicons name={iconName} size={22} color={focused ? "#007AFF" : "#8e8e8e"} />;
+    return <Ionicons name={iconName} size={22} color={focused ? Colors.greenDark : Colors.grayMedium} />;
   },
-    tabBarActiveTintColor: "#007AFF",
-    tabBarInactiveTintColor: "#8e8e8e",
+    tabBarActiveTintColor: Colors.greenDark,
+    tabBarInactiveTintColor: Colors.grayMedium,
     tabBarStyle: {
       height: 60,
       paddingBottom: 10,

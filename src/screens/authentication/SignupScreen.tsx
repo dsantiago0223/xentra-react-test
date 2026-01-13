@@ -10,6 +10,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/AppActivityIndicator';
 import AppNavigationHeader from '../../components/AppNavigationHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Colors } from '../../constants/Constants';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -63,7 +64,7 @@ const SignupScreen = ({ navigation }: Props) => {
             resizeMode="contain"
             />
           </View>
-          <Text style={styles.title}>Create Jetway Trades Account</Text>
+          <Text style={styles.title}>Create JolofPay Account</Text>
 
           <Formik
           initialValues={{ firstName: '', lastName: '', phoneNumber: '', email: '', password: '', confirmPassword: '' }}
@@ -150,21 +151,21 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: Colors.white,
   },
   scrollViewContent: {
     flexGrow: 1
   },
   inputContainer: {
     paddingHorizontal: 20,
-    backgroundColor: '#FFF',
+    backgroundColor: Colors.white,
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 16,
     textAlign: 'center',
-    color: '#4A90E2'
+    color: Colors.greenMedium
   },
   logoContainer: {
     marginBottom: 12,
@@ -172,8 +173,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 180,
+    height: 90,
   },
   errorText: {
     color: 'red',
@@ -185,11 +186,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 20,
-    color: '#555',
+    color: Colors.grayMedium,
   },
   link: {
     marginTop: 20,
-    color: '#007AFF',
+    color: Colors.greenDark,
     fontSize: 15,
   },
 });

@@ -8,6 +8,7 @@ import AppTextInput from '../../components/AppTextInput';
 import AppButton from '../../components/AppButton';
 import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/AppActivityIndicator';
+import { Colors } from "../../constants/Constants";
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -95,14 +96,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     paddingHorizontal: 30,
-  },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
   },
   logoContainer: {
     marginBottom: 40,
@@ -110,15 +105,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   logo: {
-    width: 150,
-    height: 150,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#333',
-    marginBottom: 40,
-    textAlign: 'center',
+    width: 220,
+    height: 110
   },
   iconContainer: {
     paddingHorizontal: 8,
@@ -127,10 +115,10 @@ const styles = StyleSheet.create({
   footerText: {
     textAlign: 'center',
     marginTop: 20,
-    color: '#555',
+    color: Colors.grayMedium,
   },
   link: {
-    color: '#4A90E2',
+    color: Colors.greenDark,
     fontWeight: '600',
   },
   errorText: {

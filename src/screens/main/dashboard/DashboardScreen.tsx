@@ -1,8 +1,9 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState} from 'react';
 import { View, StyleSheet, FlatList, Image, Dimensions, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { HomeTabsNavigatorParamList } from "../../../navigation/HomeTabsNavigator";
-import AppButton from "../../../components/AppButton";
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { HomeTabsNavigatorParamList } from '../../../navigation/HomeTabsNavigator';
+import AppButton from '../../../components/AppButton';
+import { Colors } from '../../../constants/Constants';
 
 type Props = {
   navigation: BottomTabNavigationProp<HomeTabsNavigatorParamList>;
@@ -63,7 +64,7 @@ export default function DashboardScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.white,
   },
   content: {
     flex: 1,
@@ -89,11 +90,11 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#ccc',
+    backgroundColor: Colors.grayLight,
     marginHorizontal: 4
   },
   activeDot: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: Colors.greenDark,
     width: 8
   }
 });

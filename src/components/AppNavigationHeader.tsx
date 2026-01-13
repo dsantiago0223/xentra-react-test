@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Colors } from '../constants/Constants';
 
 type Props = {
   titleText?: string;
@@ -29,7 +30,7 @@ const AppNavigationHeader = ({
       {/* Left Button */}
       <TouchableOpacity onPress={onLeftPressed} style={styles.leftButton}>
         {leftText ? <Text style={styles.sideText}>{leftText}</Text> :  null}
-        {leftIsImage ? <Ionicons name="chevron-back" size={24} color="#222"/> :  null}
+        {leftIsImage ? <Ionicons name="chevron-back" size={24} color={Colors.black}/> :  null}
       </TouchableOpacity>
       {/* Title */}
       {titleLogo ? (
@@ -52,7 +53,7 @@ const AppNavigationHeader = ({
       {/* Right Button */}
       <TouchableOpacity onPress={onRightPressed} style={styles.rightButton}>
         {rightText ? <Text style={styles.sideText}>{rightText}</Text> :  null}
-        {rightIsImage ? <Ionicons name="close-circle" size={24} color="#222"/> :  null}
+        {rightIsImage ? <Ionicons name="close-circle" size={24} color={Colors.black}/> :  null}
       </TouchableOpacity>
     </View>
   );
@@ -66,9 +67,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee"
+    borderBottomColor: Colors.grayLightest
   },
   titleContainer: {
     width: "50%",
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
   title : {
     fontSize: 18,
     fontWeight: "700",
-    color: "#222",
+    color: Colors.black,
   },
   logo: {
     width: 100,
@@ -96,5 +97,6 @@ const styles = StyleSheet.create({
   sideText: {
     fontSize: 16,
     fontWeight: "600",
+    color: Colors.black
   }
 });

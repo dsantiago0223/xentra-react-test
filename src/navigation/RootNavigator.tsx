@@ -7,6 +7,7 @@ import SignupScreen from '../screens/authentication/SignupScreen';
 import HomeTabsNavigator from './HomeTabsNavigator';
 import MyInformationScreen from '../screens/main/profile/MyInformationScreen';
 import { AuthContext } from '../context/AuthContext';
+import { Colors } from '../constants/Constants'; 
 
 export type RootStackParamList = {
   Login: undefined;
@@ -22,7 +23,7 @@ const RootNavigator = () => {
 
   if (loading) return (
     <View style={styles.loaderContainer}>
-      <ActivityIndicator size="large" color="#4A90E2" />
+      <ActivityIndicator size="large" color={Colors.grayDark} />
     </View>
   );
 
@@ -50,6 +51,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
   }
 });
