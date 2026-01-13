@@ -6,13 +6,11 @@
  */
 
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import RootNavigator from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/context/AuthContext';
 import { ActivityIndicatorProvider } from './src/components/AppActivityIndicator'
+import { Colors } from './src/constants/Constants';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -41,7 +39,8 @@ function AppContent() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.white
   },
 });
 
