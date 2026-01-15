@@ -76,7 +76,7 @@ const request = async <T>(
       const apiError = err.response.data;
       if (apiError) {
         //error from API
-        if (LOG_API_RESPONSE) {
+        if (Api.LOG_API_RESPONSE) {
           console.log("Response Data: " + JSON.stringify(err.response.data, null, "\t"))
         }
         let errorMessage = apiError.error.message

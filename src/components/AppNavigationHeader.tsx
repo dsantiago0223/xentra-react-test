@@ -30,7 +30,7 @@ const AppNavigationHeader = ({
       {/* Left Button */}
       <TouchableOpacity onPress={onLeftPressed} style={styles.leftButton}>
         {leftText ? <Text style={styles.sideText}>{leftText}</Text> :  null}
-        {leftIsImage ? <Ionicons name="chevron-back" size={24} color={Colors.black}/> :  null}
+        {leftIsImage ? <Ionicons name="arrow-back" size={24} color={Colors.black}/> :  null}
       </TouchableOpacity>
       {/* Title */}
       {titleLogo ? (
