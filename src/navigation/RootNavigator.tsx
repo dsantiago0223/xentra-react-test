@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/authentication/LoginScreen';
 import SignupScreen from '../screens/authentication/SignupScreen';
-import HomeTabsNavigator from './HomeTabsNavigator';
-import MyInformationScreen from '../screens/main/profile/MyInformationScreen';
+import HomeScreen from '../screens/main/HomeScreen';
+import TestUIComponents from '../components/TestUIComponents';
 import { AuthContext } from '../context/AuthContext';
 import { Colors } from '../constants/Constants'; 
 
@@ -13,7 +13,7 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   Home: undefined;
-  MyInformation: {id: string, name: string};
+  TestUIComponents: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,13 +31,13 @@ const RootNavigator = () => {
     <NavigationContainer>
       {accessToken ? (
         <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeTabsNavigator} options={{ headerShown: false }} />
-          <Stack.Screen name="MyInformation" component={MyInformationScreen} options={{ headerShown: false }} />
-        </Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+          </Stack.Navigator>
       ) : (
         <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="TestUIComponents" component={TestUIComponents} options={{ headerShown: false }} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

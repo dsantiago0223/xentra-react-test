@@ -1,84 +1,134 @@
 import React, { useState } from 'react';
-import { View, TextInput, TextInputProps, TouchableOpacity, StyleSheet } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Colors } from '../constants/Constants';
+import { StyleSheet, View } from 'react-native';
+import { TextInput, TextInputProps, HelperText, Text } from 'react-native-paper';
+import { Colors, Fonts } from '../constants/Constants';
 
-interface Props extends TextInputProps  {
-  value: string;
-  onChangeText?: (text: string) => void;
-  placeholder?: string;
-  isPassword?: boolean;
-  iconName?: string;
+/**
+Text Input
+style        → background, margin, width, fontSize
+contentStyle → height, padding
+outlineStyle → borderRadius, borderWidth
+*/
+
+type AppTextInputInputVariant = 'default' | 'error';
+
+interface AppTextInputProps extends Omit<TextInputProps, 'children'> {
+  titleText: string;
+  variant?: AppTextInputInputVariant;
+  errorText?: string;
+  clearable?: boolean;
 }
 
-const TextEntryControl = ({
+const AppTextInput = ({
+  titleText,
+  variant = 'default',
+  errorText,
+  clearable = false,
+  style,
+  right,
   value,
   onChangeText,
-  placeholder = '',
-  isPassword = false,
-  iconName = "",
+  secureTextEntry,
+  onBlur,
   ...props
-}: Props) => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+}: AppTextInputProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const isPassword = secureTextEntry;
+
+  const inputContainerStyle = {
+    backgroundColor: Colors.grayLightest,
+    borderRadius: 16,
+    borderColor: isFocused ? Colors.greenLight : 'transparent',
+    borderWidth: 1
+  };
+
+  const handleInternalBlur = (e: any) => {
+    setIsFocused(false)
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <TextInput
-      style={styles.input}
-      placeholder={placeholder}
-      placeholderTextColor="#888"
-      secureTextEntry={isPassword && !showPassword}
-      value={value}
-      onChangeText={onChangeText}
-      {...props}
-      />
-
-      {isPassword && (
-        <TouchableOpacity
-        style={styles.iconContainer}
-        onPress={() => setShowPassword(!showPassword)}>
-          <Ionicons
-          name={showPassword ? 'eye-off' : 'eye'}
-          size={22}
-          color={Colors.greenMedium}
-          />
-        </TouchableOpacity>
-      )}
-
-      {iconName !== "" && (
-        <View style={styles.iconContainer}>
-          <MaterialIcons
-          name={iconName}
-          size={22}
-          color={Colors.greenMedium}
-          />
-        </View>
+      <View style={inputContainerStyle}>
+        <Text style={styles.titleText}>{titleText}</Text>
+        <TextInput
+        mode='outlined'
+        placeholderTextColor={Colors.grayMedium}
+        value={value}
+        onChangeText={onChangeText}
+        onFocus={() => setIsFocused(true)}
+        onBlur={handleInternalBlur} 
+        secureTextEntry={isPassword && !passwordVisible}
+        error={variant === 'error'}
+        activeOutlineColor="transparent"
+        outlineColor="transparent"
+        outlineStyle={styles.inputOutlineStyle}
+        style={[styles.inputStyle, style]}
+        contentStyle={styles.inputContentStyle}
+        cursorColor={Colors.greenDark}
+        textColor={Colors.grayDark}
+        right={
+          isPassword ? (
+            <TextInput.Icon
+            icon={passwordVisible ? 'eye-off' : 'eye'}
+            accessibilityLabel="Toggle password visibility"
+            color={Colors.greenDark}
+            onPress={() => setPasswordVisible(!passwordVisible)}
+            /> 
+          ) : (
+            clearable && !!value && !props.disabled ? (
+              <TextInput.Icon
+              icon="close"
+              color={Colors.greenDark}
+              accessibilityLabel="Clear text"
+              onPress={() => onChangeText?.('')}
+              />
+            ) : (
+              right
+            )
+          ) 
+        }
+        {...props}
+        />
+      </View>
+      {variant === 'error' && errorText && (
+        <HelperText type="error" visible>
+          {errorText}
+        </HelperText>
       )}
     </View>
   );
 };
 
-export default TextEntryControl;
+export default AppTextInput;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: Colors.grayDark,
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 10,
     marginBottom: 16
   },
-  input: {
-    flex: 1,
-    height: 50,
-    color: Colors.black,
-    fontSize: 16
+  titleText: {
+    backgroundColor: 'transparent',
+    fontSize: 15,
+    fontFamily: Fonts.medium,
+    color: Colors.greenDark,
+    marginTop: 8,
+    marginLeft: 16,
+    marginRight: 16
   },
-  iconContainer: {
-    paddingHorizontal: 8,
-    paddingVertical: 4
+  inputStyle: {
+    backgroundColor: 'transparent',
+    marginBottom: 8
   },
+  inputContentStyle: {
+    paddingLeft: 16,
+    fontSize: 17,
+    fontFamily: Fonts.regular
+  },
+  inputOutlineStyle: {
+    borderWidth: 0 
+  }
 });
+ 

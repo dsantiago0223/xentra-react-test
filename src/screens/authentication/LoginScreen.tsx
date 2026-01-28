@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, View, Text, StyleSheet, Image, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -8,7 +8,9 @@ import AppTextInput from '../../components/AppTextInput';
 import AppButton from '../../components/AppButton';
 import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/AppActivityIndicator';
-import { Colors } from "../../constants/Constants";
+import { Colors, Fonts } from '../../constants/Constants';
+import { TextInput } from 'react-native-paper';
+import AppPressable from '../../components/AppPressable';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -39,55 +41,61 @@ const LoginScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-        source={require('../../../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-        />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        
+        <View style={styles.logoContainer}>
+          <Image
+          source={require('../../../assets/images/logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+          />
+        </View>
+
+        <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={LoginSchema}
+        onSubmit={handleLogin}>
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            <>
+              <AppTextInput
+              titleText="Email"
+              placeholder='Input your Email Address'
+              keyboardType='email-address'
+              autoCapitalize='none'
+              value={values.email}
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
+              variant={touched.email && errors.email ? 'error' : 'default'}
+              errorText={errors.email}
+              right={<TextInput.Icon icon="email" color={Colors.greenDark}/>}
+              clearable
+              />
+              
+              <AppTextInput
+              titleText="Password"
+              placeholder='Input your Password'
+              secureTextEntry
+              autoCapitalize='none'
+              value={values.password}
+              onChangeText={handleChange('password')}
+              onBlur={handleBlur('password')}
+              variant={touched.password && errors.password ? 'error' : 'default'}
+              errorText={errors.password}
+              />
+              
+              <AppButton style={styles.button} title='Login' variant='primary-1' onPress={handleSubmit} disabled={loading} />
+              <AppButton style={styles.button} title='Test UI Components' variant='primary-1' onPress={() => navigation.navigate('TestUIComponents')} disabled={loading} />
+            </>
+          )}
+        </Formik>
+
+        <AppPressable onPress={() => navigation.navigate('Signup')}>
+          <Text style={styles.footerText}>Don’t have an account? <Text style={styles.link}>Sign up</Text>
+          </Text>
+        </AppPressable>
       </View>
-
-      <Formik
-      initialValues={{ email: '', password: '' }}
-      validationSchema={LoginSchema}
-      onSubmit={handleLogin}>
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <>
-            <AppTextInput
-            placeholder='Email'
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={values.email}
-            onChangeText={handleChange('email')}
-            onBlur={handleBlur('email')}
-            iconName='email'
-            />
-            {touched.email && errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
-
-            <AppTextInput
-            placeholder='Password'
-            value={values.password}
-            onChangeText={handleChange('password')}
-            onBlur={handleBlur('password')}
-            isPassword
-            />
-            {touched.password && errors.password && (
-              <Text style={styles.errorText}>{errors.password}</Text>
-            )}
-
-            <AppButton titleText='Login' onPressed={handleSubmit} disabled={loading} />
-          </>
-        )}
-      </Formik>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.footerText}>Don’t have an account? <Text style={styles.link}>Sign up</Text>
-        </Text>
-      </TouchableOpacity>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -100,7 +108,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   logoContainer: {
-    marginBottom: 40,
+    marginBottom: 24,
     marginTop: 20,
     alignItems: "center"
   },
@@ -116,10 +124,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     color: Colors.grayMedium,
+    fontFamily: Fonts.regular
   },
   link: {
     color: Colors.greenDark,
-    fontWeight: '600',
+    fontFamily: Fonts.medium
   },
   errorText: {
     color: 'red',
@@ -127,4 +136,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 5,
   },
+  button: {
+    marginTop: 16
+  }
 });

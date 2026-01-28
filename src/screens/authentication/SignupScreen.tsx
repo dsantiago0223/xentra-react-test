@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard, View, Text, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, View, Text, Alert, StyleSheet, Image } from 'react-native';
 import { Formik } from 'formik';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -10,7 +10,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/AppActivityIndicator';
 import AppNavigationHeader from '../../components/AppNavigationHeader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Colors } from '../../constants/Constants';
+import { Colors, Fonts } from '../../constants/Constants';
+import AppPressable from '../../components/AppPressable';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
 
@@ -55,11 +56,11 @@ const SignupScreen = ({ navigation }: Props) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAwareScrollView
         enableOnAndroid
-        extraScrollHeight={20}
+        extraScrollHeight={150}
         keyboardShouldPersistTaps="handled">
           <View style={styles.logoContainer}>
             <Image
-            source={require('../../../assets/logo.png')}
+            source={require('../../../assets/images/logo.png')}
             style={styles.logo}
             resizeMode="contain"
             />
@@ -73,73 +74,88 @@ const SignupScreen = ({ navigation }: Props) => {
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
               <View style={styles.inputContainer}>
                 <AppTextInput
-                placeholder='First Name'
+                titleText='First Name'
+                placeholder='Input your first name'
                 keyboardType='default'
                 autoCapitalize='words'
                 value={values.firstName}
                 onChangeText={handleChange('firstName')}
                 onBlur={handleBlur('firstName')}
+                variant={touched.firstName && errors.firstName ? 'error' : 'default'}
+                errorText={errors.firstName}
+                clearable
                 />
-                {touched.firstName && errors.firstName && <Text style={styles.errorText}>{errors.firstName}</Text>}
                 
                 <AppTextInput
-                placeholder='Last Name'
+                titleText='Last Name'
+                placeholder='Input your last name'
                 keyboardType='default'
                 autoCapitalize='words'
                 value={values.lastName}
                 onChangeText={handleChange('lastName')}
                 onBlur={handleBlur('lastName')}
+                variant={touched.lastName && errors.lastName ? 'error' : 'default'}
+                errorText={errors.lastName}
+                clearable
                 />
-                {touched.lastName && errors.lastName && <Text style={styles.errorText}>{errors.lastName}</Text>}
-
+                
                 <AppTextInput
-                placeholder='Phone Number'
+                titleText='Phone Number'
+                placeholder='Input your phone number'
                 keyboardType='phone-pad'
                 autoCapitalize="none"
                 value={values.phoneNumber}
                 onChangeText={handleChange('phoneNumber')}
                 onBlur={handleBlur('phoneNumber')}
+                variant={touched.phoneNumber && errors.phoneNumber ? 'error' : 'default'}
+                errorText={errors.phoneNumber}
+                clearable
                 />
-                {touched.phoneNumber && errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber}</Text>}
-
+                
                 <AppTextInput
-                placeholder='Email'
+                titleText='Email'
+                placeholder='Input your email address'
                 keyboardType='email-address'
                 autoCapitalize='none'
                 value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
-                iconName='email'
+                variant={touched.email && errors.email ? 'error' : 'default'}
+                errorText={errors.email}
+                clearable
                 />
-                {touched.email && errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-
+                
                 <AppTextInput
-                placeholder='Password'
+                titleText='Password'
+                placeholder='Input your password'
                 value={values.password}
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
-                isPassword
+                secureTextEntry
+                autoCapitalize='none'
+                variant={touched.password && errors.password ? 'error' : 'default'}
+                errorText={errors.password}
                 />
-                {touched.password && errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-
+                
                 <AppTextInput
-                placeholder="Confirm Password"
+                titleText='Confirm Password'
+                placeholder="Confirm your password"
                 value={values.confirmPassword}
                 onChangeText={handleChange('confirmPassword')}
                 onBlur={handleBlur('confirmPassword')}
-                isPassword
+                secureTextEntry
+                autoCapitalize='none'
+                variant={touched.confirmPassword && errors.confirmPassword ? 'error' : 'default'}
+                errorText={errors.confirmPassword}
                 />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-                )}
-
-                <AppButton titleText='Register' onPressed={handleSubmit} disabled={loading} />
+                
+                <AppButton title='Register' onPress={handleSubmit} disabled={loading} />
               </View>
             )}
           </Formik>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <AppPressable onPress={() => navigation.goBack()}>
             <Text style={styles.footerText}>Already have an account? <Text style={styles.link}>Login</Text> </Text>
-          </TouchableOpacity>
+          </AppPressable>
         </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     </View>
@@ -162,13 +178,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Fonts.bold,
     marginBottom: 16,
     textAlign: 'center',
     color: Colors.greenMedium
   },
   logoContainer: {
-    marginBottom: 12,
+    marginBottom: 8,
     marginTop: 8,
     alignItems: 'center'
   },
@@ -187,10 +203,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     color: Colors.grayMedium,
+    fontFamily: Fonts.regular
   },
   link: {
     marginTop: 20,
     color: Colors.greenDark,
     fontSize: 15,
+    fontFamily: Fonts.medium
   },
 });

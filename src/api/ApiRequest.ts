@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ApiError } from "./ApiError";
-import { buildQueryString } from "../utils/StringUtils";
+import { buildQueryString } from "../utils/Utils";
 import { Api } from "../constants/Constants";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
