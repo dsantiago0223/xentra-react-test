@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.jolofpay"
+    namespace "com.dave.xentra"
     defaultConfig {
-        applicationId "com.jolofpay"
+        applicationId "com.dave.xentra"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

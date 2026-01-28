@@ -1,4 +1,4 @@
-package com.jolofpay
+package com.dave.xentra
 
 import android.app.Application
 import com.facebook.react.PackageList

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "JolofPay.app"
-               BlueprintName = "JolofPay"
-               ReferencedContainer = "container:JolofPay.xcodeproj">
+               BuildableName = "XentraReactTest.app"
+               BlueprintName = "XentraReactTest"
+               ReferencedContainer = "container:XentraReactTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "JolofPayTests.xctest"
-               BlueprintName = "JolofPayTests"
-               ReferencedContainer = "container:JolofPay.xcodeproj">
+               BuildableName = "XentraReactTestTests.xctest"
+               BlueprintName = "XentraReactTestTests"
+               ReferencedContainer = "container:XentraReactTest.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "JolofPay.app"
-            BlueprintName = "JolofPay"
-            ReferencedContainer = "container:JolofPay.xcodeproj">
+            BuildableName = "XentraReactTest.app"
+            BlueprintName = "XentraReactTest"
+            ReferencedContainer = "container:XentraReactTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "JolofPay.app"
-            BlueprintName = "JolofPay"
-            ReferencedContainer = "container:JolofPay.xcodeproj">
+            BuildableName = "XentraReactTest.app"
+            BlueprintName = "XentraReactTest"
+            ReferencedContainer = "container:XentraReactTest.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
