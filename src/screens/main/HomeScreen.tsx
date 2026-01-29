@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, ScrollView, Platform, Image, FlatList } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform, Image, ImageBackground, FlatList } from 'react-native';
 import { Text, IconButton, Switch, Surface } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -7,7 +7,6 @@ import { AuthContext } from '../../context/AuthContext';
 import useGetUser from '../../hooks/useGetUser';
 import { Colors, Fonts } from '../../constants/Constants';
 import AppUserAvatar from '../../components/AppUserAvatar';
-import LinearGradient from 'react-native-linear-gradient';
 import { formatBalance } from '../../utils/Utils';
 import AppButton from '../../components/AppButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -85,11 +84,11 @@ const HomeScreen = ({ navigation }: Props) => {
       {/* Content Views */}
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContentContainerStyle}>
         <View style={styles.scrollViewContent}>
-          <LinearGradient
-          colors={[Colors.greenLight, Colors.greenMedium]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.cardLinearGradient}>
+          <ImageBackground
+          style={styles.cardImageBackground}
+          imageStyle={styles.cardImageStyle}
+          resizeMode='cover'
+          source={require('../../../assets/images/home_card_background.png')}>
               <View style={styles.cardBalanceContainer}>
                 <Text variant='bodyMedium' style={styles.cardBalanceLabel}>available balance</Text>
                 <View style={styles.cardAvailableBalanceContainer}>
@@ -125,7 +124,7 @@ const HomeScreen = ({ navigation }: Props) => {
                 iconPositionRight 
                 />
               </View>
-            </LinearGradient>
+            </ImageBackground>
             <View style={styles.squareImageButtonContainer}>
               <AppPressable onPress={toggleBalanceVisibility}>
                 <Surface elevation={1} style={styles.squareImageButtonSurface}>
@@ -293,8 +292,13 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     padding: 16
   },
-  cardLinearGradient: {
-    height: 200,
+  cardImageBackground: {
+    width: '100%',
+    height: 200, 
+    borderRadius: 24,
+    overflow: 'hidden'
+  },
+  cardImageStyle: {
     borderRadius: 24
   },
   cardBalanceContainer: {
@@ -373,8 +377,8 @@ const styles = StyleSheet.create({
     padding: 8
   },
   floatingImageButtonLogo: {
-    width: 42,
-    height: 42
+    width: 40,
+    height: 40
   },
   floatingImageButtonQR: {
     width: 40,
