@@ -42,7 +42,7 @@ const loginUser = async (params: { email: string, password: string }) => {
       setAccessToken(token);
       return { data, error: null };
     } else {
-        return { data: null, error };
+      return { data: null, error };
     }*/
     await delay(1000);
     const data = {
@@ -64,7 +64,7 @@ const loginUser = async (params: { email: string, password: string }) => {
 
   // Signup
   const registerUser = async (params: { firstName: string, lastName: string, phoneNumber: string, email: string, password: string }) => {
-    const { data, error } = await register(params);
+    /*const { data, error } = await login(params);
     if (data) {
       const token = data.user.access_token;
       await save("accessToken", token);  
@@ -72,14 +72,30 @@ const loginUser = async (params: { email: string, password: string }) => {
       return { data, error: null };
     } else {
       return { data: null, error };
-    }
+    }*/
+    await delay(1000);
+    const data = {
+        "success": true,
+        "user": {
+            "id": "232323",
+            "first_name": "Dave",
+            "last_name": "Santiago",
+            "phone_number": "09172323252",
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjMxMjViZmJkZWFkMTVmN2NkMmRlZGE4NmFkNjk3NjkxIn0.eyJpYXQiOjE2NTAwMzUzMzIsImV4cCI6MTY1MDAzODkzMiwiaWQiOjEsIm5hbWUiOiJKb2huIERvZSJ9."
+        },
+        "error": null
+      }
+      const token = data.user.access_token;
+      await save("accessToken", token);  
+      setAccessToken(token);
+      return { data, error: null };
   };
 
   // Logout
   const logoutUser = async () => {
     setAccessToken(null);
     await remove("accessToken");
-    await logout();
+    //await logout();
   };
 
   return (

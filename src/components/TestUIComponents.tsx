@@ -9,6 +9,8 @@ import AppButton from '../components/AppButton';
 import AppTextInput from '../components/AppTextInput';
 import { TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useAlert } from '../context/AlertContext';
+import { delay } from '../utils/Utils';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TestUIComponents'>;
 
@@ -23,6 +25,7 @@ const ArrowUpIcon = () => (
 export default function TestUIComponents ({ navigation }: Props) {
     const [inputValue1, setInputValue1] = useState('');
     const [inputValue2, setInputValue2] = useState('');
+    const { showAlert } = useAlert();
 
     return (
         <View style={styles.container}>
@@ -132,6 +135,48 @@ export default function TestUIComponents ({ navigation }: Props) {
                     errorText={'test error'}
                     value={inputValue2}
                     onChangeText={setInputValue2}
+                    />
+
+                    <AppButton 
+                    style={{marginTop: 8}} 
+                    title='Alert Cancel OK' 
+                    variant='primary-1' 
+                    onPress={() => {
+                        showAlert({
+                            title: 'Logout?',
+                            message: 'Are you sure you want to logout?',
+                            onOk: () => {}
+                        });
+                    }} 
+                    />
+                    <AppButton 
+                    style={{marginTop: 8}} 
+                    title='Alert OK' 
+                    variant='primary-1' 
+                    onPress={() => {
+                        showAlert({
+                            title: 'Success',
+                            message: 'Profile updated!',
+                            showCancel: false,
+                            onOk: () => {}
+                        });
+                    }} 
+                    />
+                    <AppButton 
+                    style={{marginTop: 8}} 
+                    title='Custom' 
+                    variant='primary-1' 
+                    onPress={() => {
+                        showAlert({
+                            title: 'Delete item',
+                            message: 'This action cannot be undone.',
+                            okText: 'Delete',
+                            cancelText: 'Cancel',
+                            onOk: async () => {
+                                await delay(3000);
+                            },
+                        });
+                    }} 
                     />
                 </View>
             </KeyboardAwareScrollView>

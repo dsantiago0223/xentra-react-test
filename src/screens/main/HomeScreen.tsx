@@ -15,6 +15,7 @@ import { shadow } from '../../utils/Utils';
 import AppPressable from '../../components/AppPressable';
 import HomeTransactionListItem from './HomeTransactionListItem';
 import AppListSeparator from '../../components/AppListSeparator';
+import { useAlert } from '../../context/AlertContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -30,6 +31,7 @@ const HomeScreen = ({ navigation }: Props) => {
 
   const { logoutUser } = useContext(AuthContext);
   const { user } = useGetUser();
+  const { showAlert } = useAlert();
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [isSwitchOn, setIsSwitchOn] = React.useState(true);
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
@@ -77,7 +79,7 @@ const HomeScreen = ({ navigation }: Props) => {
         icon={notificationIcon}
         iconColor={Colors.greenDark}
         size={24}
-        onPress={toggleBalanceVisibility}
+        onPress={() => { console.log('notification tapped') }}
         accessibilityLabel={balanceVisible ? 'Hide balance' : 'Show balance'}
         />
       </View>
@@ -110,7 +112,7 @@ const HomeScreen = ({ navigation }: Props) => {
                 style={styles.cardLoadButton} 
                 title='Load' 
                 variant='primary-2' 
-                onPress={toggleBalanceVisibility} 
+                onPress={logout} 
                 icon={arrowDownIcon} 
                 iconPositionRight 
                 />
@@ -119,14 +121,14 @@ const HomeScreen = ({ navigation }: Props) => {
                 style={styles.cardTransferButton} 
                 title='Transfer' 
                 variant='secondary' 
-                onPress={toggleBalanceVisibility} 
+                onPress={logout} 
                 icon={arrowUpIcon}
                 iconPositionRight 
                 />
               </View>
             </ImageBackground>
             <View style={styles.squareImageButtonContainer}>
-              <AppPressable onPress={toggleBalanceVisibility}>
+              <AppPressable onPress={() => { console.log('mobile topup tapped') }}>
                 <Surface elevation={1} style={styles.squareImageButtonSurface}>
                   <Image
                   source={require('../../../assets/images/home_button_mobile_topup.png')}
@@ -136,7 +138,7 @@ const HomeScreen = ({ navigation }: Props) => {
                 </Surface>
                 <Text variant='bodyMedium' numberOfLines={2} ellipsizeMode='tail' style={styles.squareImageButtonText}>Mobile{'\n'}Topup</Text>
               </AppPressable>
-              <AppPressable onPress={toggleBalanceVisibility}>
+              <AppPressable onPress={() => { console.log('send money tapped') }}>
                 <Surface elevation={1} style={styles.squareImageButtonSurface}>
                   <Image
                   source={require('../../../assets/images/home_button_send_money.png')}
@@ -146,7 +148,7 @@ const HomeScreen = ({ navigation }: Props) => {
                 </Surface>
                 <Text variant='bodyMedium' numberOfLines={2} ellipsizeMode='tail' style={styles.squareImageButtonText}>Send{'\n'}Money</Text>
               </AppPressable>
-              <AppPressable onPress={toggleBalanceVisibility}>
+              <AppPressable onPress={() => { console.log('pay bills tapped') }}>
                 <Surface elevation={1} style={styles.squareImageButtonSurface}>
                   <Image
                   source={require('../../../assets/images/home_button_pay_bills.png')}
@@ -156,7 +158,7 @@ const HomeScreen = ({ navigation }: Props) => {
                 </Surface>
                 <Text variant='bodyMedium' numberOfLines={2} ellipsizeMode='tail' style={styles.squareImageButtonText}>Pay Bills</Text>
               </AppPressable>
-              <AppPressable onPress={toggleBalanceVisibility}>
+              <AppPressable onPress={() => { console.log('gift card tapped') }}>
                 <Surface elevation={1} style={styles.squareImageButtonSurface}>
                   <Image
                   source={require('../../../assets/images/home_button_gift_card.png')}
@@ -170,7 +172,7 @@ const HomeScreen = ({ navigation }: Props) => {
             <View style={[styles.transactionsContainer, shadow(1)]}>
               <View style={styles.transactionsTitleContainer}>
                 <Text variant='bodyLarge' style={styles.transactionsTitle}>Transactions</Text>
-                <AppPressable onPress={toggleBalanceVisibility}>
+                <AppPressable onPress={() => { console.log('view all tapped') }}>
                   <Text variant='bodyLarge' style={styles.transactionsViewAll}>View All</Text>
                 </AppPressable>
               </View>
@@ -185,7 +187,7 @@ const HomeScreen = ({ navigation }: Props) => {
                 description={item.description}
                 amount={item.amount}
                 leftIcon={item.icon}
-                onPress={toggleBalanceVisibility}
+                onPress={() => { console.log('list item tapped') }}
                 />
               )}
               ItemSeparatorComponent={<AppListSeparator color={Colors.grayLight} />}
@@ -199,14 +201,14 @@ const HomeScreen = ({ navigation }: Props) => {
       {/* Floating Views */}
       <View style={styles.floatingViewContainer}>
         <View style={[styles.floatingViewContent, shadow(1)]}>
-          <AppPressable style={styles.floatingImageButtonLogoContainer}onPress={toggleBalanceVisibility}>
+          <AppPressable style={styles.floatingImageButtonLogoContainer}onPress={() => { console.log('floating logo tapped') }}>
             <Image
             source={require('../../../assets/images/logo_yellow.png')}
             style={styles.floatingImageButtonLogo}
             resizeMode='contain'
             />
           </AppPressable>
-          <AppPressable onPress={toggleBalanceVisibility}>
+          <AppPressable onPress={() => { console.log('card tapped') }}>
             <Image
             source={require('../../../assets/images/home_button_card.png')}
             style={styles.floatingImageButtonCard}
@@ -215,7 +217,7 @@ const HomeScreen = ({ navigation }: Props) => {
           </AppPressable>
         </View>
         <View style={[styles.floatingViewQRContent, shadow()]}>
-            <AppPressable onPress={toggleBalanceVisibility}>
+            <AppPressable onPress={() => { console.log('qr code tapped') }}>
               <Image
               source={require('../../../assets/images/home_button_qr_code.png')}
               style={styles.floatingImageButtonQR}
@@ -228,7 +230,11 @@ const HomeScreen = ({ navigation }: Props) => {
   );
 
   function logout() {
-    logoutUser();
+    showAlert({
+      title: 'Logout?',
+      message: 'Are you sure you want to logout?',
+      onOk: logoutUser,
+    });
   }
 
 }

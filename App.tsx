@@ -11,6 +11,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import RootNavigator from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/context/AuthContext';
 import { ActivityIndicatorProvider } from './src/components/AppActivityIndicator'
+import { AlertProvider } from './src/context/AlertContext';
 import { Colors, Fonts } from './src/constants/Constants';
 
 const appTheme = {
@@ -115,7 +116,9 @@ function AppContent() {
       <View style={[styles.container, {paddingTop: safeAreaInsets.top, paddingBottom: safeAreaInsets.bottom}]}>
         <AuthProvider>
           <ActivityIndicatorProvider>
-            <RootNavigator />
+            <AlertProvider>
+              <RootNavigator />
+            </AlertProvider>
           </ActivityIndicatorProvider>
         </AuthProvider>
       </View>
