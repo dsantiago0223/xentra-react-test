@@ -1,5 +1,5 @@
 /**
- * Jolof Pay Mobile App
+ * Xentra React Test Mobile App
  * https://github.com/facebook/react-native
  *
  * @format
