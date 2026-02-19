@@ -102,7 +102,7 @@ const HomeScreen = ({ navigation }: Props) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            'User'
+            Dave
           </Text>
         </View>
         <View>
