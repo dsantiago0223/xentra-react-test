@@ -1,7 +1,7 @@
-import axios from "axios";
-import { ApiError } from "./ApiError";
-import { buildQueryString } from "../utils/Utils";
-import { Api } from "../constants/Constants";
+import axios from 'axios';
+import { ApiError } from './ApiError';
+import { buildQueryString } from '../utils/Utils';
+import { Api } from '../constants/Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Axios instance
@@ -16,43 +16,43 @@ const api = axios.create({
 
 //Request Interceptor
 api.interceptors.request.use(
-  async (config) => {
+  async config => {
     const token = await AsyncStorage.getItem('accessToken');
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
-  (error) => Promise.reject(error)
+  error => Promise.reject(error),
 );
 
 //Response Interceptor
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     /*if (error.response) {
       console.log("API Error: ", error.response.status, error.response.data);
     } else {
       console.log("Network Error: ", error.message);
     }*/
     return Promise.reject(error);
-  }
+  },
 );
 
-export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export interface ApiOptions {
   params?: Record<string, any>;
   body?: any;
   headers?: Record<string, any>;
-  signal?: AbortSignal; 
+  signal?: AbortSignal;
 }
 
 const request = async <T>(
   method: HttpMethod,
   url: string,
-  options: ApiOptions = {}
+  options: ApiOptions = {},
 ): Promise<T> => {
   try {
-    const query = options.params ? buildQueryString(options.params) : "";
+    const query = options.params ? buildQueryString(options.params) : '';
 
     const response = await api.request<T>({
       method,
@@ -65,11 +65,15 @@ const request = async <T>(
     if (Api.LOG_API_RESPONSE) {
       if (options.body) {
         console.log(`For Endpoint: ${url}`);
-        console.log("Request Data: " + JSON.stringify(options.body, null, "\t"));
+        console.log(
+          'Request Data: ' + JSON.stringify(options.body, null, '\t'),
+        );
       }
-      console.log("Response Data: " + JSON.stringify(response.data, null, "\t"));
+      console.log(
+        'Response Data: ' + JSON.stringify(response.data, null, '\t'),
+      );
     }
-  
+
     return response.data;
   } catch (err: any) {
     if (err.response) {
@@ -77,17 +81,22 @@ const request = async <T>(
       if (apiError) {
         //error from API
         if (Api.LOG_API_RESPONSE) {
-          console.log("Response Data: " + JSON.stringify(err.response.data, null, "\t"))
+          console.log(
+            'Response Data: ' + JSON.stringify(err.response.data, null, '\t'),
+          );
         }
-        let errorMessage = apiError.error.message
-        throw new ApiError(errorMessage, null);  
+        let errorMessage = apiError.error.message;
+        throw new ApiError(errorMessage, null);
       } else {
-        throw new ApiError(err.response.data?.message || "Server error", err.response.status);
+        throw new ApiError(
+          err.response.data?.message || 'Server error',
+          err.response.status,
+        );
       }
     }
 
     if (err.request) {
-      throw new ApiError("Network connection lost", null);
+      throw new ApiError('Network connection lost', null);
     }
 
     throw new ApiError(err.message, null);
@@ -97,13 +106,13 @@ const request = async <T>(
 export const ApiRequest = {
   request,
   get: <T>(url: string, options?: ApiOptions) =>
-    request<T>("GET", url, options),
+    request<T>('GET', url, options),
   post: <T>(url: string, body?: any, options?: ApiOptions) =>
-    request<T>("POST", url, { ...options, body }),
+    request<T>('POST', url, { ...options, body }),
   put: <T>(url: string, body?: any, options?: ApiOptions) =>
-    request<T>("PUT", url, { ...options, body }),
+    request<T>('PUT', url, { ...options, body }),
   patch: <T>(url: string, body?: any, options?: ApiOptions) =>
-    request<T>("PATCH", url, { ...options, body }),
+    request<T>('PATCH', url, { ...options, body }),
   delete: <T>(url: string, options?: ApiOptions) =>
-    request<T>("DELETE", url, options),
+    request<T>('DELETE', url, options),
 };

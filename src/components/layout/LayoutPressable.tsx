@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, ViewStyle } from 'react-native';
 
-interface AppPressableProps {
+interface LayoutPressableProps {
   children: React.ReactNode;
   onPress?: () => void;
   style?: ViewStyle | ViewStyle[];
@@ -9,24 +9,30 @@ interface AppPressableProps {
   activeOpacity?: number;
 }
 
-const AppPressable = ({
+const LayoutPressable = ({
   children,
   onPress,
   style,
   disabled = false,
   activeOpacity = 0.6,
-}: AppPressableProps) => {
+}: LayoutPressableProps) => {
   return (
     <Pressable
-    onPress={onPress}
-    disabled={disabled}
-    style={({ pressed }) => [styles.base, pressed && !disabled && { opacity: activeOpacity }, disabled && styles.disabled, style]}>
+      onPress={onPress}
+      disabled={disabled}
+      style={({ pressed }) => [
+        styles.base,
+        pressed && !disabled && { opacity: activeOpacity },
+        disabled && styles.disabled,
+        style,
+      ]}
+    >
       {children}
     </Pressable>
   );
 };
 
-export default AppPressable;
+export default LayoutPressable;
 
 const styles = StyleSheet.create({
   base: {
@@ -34,6 +40,5 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.4,
-  }
+  },
 });
-

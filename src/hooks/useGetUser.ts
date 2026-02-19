@@ -10,32 +10,31 @@ interface UserState {
 }
 
 const useGetUser = () => {
-  const [user, setUser] = useState<UserState>(
-    { id: '', 
-      first_name: '', 
-      last_name: '', 
-      phone_number: '', 
-      access_token: '' 
-    }
-  );
+  const [user, setUser] = useState<UserState>({
+    id: '',
+    first_name: '',
+    last_name: '',
+    phone_number: '',
+    access_token: '',
+  });
   const [loading, setLoading] = useState(true);
   const [responseError, setResponseError] = useState(null);
 
-    useEffect(() => {
-        const getUserData = async () => {
-          const { data, error } = await getUser();
-            if (data) {
-              setUser(data.user)
-            } else if (error) {
-                setResponseError(error);
-            }
-            setLoading(false);
-        };
-    
-        getUserData();
-      }, []);
+  useEffect(() => {
+    const getUserData = async () => {
+      const { data, error } = await getUser();
+      if (data) {
+        setUser(data.user);
+      } else if (error) {
+        setResponseError(error);
+      }
+      setLoading(false);
+    };
 
-      return { user, loading, responseError };
+    getUserData();
+  }, []);
+
+  return { user, loading, responseError };
 };
 
 export default useGetUser;

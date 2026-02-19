@@ -1,7 +1,7 @@
 import React from 'react';
 import { Portal, Dialog, Button, Text } from 'react-native-paper';
 
-interface AppAlertProps {
+interface UIAlertProps {
   visible: boolean;
   title?: string;
   message?: string;
@@ -14,7 +14,7 @@ interface AppAlertProps {
   loading?: boolean;
 }
 
-const AppAlert = ({
+const UIAlert = ({
   visible,
   title,
   message,
@@ -25,7 +25,7 @@ const AppAlert = ({
   onCancel,
   dismissable = true,
   loading = false,
-}: AppAlertProps) => {
+}: UIAlertProps) => {
   return (
     <Portal>
       <Dialog visible={visible} dismissable={dismissable} onDismiss={onCancel}>
@@ -39,14 +39,18 @@ const AppAlert = ({
 
         <Dialog.Actions>
           {showCancel && (
-            <Button onPress={onCancel} disabled={loading}>{cancelText}</Button>
+            <Button onPress={onCancel} disabled={loading}>
+              {cancelText}
+            </Button>
           )}
 
-          <Button onPress={onOk} loading={loading} disabled={loading}>{okText}</Button>
+          <Button onPress={onOk} loading={loading} disabled={loading}>
+            {okText}
+          </Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>
   );
 };
 
-export default AppAlert;
+export default UIAlert;

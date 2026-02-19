@@ -11,7 +11,13 @@ type Props = {
   onPress?: () => void;
 };
 
-const HomeTransactionListItem = ({ title = '', description = '', amount = '+$0.00', leftIcon, onPress }: Props) => {
+const HomeTransactionListItem = ({
+  title = '',
+  description = '',
+  amount = '+$0.00',
+  leftIcon,
+  onPress,
+}: Props) => {
   return (
     <Pressable
       onPress={onPress}
@@ -33,12 +39,25 @@ const HomeTransactionListItem = ({ title = '', description = '', amount = '+$0.0
       )}
 
       <View style={styles.textContainer}>
-        <Text variant='bodyLarge' style={{ fontFamily: Fonts.medium, color: Colors.greenDark }}>{title}</Text>
-        <Text variant='bodyMedium' style={{ fontFamily: Fonts.regular, color: Colors.grayMedium }}>
-            {description}
+        <Text
+          variant="bodyLarge"
+          style={{ fontFamily: Fonts.medium, color: Colors.greenDark }}
+        >
+          {title}
+        </Text>
+        <Text
+          variant="bodyMedium"
+          style={{ fontFamily: Fonts.regular, color: Colors.grayMedium }}
+        >
+          {description}
         </Text>
       </View>
-      <Text variant='bodyLarge' style={{ fontFamily: Fonts.bold, color: Colors.greenDark }}>{amount}</Text>
+      <Text
+        variant="bodyLarge"
+        style={{ fontFamily: Fonts.bold, color: Colors.greenDark }}
+      >
+        {amount}
+      </Text>
     </Pressable>
   );
 };
@@ -50,14 +69,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 14,
-    paddingBottom: 14
+    paddingBottom: 14,
   },
   avatar: {
     marginRight: 12,
-    backgroundColor: Colors.grayLightest
+    backgroundColor: Colors.grayLightest,
   },
   textContainer: {
     flex: 1,
-    marginRight: 12
-  }
+    marginRight: 12,
+  },
 });

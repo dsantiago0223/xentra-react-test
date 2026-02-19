@@ -1,28 +1,34 @@
 import { ApiRequest } from '../ApiRequest';
 
-type UserResponse =  {
+type UserResponse = {
   success: boolean;
   user: {
-    id: string,
-    first_name: string,
-    last_name: string,
-    phone_number: string,
-    access_token: string
-  }
-}
+    id: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    access_token: string;
+  };
+};
 
-export const login = async (params: { email: string, password: string }) => {
+export const login = async (params: { email: string; password: string }) => {
   try {
-    const data = await ApiRequest.post<UserResponse>("/login", params);
+    const data = await ApiRequest.post<UserResponse>('/login', params);
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
   }
 };
 
-export const register = async (params: { firstName: string, lastName: string, phoneNumber: string, email: string, password: string }) => {
+export const register = async (params: {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
+}) => {
   try {
-    const data = await ApiRequest.post<UserResponse>("/register", params);
+    const data = await ApiRequest.post<UserResponse>('/register', params);
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
@@ -31,7 +37,7 @@ export const register = async (params: { firstName: string, lastName: string, ph
 
 export const logout = async () => {
   try {
-    const data = await ApiRequest.post<UserResponse>("/logout", {});
+    const data = await ApiRequest.post<UserResponse>('/logout', {});
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
@@ -40,7 +46,7 @@ export const logout = async () => {
 
 export const getUser = async () => {
   try {
-    const data = await ApiRequest.get<UserResponse>("/user");
+    const data = await ApiRequest.get<UserResponse>('/user');
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };

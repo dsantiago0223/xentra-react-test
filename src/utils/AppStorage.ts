@@ -10,8 +10,8 @@ export const save = async (key: string, value: string) => {
 
 export const get = async (key: string) => {
   try {
-    const token = await AsyncStorage.getItem(key);
-    return token;
+    const item = await AsyncStorage.getItem(key);
+    return item;
   } catch (error) {
     console.error(error);
     return null;

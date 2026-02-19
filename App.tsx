@@ -1,18 +1,23 @@
 /**
- * JolofPay Mobile App
+ * Jolof Pay Mobile App
  * https://github.com/facebook/react-native
  *
  * @format
  */
 
-import { Provider as PaperProvider, MD3LightTheme as DefaultTheme } from 'react-native-paper';
+import { useEffect } from 'react';
+import {
+  Provider as PaperProvider,
+  MD3LightTheme as DefaultTheme,
+} from 'react-native-paper';
 import { StatusBar, StyleSheet, View } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import RootNavigator from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/context/AuthContext';
-import { ActivityIndicatorProvider } from './src/components/AppActivityIndicator'
+import { ActivityIndicatorProvider } from './src/components/ui/UIActivityIndicator';
 import { AlertProvider } from './src/context/AlertContext';
 import { Colors, Fonts } from './src/constants/Constants';
+import RNBootSplash from 'react-native-bootsplash';
 
 const appTheme = {
   ...DefaultTheme,
@@ -22,7 +27,8 @@ const appTheme = {
     secondary: Colors.greenMedium,
     tertiary: Colors.yellowDark,
     background: Colors.white,
-    error: Colors.red
+    error: Colors.red,
+    disabled: Colors.grayLightest,
   },
   fonts: {
     ...DefaultTheme.fonts,
@@ -38,7 +44,7 @@ const appTheme = {
       ...DefaultTheme.fonts.displaySmall,
       fontFamily: Fonts.bold,
     },
-    
+
     headlineLarge: {
       ...DefaultTheme.fonts.headlineLarge,
       fontFamily: Fonts.bold,
@@ -90,17 +96,21 @@ const appTheme = {
       ...DefaultTheme.fonts.labelSmall,
       fontFamily: Fonts.medium,
     },
-  }
+  },
 };
 
 function App() {
+  useEffect(() => {
+    RNBootSplash.hide({ fade: true });
+  }, []);
+
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
         <StatusBar
-        barStyle='dark-content'
-        backgroundColor={Colors.white}
-        translucent={true}
+          barStyle="dark-content"
+          backgroundColor={Colors.white}
+          translucent={true}
         />
         <AppContent />
       </View>
@@ -109,11 +119,9 @@ function App() {
 }
 
 function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
   return (
     <PaperProvider theme={appTheme}>
-      <View style={[styles.container, {paddingTop: safeAreaInsets.top, paddingBottom: safeAreaInsets.bottom}]}>
+      <View style={[styles.container]}>
         <AuthProvider>
           <ActivityIndicatorProvider>
             <AlertProvider>
@@ -129,8 +137,8 @@ function AppContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white
-  }
+    backgroundColor: Colors.white,
+  },
 });
 
 export default App;

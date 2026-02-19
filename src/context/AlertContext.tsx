@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import AppAlert from '../components/AppAlert';
+import UIAlert from '../components/ui/UIAlert';
 
 interface AlertOptions {
   title?: string;
@@ -66,8 +66,8 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AlertContext.Provider value={{ showAlert, hideAlert }}>
-        {children}
-        <AppAlert
+      {children}
+      <UIAlert
         visible={visible}
         title={options.title}
         message={options.message}

@@ -16,6 +16,8 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BC2B1425C1DA47EDBF1E093E /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 658140B9D5F446A4A0518A62 /* SF-Pro-Text-Light.otf */; };
 		CF4CF88D3EC0421791EA22E0 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2B4D51F02F514EF1BA3F193D /* SF-Pro-Text-Medium.otf */; };
+		81143052B4244569A5E749D9 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11200AE352F450FBEB93FFC /* BootSplash.storyboard */; };
+		4D2E242CE2024F81BECF45C4 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF7A9EB428C44A8B91193D30 /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		8C8692ACDC1949819F286E98 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Text-Bold.otf"; path = "../assets/fonts/SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
 		C26870F9FAA249D7BFC7C906 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Text-Regular.otf"; path = "../assets/fonts/SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		B11200AE352F450FBEB93FFC /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "XentraReactTest/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EF7A9EB428C44A8B91193D30 /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "XentraReactTest/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				B11200AE352F450FBEB93FFC /* BootSplash.storyboard */,
+				EF7A9EB428C44A8B91193D30 /* Colors.xcassets */,
 			);
 			name = XentraReactTest;
 			sourceTree = "<group>";
@@ -185,6 +191,8 @@
 				70AB6259B22A413DA751EAF1 /* SF-Pro-Text-Regular.otf in Resources */,
 				523FAFA0CB8C48858AD30EE4 /* SF-Pro-Text-Bold.otf in Resources */,
 				CF4CF88D3EC0421791EA22E0 /* SF-Pro-Text-Medium.otf in Resources */,
+				81143052B4244569A5E749D9 /* BootSplash.storyboard in Resources */,
+				4D2E242CE2024F81BECF45C4 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,13 +223,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-XentraReactTest/Pods-XentraReactTest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-XentraReactTest/Pods-XentraReactTest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -258,13 +262,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-XentraReactTest/Pods-XentraReactTest-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-XentraReactTest/Pods-XentraReactTest-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

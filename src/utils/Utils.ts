@@ -2,19 +2,19 @@ import { Platform } from 'react-native';
 import { Colors } from '../constants/Constants';
 
 export const buildQueryString = (params: Record<string, any>) => {
-  if (!params) return "";
+  if (!params) return '';
 
-  const build = (obj: Record<string, any>, prefix = ""): string[] => {
+  const build = (obj: Record<string, any>, prefix = ''): string[] => {
     return Object.entries(obj).flatMap(([key, value]) => {
       const fullKey = prefix ? `${prefix}[${key}]` : key;
 
       if (Array.isArray(value)) {
         return value.map(
-          (v) => `${encodeURIComponent(fullKey)}[]=${encodeURIComponent(v)}`
+          v => `${encodeURIComponent(fullKey)}[]=${encodeURIComponent(v)}`,
         );
       }
 
-      if (value !== null && typeof value === "object") {
+      if (value !== null && typeof value === 'object') {
         return build(value, fullKey);
       }
 
@@ -24,8 +24,8 @@ export const buildQueryString = (params: Record<string, any>) => {
     });
   };
 
-  const query = build(params).join("&");
-  return query ? `?${query}` : "";
+  const query = build(params).join('&');
+  return query ? `?${query}` : '';
 };
 
 export const formatBalance = (amount: number) => {
@@ -55,4 +55,3 @@ export const shadow = (elevation = 4, color = Colors.grayMedium) => {
     elevation,
   };
 };
-
