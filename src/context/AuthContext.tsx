@@ -1,13 +1,16 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { login, register, logout } from '../api/user/User';
-import { save, get, remove } from '../utils/AppStorage';
-import { delay } from '../utils/Utils';
+import { storage } from '../utils/AppStorage';
+//import { delay } from '../utils/Utils';
+import { User } from '../api/user/UserData';
+import { Keys } from '../constants/DataStoreKeys';
 
 type AuthContextType = {
   accessToken: string | null;
+  authedUser: User | null;
   loading: boolean;
   authedUserDidSignUp: boolean;
-  loginUser: (params: { email: string; password: string }) => Promise<any>;
+  loginUser: (params: { username: string; password: string }) => Promise<any>;
   createNewUser: (params: {
     firstName: string;
     lastName: string;
@@ -21,6 +24,7 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>({
   accessToken: null,
+  authedUser: null,
   loading: true,
   authedUserDidSignUp: false,
   loginUser: async () => {},
@@ -31,39 +35,41 @@ export const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [authedUser, setAuthedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [authedUserDidSignUp, setAuthedUserDidSignUp] = useState(false);
 
-  // Load token when app starts
   useEffect(() => {
-    const loadToken = async () => {
-      const token = await get('accessToken');
+    const loadUserData = async () => {
+      const token = await storage.get(Keys.ACCESS_TOKEN);
       if (token) setAccessToken(token);
+
+      const storedUser = await storage.get(Keys.USER);
+      if (storedUser) setAuthedUser(JSON.parse(storedUser));
+
       setLoading(false);
     };
-    loadToken();
+
+    loadUserData();
   }, []);
 
-  // Login
-  const loginUser = async (params: { email: string; password: string }) => {
-    /*const { data, error } = await login(params);
+  const loginUser = async (params: { username: string; password: string }) => {
+    const { data, error } = await login(params);
     if (data) {
-      const token = data.user.access_token;
-      await save("accessToken", token);  
-      setAccessToken(token);
+      const userData = { account: data.account, address: data.address }
+
+      await storage.save(Keys.ACCESS_TOKEN, data.token);
+      await storage.save(Keys.USER, JSON.stringify(userData));
+      
+      setAccessToken(data.token);
+      setAuthedUser(userData);
+      
       return { data, error: null };
     } else {
       return { data: null, error };
-    }*/
-    await delay(1000);
-    const data = {
-    };
-    await save('accessToken', '<ACCESS_TOKEN_HERE>');
-    setAccessToken('<ACCESS_TOKEN_HERE>');
-    return { data, error: null };
+    }
   };
 
-  // Sign Up
   const createNewUser = async (params: {
     firstName: string;
     lastName: string;
@@ -71,38 +77,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string;
     password: string;
   }) => {
-    /*const { data, error } = await login(params);
+    const { data, error } = await register(params);
     if (data) {
-      const token = data.user.access_token;
-      await save("accessToken", token);  
-      setAccessToken(token);
+      const userData = { account: data.account, address: data.address }
+
+      await storage.save(Keys.ACCESS_TOKEN, data.token);
+      await storage.save(Keys.USER, JSON.stringify(userData));
+      
+      setAccessToken(data.token);
+      setAuthedUser(userData);
+      setAuthedUserDidSignUp(true);
+      
       return { data, error: null };
     } else {
       return { data: null, error };
-    }*/
-    await delay(1000);
-    const data = {
-    };
-    await save('accessToken', '<ACCESS_TOKEN_HERE>');
-    setAccessToken('<ACCESS_TOKEN_HERE>');
-    setAuthedUserDidSignUp(true);
-    return { data, error: null };
+    }
+    //await delay(1000);
   };
 
   const createNewUserFlowComplete = () => {
     setAuthedUserDidSignUp(false);
-  }
+  };
 
   // Logout
   const logoutUser = async () => {
     setAccessToken(null);
-    await remove('accessToken');
+    setAuthedUser(null);
+    
+    await storage.remove(Keys.ACCESS_TOKEN);
+    await storage.remove(Keys.USER);
     //await logout();
   };
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, loading, authedUserDidSignUp, loginUser, createNewUser, createNewUserFlowComplete, logoutUser }}
+      value={{
+        accessToken,
+        authedUser,
+        loading,
+        authedUserDidSignUp,
+        loginUser,
+        createNewUser,
+        createNewUserFlowComplete,
+        logoutUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

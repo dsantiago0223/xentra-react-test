@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard } from 'react-native';
 import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../../../components/layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -20,6 +20,7 @@ type Props = NativeStackScreenProps<
 const SignUpPhoneNumberVerificationScreen = ({ navigation, route }: Props) => {
   const { phoneNumber } = route.params;
   const [isDisabled, setIsDisabled] = useState(true);
+  const [error, setError] = useState(false);
   let otpCode = '';
 
   useDefaultAndroidBackHandler(navigation);
@@ -40,19 +41,26 @@ const SignUpPhoneNumberVerificationScreen = ({ navigation, route }: Props) => {
           Phone Verification
         </Text>
         <Text style={styles.textLine2} variant="bodyLarge">
-          Enter the code we just sent to your phone{'\n'}+211*** ** { phoneNumber.slice(-2) }
+          Enter the code we just sent to your phone{'\n'}+211*** **{' '}
+          {phoneNumber.slice(-2)}
         </Text>
         <UISingleDigitInput
           containerStyle={styles.otpInput}
           length={4}
           placeholder="-"
+          error={error}
           onChange={code => {
+            setError(false);
             setIsDisabled(code.length !== 4);
             console.log('OTP current value:', code);
           }}
           onComplete={code => {
+            Keyboard.dismiss();
             otpCode = code;
             console.log('OTP Code:', otpCode);
+            if (code === '0000') {
+              setError(true);
+            }
           }}
         />
         <Text style={styles.otpText} variant="bodyLarge">
@@ -71,9 +79,9 @@ const SignUpPhoneNumberVerificationScreen = ({ navigation, route }: Props) => {
             style={styles.button}
             title="Verify"
             variant="primary"
-            disabled={isDisabled}
+            disabled={isDisabled || error}
             onPress={() => {
-              if (!isDisabled) {
+              if (!isDisabled && !error) {
                 navigation.navigate('SignUpNameAndEmail');
               }
             }}

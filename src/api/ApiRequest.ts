@@ -1,24 +1,32 @@
 import axios from 'axios';
 import { ApiError } from './ApiError';
 import { buildQueryString } from '../utils/Utils';
-import { Api } from '../constants/Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from "react-native-config";
+import { Keys } from '../constants/DataStoreKeys';
+
+const logEnabled = Config.LOG_API_RESPONSE === 'true';
 
 //Axios instance
 const api = axios.create({
-  baseURL: Api.API_BASE_URL,
+  baseURL: `${Config.API_BASE_URL}/${Config.API_VERSION}`,
   timeout: 15000,
   headers: {
+    'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'x-mock-match-request-body"': true,
+    'x-api-key': Config.API_KEY,
   },
 });
 
 //Request Interceptor
 api.interceptors.request.use(
   async config => {
-    const token = await AsyncStorage.getItem('accessToken');
+    const token = await AsyncStorage.getItem(Keys.ACCESS_TOKEN);
     if (token) config.headers.Authorization = `Bearer ${token}`;
+    if (logEnabled) {
+      console.log(`For Endpoint: ${config.baseURL}${config.url}`);
+      console.log(`Headers:${'\n'}${config.headers}`)
+    }
     return config;
   },
   error => Promise.reject(error),
@@ -62,9 +70,8 @@ const request = async <T>(
       signal: options.signal,
     });
 
-    if (Api.LOG_API_RESPONSE) {
+    if (logEnabled) {
       if (options.body) {
-        console.log(`For Endpoint: ${url}`);
         console.log(
           'Request Data: ' + JSON.stringify(options.body, null, '\t'),
         );
@@ -80,12 +87,12 @@ const request = async <T>(
       const apiError = err.response.data;
       if (apiError) {
         //error from API
-        if (Api.LOG_API_RESPONSE) {
+        if (logEnabled) {
           console.log(
             'Response Data: ' + JSON.stringify(err.response.data, null, '\t'),
           );
         }
-        let errorMessage = apiError.error.message;
+        let errorMessage = apiError.message;
         throw new ApiError(errorMessage, null);
       } else {
         throw new ApiError(

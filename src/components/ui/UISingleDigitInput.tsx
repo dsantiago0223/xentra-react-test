@@ -9,12 +9,14 @@ import {
   ViewStyle,
 } from 'react-native';
 import { Colors, Fonts } from '../../constants/Constants';
+import { HelperText, useTheme } from 'react-native-paper';
 
 type UISingleDigitInputProps = {
   containerStyle?: StyleProp<ViewStyle>;
   length?: number;
   placeholder?: string;
   secure?: boolean;
+  error?: boolean;
   onChange?: (code: string) => void;
   onComplete?: (code: string) => void;
 };
@@ -26,11 +28,18 @@ const UISingleDigitInput = ({
   length = 4,
   placeholder = '',
   secure = false,
+  error = false,
   onChange,
   onComplete,
 }: UISingleDigitInputProps) => {
   const [code, setCode] = useState('');
   const inputRef = useRef<TextInput>(null);
+  const theme = useTheme();
+
+  const errorStyle = {
+    borderWidth: 1,
+    borderColor: theme.colors.error,
+  };
 
   const handleChange = (text: string) => {
     const cleaned = text.replace(/[^0-9]/g, '').slice(0, length);
@@ -63,7 +72,11 @@ const UISingleDigitInput = ({
           return (
             <View
               key={index}
-              style={[styles.input, isFocused && styles.focused]}
+              style={[
+                styles.input,
+                isFocused && !error && styles.focused,
+                error && errorStyle,
+              ]}
             >
               <Text
                 style={[
@@ -77,7 +90,6 @@ const UISingleDigitInput = ({
           );
         })}
 
-        {/* Hidden real input */}
         <TextInput
           ref={inputRef}
           value={code}
@@ -89,6 +101,11 @@ const UISingleDigitInput = ({
           style={styles.hiddenInput}
         />
       </View>
+      {error && (
+        <HelperText variant="bodyLarge" style={styles.HelperText} type="error" visible>
+          Oops! Incorrect PIN. Try again.
+        </HelperText>
+      )}
     </TouchableOpacity>
   );
 };
@@ -126,5 +143,9 @@ const styles = StyleSheet.create({
     opacity: 0,
     width: '100%',
     height: '100%',
+  },
+  HelperText: {
+    marginTop: 8,
+    textAlign: 'center',
   },
 });

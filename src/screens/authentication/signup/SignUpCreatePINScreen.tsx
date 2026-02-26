@@ -35,9 +35,7 @@ const SignUpCreatePINScreen = ({ navigation }: Props) => {
   const { data, reset } = useContext(SignUpContext);
   const { showAlert } = useAlert();
 
-  const handleSignup = async (values: {
-    pin: string;
-  }) => {
+  const handleSignup = async (values: { pin: string }) => {
     showLoading();
     const { error } = await createNewUser({
       firstName: data.firstName,
@@ -50,10 +48,10 @@ const SignUpCreatePINScreen = ({ navigation }: Props) => {
       showAlert({
         title: 'Failed',
         message: error.message,
-        showCancel: false
+        showCancel: false,
       });
     } else {
-      navigation.navigate('SignUpEnableFaceID')
+      navigation.navigate('SignUpEnableFaceID');
     }
     hideLoading();
     reset();
@@ -82,7 +80,10 @@ const SignUpCreatePINScreen = ({ navigation }: Props) => {
         <Formik
           initialValues={{ pin: '', confirmPIN: '' }}
           validationSchema={SignUpCreatePINScreenSchema}
-          onSubmit={handleSignup}
+          onSubmit={() => {
+            //handleSignup}
+            navigation.navigate('SignUpEnableFaceID');
+          }}
         >
           {({
             handleChange,

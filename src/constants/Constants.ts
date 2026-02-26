@@ -1,10 +1,5 @@
 import { Platform } from 'react-native';
 
-export const Api = {
-  API_BASE_URL: 'https://dd438db4-d024-4e90-a7c0-5168d4cbe765.mock.pstmn.io',
-  LOG_API_RESPONSE: true,
-};
-
 export const Colors = {
   white: '#FFFFFF',
   nearWhite: '#FAFAFA',

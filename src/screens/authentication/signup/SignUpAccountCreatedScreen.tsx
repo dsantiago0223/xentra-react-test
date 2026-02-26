@@ -11,7 +11,7 @@ import { useAndroidBackHandler } from '../../../hooks/useAndroidBackHandler';
 
 type Props = NativeStackScreenProps<SignUpStackParamList, 'SignUpAccountCreated'>;
 
-const SignUpAccountCreatedScreen = ({}: Props) => {
+const SignUpAccountCreatedScreen = ({ navigation }: Props) => {
   const { createNewUserFlowComplete } = useContext(AuthContext);
   useAndroidBackHandler(() => true);
   
@@ -37,7 +37,8 @@ const SignUpAccountCreatedScreen = ({}: Props) => {
           title="Done"
           variant="primary"
           onPress={() => {
-            createNewUserFlowComplete();
+            //createNewUserFlowComplete();
+            navigation.popTo('SignUpPhoneNumber');
           }}
         />
       </View>

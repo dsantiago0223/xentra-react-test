@@ -13,10 +13,11 @@ import LayoutSafeAreaView from '../../components/layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { AuthContext } from '../../context/AuthContext';
-//import useGetUser from '../../hooks/useGetUser';
+import useUserAccountInfo from '../../hooks/useUserAccountInfo';
+import useUserAccountBalance from '../../hooks/useUserAccountBalance';
 import { Colors, Fonts } from '../../constants/Constants';
 import UIUserAvatar from '../../components/ui/UIUserAvatar';
-import { formatBalance } from '../../utils/Utils';
+import { formatCurrency } from '../../utils/Utils';
 import UIButton from '../../components/ui/UIButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,6 +27,7 @@ import HomeTransactionListItem from './HomeTransactionListItem';
 import LayoutListSeparator from '../../components/layout/LayoutListSeparator';
 import { useAlert } from '../../context/AlertContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useAppForeground from '../../hooks/useAppForeground';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -68,19 +70,23 @@ const transactionArray = [
 ];
 
 const HomeScreen = ({ navigation }: Props) => {
-  const { logoutUser } = useContext(AuthContext);
-  //const { user } = useGetUser();
+  const { authedUser, logoutUser } = useContext(AuthContext);
+  const { accountInfo } = useUserAccountInfo();
+  const { accountBalance } = useUserAccountBalance();
   const { showAlert } = useAlert();
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [isSwitchOn, setIsSwitchOn] = React.useState(true);
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-  const balance = 12107.2;
   const imageUrl = 'https://i.pravatar.cc/150';
   const safeAreaInsets = useSafeAreaInsets();
 
   const toggleBalanceVisibility = () => {
     setBalanceVisible(!balanceVisible);
   };
+
+  useAppForeground(() => {
+    console.log('app resume from background');
+  });
 
   return (
     <LayoutSafeAreaView style={styles.container}>
@@ -102,7 +108,7 @@ const HomeScreen = ({ navigation }: Props) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            Dave
+            {accountInfo?.firstName ?? authedUser?.account.firstName ?? 'User'}
           </Text>
         </View>
         <View>
@@ -146,7 +152,11 @@ const HomeScreen = ({ navigation }: Props) => {
                   variant="headlineMedium"
                   style={styles.cardAvailableBalance}
                 >
-                  {balanceVisible ? formatBalance(balance) : '****.**'}
+                  {balanceVisible
+                    ? accountBalance !== ''
+                      ? formatCurrency(Number(accountBalance))
+                      : '$---,---'
+                    : '****.**'}
                 </Text>
                 <IconButton
                   style={styles.cardAvailableBalanceIcon}
@@ -175,7 +185,9 @@ const HomeScreen = ({ navigation }: Props) => {
                 style={styles.cardTransferButton}
                 title="Transfer"
                 variant="secondary"
-                onPress={logout}
+                onPress={()=> {
+                  navigation.navigate('TestUIComponents')
+                }}
                 icon={arrowUpIcon}
                 iconPositionRight
               />
@@ -458,14 +470,15 @@ const styles = StyleSheet.create({
   cardAvailableBalanceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   cardAvailableBalance: {
     fontFamily: Fonts.bold,
     color: Colors.white,
-    width: '90%',
+    flex: 1,
   },
   cardAvailableBalanceIcon: {
-    paddingRight: 16,
+    marginRight: 0,
   },
   cardButtonsContainer: {
     flexDirection: 'row',

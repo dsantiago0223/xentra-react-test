@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
+import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../../components/layout/LayoutSafeAreaView';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -10,18 +11,18 @@ import UIButton from '../../components/ui/UIButton';
 import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/ui/UIActivityIndicator';
 import { Colors, Fonts } from '../../constants/Constants';
-import { TextInput } from 'react-native-paper';
 import LayoutPressable from '../../components/layout/LayoutPressable';
 import LayoutNavigationHeader from '../../components/layout/LayoutNavigationHeader';
 import { useAlert } from '../../context/AlertContext';
 import { useDefaultAndroidBackHandler } from '../../hooks/useAndroidBackHandler';
+import UIPhoneNumberInput from '../../components/ui/UIPhoneNumberInput';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+  phoneNumber: Yup.string()
+      .min(9, 'Invalid phone number length')
+      .required('Phone number is required'),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
@@ -32,10 +33,10 @@ const LoginScreen = ({ navigation }: Props) => {
   const { showLoading, hideLoading } = useLoading();
   const { showAlert } = useAlert();
 
-  const handleLogin = async (values: { email: string; password: string }) => {
+  const handleLogin = async (values: { phoneNumber: string; password: string }) => {
     showLoading();
     const { error } = await loginUser({
-      email: values.email,
+      username: values.phoneNumber,
       password: values.password,
     });
     if (error) {
@@ -53,6 +54,7 @@ const LoginScreen = ({ navigation }: Props) => {
   return (
     <LayoutSafeAreaView style={styles.container} dismissKeyboardOnTap>
       <LayoutNavigationHeader
+        containerStyle={{ backgroundColor: Colors.nearWhite }}
         titleText=""
         onLeftPressed={() => navigation.goBack()}
         leftIsImage
@@ -66,9 +68,11 @@ const LoginScreen = ({ navigation }: Props) => {
             resizeMode="contain"
           />
         </View>
-
+        <Text style={styles.message}>
+          Welcome Back
+        </Text>
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ phoneNumber: '', password: '' }}
           validationSchema={LoginSchema}
           onSubmit={handleLogin}
         >
@@ -79,27 +83,29 @@ const LoginScreen = ({ navigation }: Props) => {
             values,
             errors,
             touched,
-            isValid,
-            isSubmitting,
+            isValid
           }) => (
             <>
-              <UITextInput
-                titleText="Email"
-                placeholder="Input your Email Address"
-                keyboardType="email-address"
+              <UIPhoneNumberInput
+                containerStyle={styles.phoneContainerStyle}
+                titleText="Phone Number"
+                placeholder="e.g. 77 123 45 67"
                 autoCapitalize="none"
-                value={values.email}
-                onChangeText={handleChange('email')}
+                value={values.phoneNumber}
+                onChangeText={handleChange('phoneNumber')}
                 onBlur={handleBlur('email')}
-                variant={touched.email && errors.email ? 'error' : 'default'}
-                errorText={errors.email}
-                right={<TextInput.Icon icon="email" color={Colors.greenDark} />}
+                variant={
+                  touched.phoneNumber && errors.phoneNumber
+                    ? 'error'
+                    : 'default'
+                }
+                errorText={errors.phoneNumber}
                 clearable
               />
 
               <UITextInput
                 titleText="Password"
-                placeholder="Input your Password"
+                placeholder="Enter Password"
                 secureTextEntry
                 autoCapitalize="none"
                 value={values.password}
@@ -116,21 +122,19 @@ const LoginScreen = ({ navigation }: Props) => {
                 title="Login"
                 variant="primary"
                 onPress={handleSubmit}
-                disabled={!isValid || isSubmitting}
-              />
-              <UIButton
-                style={styles.button}
-                title="Test UI Components"
-                variant="primary"
-                onPress={() => navigation.navigate('TestUIComponents')}
+                disabled={
+                  !isValid ||
+                  values.phoneNumber === '' ||
+                  values.password === ''
+                }
               />
             </>
           )}
         </Formik>
 
         <LayoutPressable onPress={() => navigation.navigate('GetStarted')}>
-          <Text style={styles.footerText}>
-            Don’t have an account? <Text style={styles.link}>Sign up</Text>
+          <Text style={styles.footerText} variant="bodyMedium">
+            Don’t have an account? <Text style={styles.link} variant="bodyMedium">Get Started</Text>
           </Text>
         </LayoutPressable>
       </View>
@@ -143,14 +147,13 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.nearWhite,
   },
   content: {
     flex: 1,
     paddingHorizontal: 30,
   },
   logoContainer: {
-    marginBottom: 24,
     alignItems: 'center',
   },
   logo: {
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 24,
     color: Colors.grayMedium,
     fontFamily: Fonts.regular,
   },
@@ -179,5 +182,15 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
+  },
+  phoneContainerStyle: {
+    marginTop: 16,
+  },
+  message: {
+    color: Colors.grayMedium,
+    textAlign: 'center',
+    marginTop: 16,
+    fontSize: 18,
+    fontFamily: Fonts.medium
   },
 });

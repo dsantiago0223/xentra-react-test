@@ -28,10 +28,17 @@ export const buildQueryString = (params: Record<string, any>) => {
   return query ? `?${query}` : '';
 };
 
-export const formatBalance = (amount: number) => {
+export const formatCurrency = (amount: number, currency: string = 'USD') => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD', // Change to your desired currency
+    currency: currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+};
+
+export const formatAmount = (amount: number) => {
+  return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);

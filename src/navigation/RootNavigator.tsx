@@ -48,6 +48,12 @@ const RootNavigator = () => {
             component={HomeScreen}
             options={{ title: 'Home' }}
           />
+
+          <Stack.Screen
+            name="TestUIComponents"
+            component={TestUIComponents}
+            options={{ title: 'UI Components' }}
+          />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator

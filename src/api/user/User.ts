@@ -1,19 +1,10 @@
 import { ApiRequest } from '../ApiRequest';
+import { UserResponse, BalanceResponse } from '../user/UserData';
 
-type UserResponse = {
-  success: boolean;
-  user: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    phone_number: string;
-    access_token: string;
-  };
-};
-
-export const login = async (params: { email: string; password: string }) => {
+export const login = async (params: { username: string; password: string }) => {
+  const requestData = { ...params, type: "MOBILE" }
   try {
-    const data = await ApiRequest.post<UserResponse>('/login', params);
+    const data = await ApiRequest.post<UserResponse>('/authenticate', requestData);
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
@@ -44,9 +35,18 @@ export const logout = async () => {
   }
 };
 
-export const getUser = async () => {
+export const getAccountInfo = async () => {
   try {
-    const data = await ApiRequest.get<UserResponse>('/user');
+    const data = await ApiRequest.get<UserResponse>('/account');
+    return { data, error: null };
+  } catch (error: any) {
+    return { data: null, error };
+  }
+};
+
+export const getAccountBalance = async () => {
+  try {
+    const data = await ApiRequest.get<BalanceResponse>('/account/balance');
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
