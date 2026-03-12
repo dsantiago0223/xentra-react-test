@@ -18,13 +18,13 @@ export const SignUpContext = createContext<SignUpContextType>(
 );
 
 export const SignUpProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<SignUpData>({});
+  const [data, setData] = useState<SignUpData>({phoneNumber: '', firstName: '', lastName: '', email: ''});
 
   const updateData = (values: Partial<SignUpData>) => {
     setData(prev => ({ ...prev, ...values }));
   };
 
-  const reset = () => setData({});
+  const reset = () => setData({phoneNumber: '', firstName: '', lastName: '', email: ''});
 
   return (
     <SignUpContext.Provider value={{ data, updateData, reset }}>

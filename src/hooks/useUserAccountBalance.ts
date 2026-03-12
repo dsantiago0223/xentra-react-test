@@ -1,11 +1,14 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAccountBalance } from '../api/user/User';
+import { AuthContext } from '../context/AuthContext';
+import { ApiError } from '../api/ApiError';
 
 const useUserAccountBalance = () => {
   const [accountBalance, setAccountBalance] = useState('');
   const [loading, setLoading] = useState(true);
-  const [responseError, setResponseError] = useState(null);
+  const [responseError, setResponseError] = useState<ApiError | null>(null);
+  const { logoutUser } = useContext(AuthContext);
 
   useFocusEffect(
     useCallback(() => {
@@ -14,14 +17,18 @@ const useUserAccountBalance = () => {
         if (data) {
           setAccountBalance(data.balance);
         } else if (error) {
-          setResponseError(error);
+          if (error.message === 'Invalid session.') {
+            logoutUser();
+          } else {
+            setResponseError(error);
+          }
         }
         setLoading(false);
       };
 
       getUserBalance();
       //return () => {};
-    }, []),
+    }, [logoutUser]),
   );
 
   return { accountBalance, loading, responseError };
