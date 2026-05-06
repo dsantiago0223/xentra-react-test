@@ -11,7 +11,7 @@ import UITextInput from '../ui/UITextInput';
 import { TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAlert } from '../../context/AlertContext';
-import { delay } from '../../utils/Utils';
+import { delay } from '../../utils/utils_';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TestUIComponents'>;
 

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { login, register } from '../api/user/User';
-import { storage } from '../utils/AppStorage';
+import { storage } from '../utils/appStorage_';
 //import { delay } from '../utils/Utils';
 import { User } from '../api/user/UserData';
 import { Keys } from '../constants/DataStoreKeys';

@@ -17,11 +17,11 @@ import useUserAccountInfo from '../../hooks/useUserAccountInfo';
 import useUserAccountBalance from '../../hooks/useUserAccountBalance';
 import { Colors, Fonts } from '../../constants/Constants';
 import UIUserAvatar from '../../components/ui/UIUserAvatar';
-import { formatCurrency } from '../../utils/Utils';
+import { formatCurrency } from '../../utils/utils_';
 import UIButton from '../../components/ui/UIButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { shadow } from '../../utils/Utils';
+import { shadow } from '../../utils/utils_';
 import LayoutPressable from '../../components/layout/LayoutPressable';
 import HomeTransactionListItem from './HomeTransactionListItem';
 import LayoutListSeparator from '../../components/layout/LayoutListSeparator';
@@ -185,8 +185,8 @@ const HomeScreen = ({ navigation }: Props) => {
                 style={styles.cardTransferButton}
                 title="Transfer"
                 variant="secondary"
-                onPress={()=> {
-                  navigation.navigate('TestUIComponents')
+                onPress={() => {
+                  navigation.navigate('TestUIComponents');
                 }}
                 icon={arrowUpIcon}
                 iconPositionRight
