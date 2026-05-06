@@ -3,7 +3,7 @@ import { login, register } from '../api/user';
 import { storage } from '../utils/appStorage';
 //import { delay } from '../utils/Utils';
 import { User } from '../api/user/types';
-import { Keys } from '../constants/dataStoreKeys_';
+import { Keys } from '../constants/dataStoreKeys';
 
 type AuthContextType = {
   accessToken: string | null;

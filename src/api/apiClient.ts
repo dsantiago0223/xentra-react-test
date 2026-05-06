@@ -3,7 +3,7 @@ import { ApiError } from './apiError';
 import { buildQueryString } from '../utils/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
-import { Keys } from '../constants/dataStoreKeys_';
+import { Keys } from '../constants/dataStoreKeys';
 
 const logEnabled = Config.LOG_API_RESPONSE === 'true';
 
