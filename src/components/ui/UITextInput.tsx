@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   inputStyle: {
-    backgroundColor: '#EFF6F3',
+    backgroundColor: Colors.grayInput,
     marginBottom: 8,
   },
   inputContentStyle: {

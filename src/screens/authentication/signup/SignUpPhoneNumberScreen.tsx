@@ -79,7 +79,7 @@ const SignUpPhoneNumberScreen = ({ navigation }: Props) => {
                 autoCapitalize="none"
                 value={values.phoneNumber}
                 onChangeText={handleChange('phoneNumber')}
-                onBlur={handleBlur('email')}
+                onBlur={handleBlur('phoneNumber')}
                 variant={
                   touched.phoneNumber && errors.phoneNumber
                     ? 'error'

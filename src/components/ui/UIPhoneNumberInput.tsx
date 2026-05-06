@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    backgroundColor: '#EFF6F3',
+    backgroundColor: Colors.grayInput,
     marginBottom: 8,
   },
   inputContentStyle: {
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 56,
-    backgroundColor: '#EFF6F3',
+    backgroundColor: Colors.grayInput,
     marginRight: 8,
     paddingHorizontal: 16,
     borderRadius: 12,
