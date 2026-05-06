@@ -29,7 +29,7 @@ const WelcomeScreen = ({ navigation }: Props) => {
         <Image
           source={require('../../../assets/images/welcome_screen_top_image.png')}
           style={styles.topImage}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
       <View style={styles.bottomContent}>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   topImage: {
     width: '100%',
-    height: '80%',
+    height: '100%',
   },
   bottomContent: {
     flex: 1.5,

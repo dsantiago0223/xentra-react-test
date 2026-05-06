@@ -7,9 +7,9 @@ export const Colors = {
   red: '#a6192e',
   transparent: 'transparent',
 
-  greenLight: '#03855e',
-  greenMedium: '#2C5C4C',
-  greenDark: '#114736',
+  greenLight: '#3497D6',
+  greenMedium: '#00408D',
+  greenDark: '#003585',
 
   yellowLight: '#FFF20E',
   yellowMedium: '#FFBF00',

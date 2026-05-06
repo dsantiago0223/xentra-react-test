@@ -557,6 +557,7 @@ const styles = StyleSheet.create({
   squareImageButton: {
     width: 40,
     height: 40,
+    tintColor: Colors.greenDark,
   },
   squareImageButtonSurface: {
     borderRadius: 12,
