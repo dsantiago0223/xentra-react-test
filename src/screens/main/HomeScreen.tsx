@@ -342,7 +342,7 @@ const HomeScreen = ({ navigation }: Props) => {
             }}
           >
             <Image
-              source={require('../../../assets/images/logo_yellow.png')}
+              source={require('../../../assets/images/logo2.png')}
               style={styles.floatingImageButtonLogo}
               resizeMode="contain"
             />
@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
   floatingImageButtonLogoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.greenDark,
+    backgroundColor: Colors.white,
     borderRadius: 100 / 2,
     padding: 8,
   },

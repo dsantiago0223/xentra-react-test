@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { login, register, logout } from '../api/user/User';
+import { login, register } from '../api/user/User';
 import { storage } from '../utils/AppStorage';
 //import { delay } from '../utils/Utils';
 import { User } from '../api/user/UserData';
@@ -9,7 +9,6 @@ type AuthContextType = {
   accessToken: string | null;
   authedUser: User | null;
   loading: boolean;
-  authedUserDidSignUp: boolean;
   loginUser: (params: { username: string; password: string }) => Promise<any>;
   createNewUser: (params: {
     firstName: string;
@@ -18,7 +17,6 @@ type AuthContextType = {
     email: string;
     password: string;
   }) => Promise<any>;
-  createNewUserFlowComplete: () => void;
   logoutUser: () => Promise<void>;
 };
 
@@ -26,10 +24,8 @@ export const AuthContext = createContext<AuthContextType>({
   accessToken: null,
   authedUser: null,
   loading: true,
-  authedUserDidSignUp: false,
   loginUser: async () => {},
   createNewUser: async () => {},
-  createNewUserFlowComplete: () => {},
   logoutUser: async () => {},
 });
 
@@ -37,8 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authedUser, setAuthedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [authedUserDidSignUp, setAuthedUserDidSignUp] = useState(false);
-
+  
   useEffect(() => {
     const loadUserData = async () => {
       const token = await storage.get(Keys.ACCESS_TOKEN);
@@ -95,10 +90,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     //await delay(1000);
   };
 
-  const createNewUserFlowComplete = () => {
-    setAuthedUserDidSignUp(false);
-  };
-
   // Logout
   const logoutUser = async () => {
     setAccessToken(null);
@@ -115,10 +106,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         accessToken,
         authedUser,
         loading,
-        authedUserDidSignUp,
         loginUser,
         createNewUser,
-        createNewUserFlowComplete,
         logoutUser,
       }}
     >

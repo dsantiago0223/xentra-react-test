@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { ApiError } from './ApiError';
+import { ApiError } from './apiError';
 import { buildQueryString } from '../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Config from "react-native-config";
+import Config from 'react-native-config';
 import { Keys } from '../constants/DataStoreKeys';
 
 const logEnabled = Config.LOG_API_RESPONSE === 'true';
@@ -12,7 +12,7 @@ const api = axios.create({
   baseURL: `${Config.API_BASE_URL}/${Config.API_VERSION}`,
   timeout: 15000,
   headers: {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
     'x-api-key': Config.API_KEY,
   },
@@ -25,7 +25,7 @@ api.interceptors.request.use(
     if (token) config.headers.Authorization = `Bearer ${token}`;
     if (logEnabled) {
       console.log(`For Endpoint: ${config.baseURL}${config.url}`);
-      console.log(`Headers:${'\n'}${config.headers}`)
+      console.log(`Headers:${'\n'}${config.headers}`);
     }
     return config;
   },

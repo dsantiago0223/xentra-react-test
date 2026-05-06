@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../../../components/layout/LayoutSafeAreaView';
@@ -6,13 +6,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SignUpStackParamList } from '../../../navigation/SignUpStack';
 import { Colors } from '../../../constants/Constants';
 import UIButton from '../../../components/ui/UIButton';
-import { AuthContext } from '../../../context/AuthContext';
 import { useAndroidBackHandler } from '../../../hooks/useAndroidBackHandler';
 
 type Props = NativeStackScreenProps<SignUpStackParamList, 'SignUpAccountCreated'>;
 
 const SignUpAccountCreatedScreen = ({ navigation }: Props) => {
-  const { createNewUserFlowComplete } = useContext(AuthContext);
   useAndroidBackHandler(() => true);
   
   return (

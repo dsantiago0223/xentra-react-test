@@ -157,12 +157,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 220,
-    height: 110,
-  },
-  iconContainer: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    width: 150,
+    height: 150,
   },
   footerText: {
     textAlign: 'center',
@@ -173,12 +169,6 @@ const styles = StyleSheet.create({
   link: {
     color: Colors.greenDark,
     fontFamily: Fonts.medium,
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 13,
-    marginBottom: 5,
-    marginLeft: 5,
   },
   button: {
     marginTop: 16,

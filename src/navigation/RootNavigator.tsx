@@ -17,7 +17,7 @@ export type RootStackParamList = {
   GetStarted: undefined;
   Login: undefined;
   SignUp: undefined;
-  
+
   Home: undefined;
 
   Test: undefined;
@@ -27,7 +27,7 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
-  const { accessToken, loading, authedUserDidSignUp } = useContext(AuthContext);
+  const { accessToken, loading } = useContext(AuthContext);
 
   if (loading)
     return (
@@ -38,7 +38,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {accessToken && !authedUserDidSignUp ? (
+      {accessToken ? (
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{ headerShown: false }}
@@ -80,7 +80,7 @@ const RootNavigator = () => {
             component={SignUpStack}
             options={{ headerShown: false }}
           />
-          
+
           <Stack.Screen
             name="TestUIComponents"
             component={TestUIComponents}

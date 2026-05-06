@@ -1,10 +1,10 @@
-import { ApiRequest } from '../ApiRequest';
+import { ApiRequest } from '../apiClient';
 import { UserResponse, BalanceResponse } from '../user/UserData';
 
 export const login = async (params: { username: string; password: string }) => {
   const requestData = { ...params, type: "MOBILE" }
   try {
-    const data = await ApiRequest.post<UserResponse>('/authenticate', requestData);
+    const data = await ApiRequest.post<UserResponse>('/login', requestData);
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
@@ -37,7 +37,7 @@ export const logout = async () => {
 
 export const getAccountInfo = async () => {
   try {
-    const data = await ApiRequest.get<UserResponse>('/account');
+    const data = await ApiRequest.get<UserResponse>('/user/profile');
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
@@ -46,7 +46,7 @@ export const getAccountInfo = async () => {
 
 export const getAccountBalance = async () => {
   try {
-    const data = await ApiRequest.get<BalanceResponse>('/account/balance');
+    const data = await ApiRequest.get<BalanceResponse>('/user/balance');
     return { data, error: null };
   } catch (error: any) {
     return { data: null, error };
