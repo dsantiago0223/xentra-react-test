@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { Button, ButtonProps } from 'react-native-paper';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 
 /**
 Button

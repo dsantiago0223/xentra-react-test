@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { getAccountInfo } from '../api/user/User';
-import { Account } from '../api/user/UserData';
+import { getAccountInfo } from '../api/user';
+import { Account } from '../api/user/types';
 
 const useUserAccountInfo = () => {
   const [accountInfo, setAccountInfo] = useState<Account | null>(null);

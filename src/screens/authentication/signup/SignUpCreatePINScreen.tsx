@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../../../components/layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SignUpStackParamList } from '../../../navigation/SignUpStack';
-import { Colors, Fonts } from '../../../constants/Constants';
+import { Colors, Fonts } from '../../../constants';
 import UIButton from '../../../components/ui/UIButton';
 import LayoutNavigationHeader from '../../../components/layout/LayoutNavigationHeader';
 import LayoutProgressLine from '../../../components/layout/LayoutProgressLine';

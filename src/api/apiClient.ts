@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { ApiError } from './apiError';
-import { buildQueryString } from '../utils/utils_';
+import { buildQueryString } from '../utils/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
-import { Keys } from '../constants/DataStoreKeys';
+import { Keys } from '../constants/dataStoreKeys_';
 
 const logEnabled = Config.LOG_API_RESPONSE === 'true';
 
@@ -110,7 +110,7 @@ const request = async <T>(
   }
 };
 
-export const ApiRequest = {
+export const ApiClient = {
   request,
   get: <T>(url: string, options?: ApiOptions) =>
     request<T>('GET', url, options),

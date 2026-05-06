@@ -9,7 +9,7 @@ import {
   StyleProp,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Colors, Fonts } from '../../constants/Constants';
+import { Colors, Fonts } from '../../constants';
 import LayoutPressable from './LayoutPressable';
 
 interface LayoutNavigationHeaderProps {

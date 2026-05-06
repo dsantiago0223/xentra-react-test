@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 
 interface LayoutListSeparatorProps {
   color?: string;

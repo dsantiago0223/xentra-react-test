@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Menu, Text, Icon } from 'react-native-paper';
 import LayoutPressable from '../layout/LayoutPressable';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 
 type Language = {
   code: string;

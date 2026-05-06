@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Test'>;
 

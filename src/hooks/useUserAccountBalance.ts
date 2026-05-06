@@ -1,6 +1,6 @@
 import { useState, useCallback, useContext } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { getAccountBalance } from '../api/user/User';
+import { getAccountBalance } from '../api/user';
 import { AuthContext } from '../context/AuthContext';
 import { ApiError } from '../api/apiError';
 

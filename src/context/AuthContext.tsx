@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { login, register } from '../api/user/User';
-import { storage } from '../utils/appStorage_';
+import { login, register } from '../api/user';
+import { storage } from '../utils/appStorage';
 //import { delay } from '../utils/Utils';
-import { User } from '../api/user/UserData';
-import { Keys } from '../constants/DataStoreKeys';
+import { User } from '../api/user/types';
+import { Keys } from '../constants/dataStoreKeys_';
 
 type AuthContextType = {
   accessToken: string | null;
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authedUser, setAuthedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const loadUserData = async () => {
       const token = await storage.get(Keys.ACCESS_TOKEN);
@@ -51,14 +51,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const loginUser = async (params: { username: string; password: string }) => {
     const { data, error } = await login(params);
     if (data) {
-      const userData = { account: data.account, address: data.address }
+      const userData = { account: data.account, address: data.address };
 
       await storage.save(Keys.ACCESS_TOKEN, data.token);
       await storage.save(Keys.USER, JSON.stringify(userData));
-      
+
       setAccessToken(data.token);
       setAuthedUser(userData);
-      
+
       return { data, error: null };
     } else {
       return { data: null, error };
@@ -74,15 +74,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }) => {
     const { data, error } = await register(params);
     if (data) {
-      const userData = { account: data.account, address: data.address }
+      const userData = { account: data.account, address: data.address };
 
       await storage.save(Keys.ACCESS_TOKEN, data.token);
       await storage.save(Keys.USER, JSON.stringify(userData));
-      
+
       setAccessToken(data.token);
       setAuthedUser(userData);
       setAuthedUserDidSignUp(true);
-      
+
       return { data, error: null };
     } else {
       return { data: null, error };
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logoutUser = async () => {
     setAccessToken(null);
     setAuthedUser(null);
-    
+
     await storage.remove(Keys.ACCESS_TOKEN);
     await storage.remove(Keys.USER);
     //await logout();

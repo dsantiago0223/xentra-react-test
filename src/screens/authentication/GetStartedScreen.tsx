@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../../components/layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 import LayoutNavigationHeader from '../../components/layout/LayoutNavigationHeader';
 import UIButton from '../../components/ui/UIButton';
 import { useDefaultAndroidBackHandler } from '../../hooks/useAndroidBackHandler';
@@ -12,7 +12,6 @@ import { useDefaultAndroidBackHandler } from '../../hooks/useAndroidBackHandler'
 type Props = NativeStackScreenProps<RootStackParamList, 'GetStarted'>;
 
 const GetStartedScreen = ({ navigation }: Props) => {
-  
   useDefaultAndroidBackHandler(navigation);
 
   return (

@@ -7,7 +7,7 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import { Colors, Fonts } from '../../constants/Constants';
+import { Colors, Fonts } from '../../constants';
 
 /**
 Text Input

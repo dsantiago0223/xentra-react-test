@@ -10,7 +10,7 @@ import UITextInput from '../../components/ui/UITextInput';
 import UIButton from '../../components/ui/UIButton';
 import { AuthContext } from '../../context/AuthContext';
 import { useLoading } from '../../components/ui/UIActivityIndicator';
-import { Colors, Fonts } from '../../constants/Constants';
+import { Colors, Fonts } from '../../constants';
 import LayoutPressable from '../../components/layout/LayoutPressable';
 import LayoutNavigationHeader from '../../components/layout/LayoutNavigationHeader';
 import { useAlert } from '../../context/AlertContext';
@@ -21,8 +21,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginSchema = Yup.object().shape({
   phoneNumber: Yup.string()
-      .min(9, 'Invalid phone number length')
-      .required('Phone number is required'),
+    .min(9, 'Invalid phone number length')
+    .required('Phone number is required'),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
@@ -33,7 +33,10 @@ const LoginScreen = ({ navigation }: Props) => {
   const { showLoading, hideLoading } = useLoading();
   const { showAlert } = useAlert();
 
-  const handleLogin = async (values: { phoneNumber: string; password: string }) => {
+  const handleLogin = async (values: {
+    phoneNumber: string;
+    password: string;
+  }) => {
     showLoading();
     const { error } = await loginUser({
       username: values.phoneNumber,
@@ -43,7 +46,7 @@ const LoginScreen = ({ navigation }: Props) => {
       showAlert({
         title: 'Login Failed',
         message: error.message,
-        showCancel: false
+        showCancel: false,
       });
     }
     hideLoading();
@@ -68,9 +71,7 @@ const LoginScreen = ({ navigation }: Props) => {
             resizeMode="contain"
           />
         </View>
-        <Text style={styles.message}>
-          Welcome Back
-        </Text>
+        <Text style={styles.message}>Welcome Back</Text>
         <Formik
           initialValues={{ phoneNumber: '', password: '' }}
           validationSchema={LoginSchema}
@@ -83,7 +84,7 @@ const LoginScreen = ({ navigation }: Props) => {
             values,
             errors,
             touched,
-            isValid
+            isValid,
           }) => (
             <>
               <UIPhoneNumberInput
@@ -134,7 +135,10 @@ const LoginScreen = ({ navigation }: Props) => {
 
         <LayoutPressable onPress={() => navigation.navigate('GetStarted')}>
           <Text style={styles.footerText} variant="bodyMedium">
-            Don’t have an account? <Text style={styles.link} variant="bodyMedium">Get Started</Text>
+            Don’t have an account?{' '}
+            <Text style={styles.link} variant="bodyMedium">
+              Get Started
+            </Text>
           </Text>
         </LayoutPressable>
       </View>
@@ -181,6 +185,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 16,
     fontSize: 18,
-    fontFamily: Fonts.medium
+    fontFamily: Fonts.medium,
   },
 });

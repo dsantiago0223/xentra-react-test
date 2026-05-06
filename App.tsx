@@ -16,7 +16,7 @@ import RootNavigator from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/context/AuthContext';
 import { ActivityIndicatorProvider } from './src/components/ui/UIActivityIndicator';
 import { AlertProvider } from './src/context/AlertContext';
-import { Colors, Fonts } from './src/constants/Constants';
+import { Colors, Fonts } from './src/constants';
 import RNBootSplash from 'react-native-bootsplash';
 
 const appTheme = {

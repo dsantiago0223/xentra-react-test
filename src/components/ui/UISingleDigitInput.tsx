@@ -8,7 +8,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import { Colors, Fonts } from '../../constants/Constants';
+import { Colors, Fonts } from '../../constants';
 import { HelperText, useTheme } from 'react-native-paper';
 
 type UISingleDigitInputProps = {
@@ -102,7 +102,12 @@ const UISingleDigitInput = ({
         />
       </View>
       {error && (
-        <HelperText variant="bodyLarge" style={styles.HelperText} type="error" visible>
+        <HelperText
+          variant="bodyLarge"
+          style={styles.HelperText}
+          type="error"
+          visible
+        >
           Oops! Incorrect PIN. Try again.
         </HelperText>
       )}

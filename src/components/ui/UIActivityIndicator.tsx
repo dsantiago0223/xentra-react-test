@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 
 interface UIActivityIndicatorContextType {
   isLoading: boolean;

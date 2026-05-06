@@ -3,7 +3,7 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
-import { Colors } from '../constants/Constants';
+import { Colors } from '../constants';
 import LoginScreen from '../screens/authentication/LoginScreen';
 import HomeScreen from '../screens/main/HomeScreen';
 import TestUIComponents from '../components/test/TestUIComponents';

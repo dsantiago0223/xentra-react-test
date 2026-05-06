@@ -4,15 +4,18 @@ import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../../../components/layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SignUpStackParamList } from '../../../navigation/SignUpStack';
-import { Colors } from '../../../constants/Constants';
+import { Colors } from '../../../constants';
 import UIButton from '../../../components/ui/UIButton';
 import { useAndroidBackHandler } from '../../../hooks/useAndroidBackHandler';
 
-type Props = NativeStackScreenProps<SignUpStackParamList, 'SignUpAccountCreated'>;
+type Props = NativeStackScreenProps<
+  SignUpStackParamList,
+  'SignUpAccountCreated'
+>;
 
 const SignUpAccountCreatedScreen = ({ navigation }: Props) => {
   useAndroidBackHandler(() => true);
-  
+
   return (
     <LayoutSafeAreaView style={styles.container}>
       <View style={styles.content}>

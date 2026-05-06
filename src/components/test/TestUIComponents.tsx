@@ -4,14 +4,14 @@ import { View, StyleSheet } from 'react-native';
 import LayoutSafeAreaView from '../layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 import LayoutNavigationHeader from '../layout/LayoutNavigationHeader';
 import UIButton from '../ui/UIButton';
 import UITextInput from '../ui/UITextInput';
 import { TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAlert } from '../../context/AlertContext';
-import { delay } from '../../utils/utils_';
+import { delay } from '../../utils/utils';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TestUIComponents'>;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle, Platform } from 'react-native';
 import { Checkbox } from 'react-native-paper';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 
 interface UICheckboxProps {
   value: boolean;

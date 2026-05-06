@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import LayoutSafeAreaView from '../../components/layout/LayoutSafeAreaView';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 import UIButton from '../../components/ui/UIButton';
 import UILanguagePicker from '../../components/ui/UILanguagePicker';
 

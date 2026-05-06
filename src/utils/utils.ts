@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { Colors } from '../constants/Constants';
+import { Colors } from '../constants';
 
 export const buildQueryString = (params: Record<string, any>) => {
   if (!params) return '';

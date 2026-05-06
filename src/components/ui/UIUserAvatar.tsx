@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-paper';
-import { Colors } from '../../constants/Constants';
+import { Colors } from '../../constants';
 
 interface UIUserAvatarProps {
   imageUrl?: string;
