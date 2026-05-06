@@ -2,7 +2,7 @@ import { useState, useCallback, useContext } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { getAccountBalance } from '../api/user/User';
 import { AuthContext } from '../context/AuthContext';
-import { ApiError } from '../api/apiError_';
+import { ApiError } from '../api/apiError';
 
 const useUserAccountBalance = () => {
   const [accountBalance, setAccountBalance] = useState('');
