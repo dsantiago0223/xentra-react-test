@@ -6,9 +6,43 @@ trigger_map:
 - push_branch: main
   workflow: build-and-test
 - pull_request_source_branch: '*'
+  pull_request_target_branch: main
   workflow: build-and-test
+- push_branch: QA
+  workflow: qa-build
+- pull_request_source_branch: '*'
+  pull_request_target_branch: QA
+  workflow: qa-build
 workflows:
   build-and-test:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - npm@1:
+        inputs:
+        - command: install
+    - npm@1:
+        inputs:
+        - command: ci
+    - npm@1:
+        inputs:
+        - command: run
+        - npm_args: test
+    - build-android-app@1:
+        inputs:
+        - project_location: android
+        - module: app
+        - variant: release
+    - xcode-build-for-test@2:
+        inputs:
+        - scheme: XentraReactTest
+        - project_path: ios/XentraReactTest.xcworkspace
+        - destination: generic/platform=iOS
+    - cache-push@2: {}
+    - deploy-to-bitrise-io@2: {}
+  qa-build:
     steps:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
