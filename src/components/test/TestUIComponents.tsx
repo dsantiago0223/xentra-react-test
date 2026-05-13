@@ -61,7 +61,7 @@ export default function TestUIComponents({ navigation }: Props) {
         />
 
         <LayoutNavigationHeader
-          titleText="Nav Header Title"
+          titleText="Header Title"
           titleLogo
           onLeftPressed={() => navigation.goBack()}
           onRightPressed={() => navigation.goBack()}
