@@ -1,4 +1,4 @@
-format_version: '26'
+format_version: '11'
 project_type: react_native
 
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
