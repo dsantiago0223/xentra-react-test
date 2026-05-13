@@ -41,12 +41,17 @@ workflows:
         - content: |-
             #!/bin/bash
             set -e
+            apk_dir="android/app/build/outputs/apk/release"
+            echo "BITRISE_DEPLOY_DIR=$BITRISE_DEPLOY_DIR"
+            echo "APK output dir: $apk_dir"
             mkdir -p "$BITRISE_DEPLOY_DIR"
-            apk_path=$(find android/app/build/outputs/apk/release -name "*release*.apk" -type f | head -n 1)
+            ls -la "$apk_dir" || true
+            apk_path=$(find "$apk_dir" -maxdepth 1 -type f \( -name '*release*.apk' -o -name '*unsigned.apk' \) | head -n 1)
             if [[ -z "$apk_path" ]]; then
               echo "Release APK not found"
               exit 1
             fi
+            echo "Copying APK: $apk_path"
             cp "$apk_path" "$BITRISE_DEPLOY_DIR/"
     - xcode-build-for-test@2:
         inputs:
@@ -82,12 +87,17 @@ workflows:
         - content: |-
             #!/bin/bash
             set -e
+            apk_dir="android/app/build/outputs/apk/release"
+            echo "BITRISE_DEPLOY_DIR=$BITRISE_DEPLOY_DIR"
+            echo "APK output dir: $apk_dir"
             mkdir -p "$BITRISE_DEPLOY_DIR"
-            apk_path=$(find android/app/build/outputs/apk/release -name "*release*.apk" -type f | head -n 1)
+            ls -la "$apk_dir" || true
+            apk_path=$(find "$apk_dir" -maxdepth 1 -type f \( -name '*release*.apk' -o -name '*unsigned.apk' \) | head -n 1)
             if [[ -z "$apk_path" ]]; then
               echo "Release APK not found"
               exit 1
             fi
+            echo "Copying APK: $apk_path"
             cp "$apk_path" "$BITRISE_DEPLOY_DIR/"
     - xcode-build-for-test@2:
         inputs:
