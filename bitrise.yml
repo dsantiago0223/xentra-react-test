@@ -1,139 +1,196 @@
----
 format_version: '26'
 project_type: react_native
+
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
 trigger_map:
 - push_branch: main
-  workflow: build-and-test
+  workflow: build
 - pull_request_source_branch: '*'
   pull_request_target_branch: main
-  workflow: build-and-test
+  workflow: build
 - push_branch: QA
-  workflow: qa-build
+  workflow: qa
 - pull_request_source_branch: '*'
   pull_request_target_branch: QA
-  workflow: qa-build
+  workflow: qa
+
 workflows:
-  build-and-test:
+
+  # =========================
+  # 🧪 MAIN BUILD WORKFLOW
+  # =========================
+  build:
     steps:
-    - activate-ssh-key@4:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+
+    - activate-ssh-key@4: {}
+
     - git-clone@6: {}
+
     - cache-pull@2: {}
-    - npm@1:
-        inputs:
-        - command: install
+
+    # Install dependencies (clean + fast)
     - npm@1:
         inputs:
         - command: ci
+
+    # Run tests
     - npm@1:
         inputs:
         - command: run
         - npm_args: test
-    - build-android-app@1:
+
+    # =========================
+    # 🤖 ANDROID BUILD (FIXED)
+    # =========================
+    - gradle-runner@2:
         inputs:
+        - gradle_task: assembleRelease
         - project_location: android
-        - module: app
-        - variant: release
+
+    # Copy APK to deploy folder
     - script@1:
-        title: Copy Android release APK to deploy dir
+        title: Copy Android APK
         inputs:
         - content: |-
             #!/bin/bash
             set -e
-            apk_dir="android/app/build/outputs/apk/release"
-            echo "BITRISE_DEPLOY_DIR=$BITRISE_DEPLOY_DIR"
-            echo "APK output dir: $apk_dir"
-            mkdir -p "$BITRISE_DEPLOY_DIR"
-            ls -la "$apk_dir" || true
-            apk_path=$(find "$apk_dir" -maxdepth 1 -type f \( -name '*release*.apk' -o -name '*unsigned.apk' \) | head -n 1)
-            if [[ -z "$apk_path" ]]; then
-              echo "Release APK not found"
+
+            APK_DIR="android/app/build/outputs/apk/release"
+
+            echo "APK dir: $APK_DIR"
+
+            APK_PATH=$(find "$APK_DIR" -name "*.apk" | head -n 1)
+
+            if [ -z "$APK_PATH" ]; then
+              echo "❌ APK not found"
               exit 1
             fi
-            echo "Copying APK: $apk_path"
-            cp "$apk_path" "$BITRISE_DEPLOY_DIR/"
-    - xcode-build-for-test@2:
+
+            echo "✅ Found APK: $APK_PATH"
+
+            cp "$APK_PATH" "$BITRISE_DEPLOY_DIR/"
+    
+    # =========================
+    # 🍎 IOS BUILD (CLEAN)
+    # =========================
+    - xcode-build-for-test@3:
         inputs:
         - scheme: XentraReactTest
         - project_path: ios/XentraReactTest.xcworkspace
         - destination: generic/platform=iOS
+
+    # =========================
+    # 📦 CACHE (MODERN)
+    # =========================
     - cache-push@2: {}
+
+    # =========================
+    # 🚀 DEPLOY ARTIFACTS
+    # =========================
     - deploy-to-bitrise-io@2: {}
-  qa-build:
+
+  # =========================
+  # 🧪 QA WORKFLOW
+  # =========================
+  qa:
     steps:
-    - activate-ssh-key@4:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+
+    - activate-ssh-key@4: {}
+
     - git-clone@6: {}
+
     - cache-pull@2: {}
-    - npm@1:
-        inputs:
-        - command: install
+
     - npm@1:
         inputs:
         - command: ci
+
     - npm@1:
         inputs:
         - command: run
         - npm_args: test
-    - build-android-app@1:
+
+    - gradle-runner@2:
         inputs:
+        - gradle_task: assembleRelease
         - project_location: android
-        - module: app
-        - variant: release
+
     - script@1:
-        title: Copy Android release APK to deploy dir
+        title: Copy Android APK
         inputs:
         - content: |-
             #!/bin/bash
             set -e
-            apk_dir="android/app/build/outputs/apk/release"
-            echo "BITRISE_DEPLOY_DIR=$BITRISE_DEPLOY_DIR"
-            echo "APK output dir: $apk_dir"
-            mkdir -p "$BITRISE_DEPLOY_DIR"
-            ls -la "$apk_dir" || true
-            apk_path=$(find "$apk_dir" -maxdepth 1 -type f \( -name '*release*.apk' -o -name '*unsigned.apk' \) | head -n 1)
-            if [[ -z "$apk_path" ]]; then
-              echo "Release APK not found"
+
+            APK_DIR="android/app/build/outputs/apk/release"
+            APK_PATH=$(find "$APK_DIR" -name "*.apk" | head -n 1)
+
+            if [ -z "$APK_PATH" ]; then
+              echo "❌ APK not found"
               exit 1
             fi
-            echo "Copying APK: $apk_path"
-            cp "$apk_path" "$BITRISE_DEPLOY_DIR/"
-    - xcode-build-for-test@2:
+
+            cp "$APK_PATH" "$BITRISE_DEPLOY_DIR/"
+
+    - xcode-build-for-test@3:
         inputs:
         - scheme: XentraReactTest
         - project_path: ios/XentraReactTest.xcworkspace
         - destination: generic/platform=iOS
+
     - cache-push@2: {}
+
     - deploy-to-bitrise-io@2: {}
-  build-android:
+
+  # =========================
+  # 🤖 ANDROID ONLY
+  # =========================
+  android:
     steps:
+
     - git-clone@6: {}
+
     - cache-pull@2: {}
+
     - npm@1:
         inputs:
-        - command: install
-    - build-android-app@1:
+        - command: ci
+
+    - gradle-runner@2:
         inputs:
+        - gradle_task: assembleRelease
         - project_location: android
-        - module: app
-        - variant: release
+
     - cache-push@2: {}
+
     - deploy-to-bitrise-io@2: {}
-  build-ios:
+
+  # =========================
+  # 🍎 IOS ONLY
+  # =========================
+  ios:
     steps:
+
     - git-clone@6: {}
+
     - cache-pull@2: {}
+
     - npm@1:
         inputs:
-        - command: install
-    - xcode-build-for-test@2:
+        - command: ci
+
+    - xcode-build-for-test@3:
         inputs:
         - scheme: XentraReactTest
         - project_path: ios/XentraReactTest.xcworkspace
-    - xcode-build@2:
+
+    - xcode-build@3:
         inputs:
         - scheme: XentraReactTest
         - project_path: ios/XentraReactTest.xcworkspace
         - configuration: Release
+
     - cache-push@2: {}
+
+    - deploy-to-bitrise-io@2: {}
