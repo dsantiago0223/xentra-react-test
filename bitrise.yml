@@ -1,6 +1,7 @@
 ---
 format_version: '26'
 project_type: react_native
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 trigger_map:
 - push_branch: main
   workflow: build-and-test
