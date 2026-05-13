@@ -1,6 +1,5 @@
 ---
-format_version: '11'
-default_step_retry_count: 1
+format_version: '26'
 project_type: react_native
 trigger_map:
 - push_branch: main
