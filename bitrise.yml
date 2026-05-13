@@ -35,6 +35,19 @@ workflows:
         - project_location: android
         - module: app
         - variant: release
+    - script@1:
+        title: Copy Android release APK to deploy dir
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -e
+            mkdir -p "$BITRISE_DEPLOY_DIR"
+            apk_path=$(find android/app/build/outputs/apk/release -name "*release*.apk" -type f | head -n 1)
+            if [[ -z "$apk_path" ]]; then
+              echo "Release APK not found"
+              exit 1
+            fi
+            cp "$apk_path" "$BITRISE_DEPLOY_DIR/"
     - xcode-build-for-test@2:
         inputs:
         - scheme: XentraReactTest
@@ -63,6 +76,19 @@ workflows:
         - project_location: android
         - module: app
         - variant: release
+    - script@1:
+        title: Copy Android release APK to deploy dir
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -e
+            mkdir -p "$BITRISE_DEPLOY_DIR"
+            apk_path=$(find android/app/build/outputs/apk/release -name "*release*.apk" -type f | head -n 1)
+            if [[ -z "$apk_path" ]]; then
+              echo "Release APK not found"
+              exit 1
+            fi
+            cp "$apk_path" "$BITRISE_DEPLOY_DIR/"
     - xcode-build-for-test@2:
         inputs:
         - scheme: XentraReactTest
