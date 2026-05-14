@@ -18,12 +18,15 @@ workflows:
         - content: |
             #!/bin/bash
             set -e
-            cat > .env <<'EOF'
-            API_BASE_URL="${API_BASE_URL}"
-            API_VERSION="${API_VERSION}"
-            API_KEY="${API_KEY}"
-            LOG_API_RESPONSE="${LOG_API_RESPONSE}"
+            cat > .env <<EOF
+            API_BASE_URL=${API_BASE_URL}
+            API_VERSION=${API_VERSION}
+            API_KEY=${API_KEY}
+            LOG_API_RESPONSE=${LOG_API_RESPONSE}
             EOF
+
+            echo ".env generated:"
+            cat .env
     - npm@3:
         title: npm install
         inputs:
@@ -44,12 +47,12 @@ workflows:
         - variant: "$VARIANT"
     - slack@4:
         inputs:
-        - webhook_url: $SLACK_WEBHOOK_URL
+        - webhook_url: "$SLACK_WEBHOOK_URL"
         - channel: "$SLACK_CHANNEL"
         - message: Build <$BITRISE_BUILD_URL|#$BITRISE_BUILD_NUMBER> for
             $BITRISE_APP_TITLE finished on branch $BITRISE_GIT_BRANCH.
         - send_only_on_failure: 'no'
-        - deploy-to-bitrise-io@2: {}
+    - deploy-to-bitrise-io@2: {}
     triggers:
       push:
       - branch: main
