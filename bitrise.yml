@@ -19,12 +19,13 @@ workflows:
   # =========================
   build:
     steps:
-      - activate-ssh-key@4:
-          run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-
       - git-clone@6: {}
 
-      - cache-pull@2: {}
+      - cache-pull@2.4:
+          inputs:
+          - cache_paths: |
+              node_modules -> package.json,yarn.lock
+              android/.gradle -> android/build.gradle,android/app/build.gradle
 
       # Install dependencies (fast + consistent)
       - npm@1:
@@ -79,7 +80,11 @@ workflows:
             - project_path: ios/XentraReactTest.xcworkspace
             - destination: generic/platform=iOS
 
-      - cache-push@2: {}
+      - cache-push@2.4:
+          inputs:
+          - cache_paths: |
+              node_modules -> package.json,yarn.lock
+              android/.gradle -> android/build.gradle,android/app/build.gradle
 
       - deploy-to-bitrise-io@2: {}
 
@@ -88,12 +93,13 @@ workflows:
   # =========================
   qa:
     steps:
-      - activate-ssh-key@4:
-          run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-
       - git-clone@6: {}
 
-      - cache-pull@2: {}
+      - cache-pull@2.4:
+          inputs:
+          - cache_paths: |
+              node_modules -> package.json,yarn.lock
+              android/.gradle -> android/build.gradle,android/app/build.gradle
 
       - npm@1:
           inputs:
@@ -127,6 +133,10 @@ workflows:
             - scheme: XentraReactTest
             - project_path: ios/XentraReactTest.xcworkspace
 
-      - cache-push@2: {}
+      - cache-push@2.4:
+          inputs:
+          - cache_paths: |
+              node_modules -> package.json,yarn.lock
+              android/.gradle -> android/build.gradle,android/app/build.gradle
 
       - deploy-to-bitrise-io@2: {}
