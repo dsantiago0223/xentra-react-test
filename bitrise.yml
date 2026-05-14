@@ -42,13 +42,14 @@ workflows:
         - project_location: "$PROJECT_LOCATION"
         - module: "$MODULE"
         - variant: "$VARIANT"
-    - slack@3:
+    - slack@4:
         inputs:
-        - slack_webhook_url: "$SLACK_WEBHOOK_URL"
+        - webhook_url: $SLACK_WEBHOOK_URL
         - channel: "$SLACK_CHANNEL"
-        - message: "Build <$BITRISE_BUILD_URL|#$BITRISE_BUILD_NUMBER> for $BITRISE_APP_TITLE finished on branch $BITRISE_GIT_BRANCH."
-        - send_only_on_failure: "no"
-    - deploy-to-bitrise-io@2: {}
+        - message: Build <$BITRISE_BUILD_URL|#$BITRISE_BUILD_NUMBER> for
+            $BITRISE_APP_TITLE finished on branch $BITRISE_GIT_BRANCH.
+        - send_only_on_failure: 'no'
+        - deploy-to-bitrise-io@2: {}
     triggers:
       push:
       - branch: main
