@@ -12,6 +12,18 @@ workflows:
       - Check out [Getting started with React Native apps](https://docs.bitrise.io/en/bitrise-ci/getting-started/quick-start-guides/getting-started-with-react-native-projects.html).
     steps:
     - git-clone@8: {}
+    - script@1:
+        title: Generate .env from Bitrise env vars
+        inputs:
+        - content: |
+            #!/bin/bash
+            set -e
+            cat > .env <<'EOF'
+            API_BASE_URL="${API_BASE_URL}"
+            API_VERSION="${API_VERSION}"
+            API_KEY="${API_KEY}"
+            LOG_API_RESPONSE="${LOG_API_RESPONSE}"
+            EOF
     - npm@3:
         title: npm install
         inputs:
@@ -30,16 +42,6 @@ workflows:
         - project_location: "$PROJECT_LOCATION"
         - module: "$MODULE"
         - variant: "$VARIANT"
-    - cocoapods-install@3:
-        inputs:
-        - is_cache_disabled: 'true'
-    - xcode-archive@6:
-        inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
-        - scheme: "$BITRISE_SCHEME"
-        - distribution_method: "$BITRISE_DISTRIBUTION_METHOD"
-        - configuration: Release
-        - automatic_code_signing: api-key
     - deploy-to-bitrise-io@2: {}
     triggers:
       push:
