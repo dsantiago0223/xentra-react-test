@@ -1,142 +1,100 @@
-format_version: '11'
-project_type: react_native
-
+---
+format_version: '26'
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
-
-trigger_map:
-  - push_branch: main
-    workflow: build
-  - pull_request_target_branch: main
-    workflow: build
-  - push_branch: QA
-    workflow: qa
-  - pull_request_target_branch: QA
-    workflow: qa
-
+project_type: react-native
 workflows:
-  # =========================
-  # MAIN BUILD (APK OUTPUT)
-  # =========================
-  build:
+  deploy:
+    description: |
+      Tests, builds and deploys the app using *Deploy to bitrise.io* Step.
+
+      Next steps:
+      - Set up an [Apple service with API key](https://docs.bitrise.io/en/bitrise-platform/integrations/apple-services-connection/connecting-to-an-apple-service-with-api-key.html).
+      - Check out [Getting started with React Native apps](https://docs.bitrise.io/en/bitrise-ci/getting-started/quick-start-guides/getting-started-with-react-native-projects.html).
     steps:
-      - git-clone@6: {}
+    - git-clone@8: {}
+    - npm@3:
+        title: npm install
+        inputs:
+        - workdir: "$WORKDIR"
+        - command: install
+    - npm@3:
+        title: npm test
+        inputs:
+        - workdir: "$WORKDIR"
+        - command: test
+    - install-missing-android-tools@3:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - android-build@1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - cocoapods-install@3:
+        inputs:
+        - is_cache_disabled: 'true'
+    - xcode-archive@6:
+        inputs:
+        - project_path: "$BITRISE_PROJECT_PATH"
+        - scheme: "$BITRISE_SCHEME"
+        - distribution_method: "$BITRISE_DISTRIBUTION_METHOD"
+        - configuration: Release
+        - automatic_code_signing: api-key
+    - deploy-to-bitrise-io@2: {}
+    triggers:
+      push:
+      - branch: main
+      - branch: QA
+      pull_request:
+      - source_branch: "*"
+        target_branch: main
+      - source_branch: "*"
+        target_branch: QA
+  primary:
+    description: |
+      Runs tests.
 
-      - cache-pull@2.4:
-          inputs:
-          - cache_paths: |
-              node_modules -> package.json,yarn.lock
-              android/.gradle -> android/build.gradle,android/app/build.gradle
-
-      # Install dependencies (fast + consistent)
-      - npm@1:
-          inputs:
-            - command: ci
-
-      # Run tests
-      - npm@1:
-          inputs:
-            - command: run
-            - npm_args: test
-
-      # =========================
-      #  ANDROID APK BUILD
-      # =========================
-      - gradle-runner@2:
-          inputs:
-            - project_location: android
-            - gradle_task: assembleRelease
-
-      # =========================
-      # FIND + COPY APK
-      # =========================
-      - script@1:
-          title: Collect APK artifact
-          inputs:
-            - content: |-
-                #!/bin/bash
-                set -e
-
-                echo "Searching for APK..."
-
-                APK_PATH=$(find android/app/build/outputs/apk/release \
-                  -name "*.apk" | head -n 1)
-
-                if [ -z "$APK_PATH" ]; then
-                  echo "APK not found!"
-                  exit 1
-                fi
-
-                echo "APK found: $APK_PATH"
-
-                mkdir -p "$BITRISE_DEPLOY_DIR"
-                cp "$APK_PATH" "$BITRISE_DEPLOY_DIR/app-release.apk"
-
-      # =========================
-      # IOS TEST BUILD (optional)
-      # =========================
-      - xcode-build-for-test@3:
-          inputs:
-            - scheme: XentraReactTest
-            - project_path: ios/XentraReactTest.xcworkspace
-            - destination: generic/platform=iOS
-
-      - cache-push@2.4:
-          inputs:
-          - cache_paths: |
-              node_modules -> package.json,yarn.lock
-              android/.gradle -> android/build.gradle,android/app/build.gradle
-
-      - deploy-to-bitrise-io@2: {}
-
-  # =========================
-  # 🧪 QA BUILD (same but isolated)
-  # =========================
-  qa:
+      Next steps:
+      - Check out [Getting started with React Native apps](https://docs.bitrise.io/en/bitrise-ci/getting-started/quick-start-guides/getting-started-with-react-native-projects.html).
     steps:
-      - git-clone@6: {}
-
-      - cache-pull@2.4:
-          inputs:
-          - cache_paths: |
-              node_modules -> package.json,yarn.lock
-              android/.gradle -> android/build.gradle,android/app/build.gradle
-
-      - npm@1:
-          inputs:
-            - command: ci
-
-      - npm@1:
-          inputs:
-            - command: run
-            - npm_args: test
-
-      - gradle-runner@2:
-          inputs:
-            - project_location: android
-            - gradle_task: assembleRelease
-
-      - script@1:
-          title: Collect APK artifact
-          inputs:
-            - content: |-
-                #!/bin/bash
-                set -e
-
-                APK_PATH=$(find android/app/build/outputs/apk/release \
-                  -name "*.apk" | head -n 1)
-
-                mkdir -p "$BITRISE_DEPLOY_DIR"
-                cp "$APK_PATH" "$BITRISE_DEPLOY_DIR/app-release.apk"
-
-      - xcode-build-for-test@3:
-          inputs:
-            - scheme: XentraReactTest
-            - project_path: ios/XentraReactTest.xcworkspace
-
-      - cache-push@2.4:
-          inputs:
-          - cache_paths: |
-              node_modules -> package.json,yarn.lock
-              android/.gradle -> android/build.gradle,android/app/build.gradle
-
-      - deploy-to-bitrise-io@2: {}
+    - git-clone@8: {}
+    - restore-npm-cache@3: {}
+    - npm@3:
+        title: npm install
+        inputs:
+        - workdir: "$WORKDIR"
+        - command: install
+    - npm@3:
+        title: npm test
+        inputs:
+        - workdir: "$WORKDIR"
+        - command: test
+    - save-npm-cache@1: {}
+    - deploy-to-bitrise-io@2: {}
+meta:
+  bitrise.io:
+    stack: osx-xcode-26.5.x
+    machine_type_id: g2.mac.large
+app:
+  envs:
+  - WORKDIR: "."
+    opts:
+      is_expand: false
+  - PROJECT_LOCATION: android
+    opts:
+      is_expand: false
+  - MODULE: app
+    opts:
+      is_expand: false
+  - VARIANT: Release
+    opts:
+      is_expand: false
+  - BITRISE_PROJECT_PATH: ios/XentraReactTest.xcworkspace
+    opts:
+      is_expand: false
+  - BITRISE_SCHEME: XentraReactTest
+    opts:
+      is_expand: false
+  - BITRISE_DISTRIBUTION_METHOD: development
+    opts:
+      is_expand: false
