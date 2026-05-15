@@ -63,8 +63,6 @@ workflows:
       - source_branch: "*"
         target_branch: QA
     envs:
-      opts:
-        is_expand: false
     - API_VERSION: v1
       opts:
         is_expand: false
