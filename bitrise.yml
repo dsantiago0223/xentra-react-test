@@ -3,8 +3,7 @@ format_version: '26'
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: react-native
 workflows:
-  # The `deploy` workflow is triggered on pushes to the `main` and `QA` branches, and on pull requests targeting those branches. It tests, builds, and deploys the app using the *Deploy to bitrise.io* Step.
-  deploy: 
+  deploy:
     description: |
       Tests, builds and deploys the app using *Deploy to bitrise.io* Step.
 
@@ -63,6 +62,15 @@ workflows:
         target_branch: main
       - source_branch: "*"
         target_branch: QA
+    envs:
+      opts:
+        is_expand: false
+    - API_VERSION: v1
+      opts:
+        is_expand: false
+    - LOG_API_RESPONSE: false
+      opts:
+        is_expand: false
   primary:
     description: |
       Runs tests.
