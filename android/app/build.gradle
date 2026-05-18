@@ -87,7 +87,7 @@ android {
         versionName "1.0"
         resValue "string", "build_config_package", "com.dave.xentra" //react-native-config
     }
-    signingConfigs {
+    /*signingConfigs {
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -106,7 +106,37 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
-    }
+    }*/
+    //Bitrise
+    signingConfigs {
+      debug {
+          storeFile file('debug.keystore')
+          storePassword 'android'
+          keyAlias 'androiddebugkey'
+          keyPassword 'android'
+      }
+
+      release {
+          if (System.getenv("BITRISEIO_ANDROID_KEYSTORE_URL")) {
+              storeFile file(System.getenv("HOME") + "/keystores/xentra-react-test.keystore")
+              storePassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
+              keyAlias System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
+              keyPassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+          }
+      }
+  }
+
+  buildTypes {
+      debug {
+          signingConfig signingConfigs.debug
+      }
+
+      release {
+          signingConfig signingConfigs.release
+          minifyEnabled enableProguardInReleaseBuilds
+          proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+      }
+  }
 }
 
 dependencies {
