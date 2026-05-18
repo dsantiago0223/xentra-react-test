@@ -41,6 +41,27 @@ workflows:
         inputs:
         - gradlew_path: "$PROJECT_LOCATION/gradlew"
     - script@1:
+        title: Download and setup release keystore
+        inputs:
+        - content: |
+            #!/bin/bash
+            set -ex
+
+            # Create keystores directory if it doesn't exist
+            mkdir -p $HOME/keystores
+
+            # Download keystore from Bitrise
+            if [ -n "$BITRISEIO_ANDROID_KEYSTORE_URL" ]; then
+              KEYSTORE_PATH="$HOME/keystores/release.keystore"
+              curl -fLo "$KEYSTORE_PATH" "$BITRISEIO_ANDROID_KEYSTORE_URL"
+              
+              # Export the path for the build step to use
+              envman add --key BITRISEIO_ANDROID_KEYSTORE_PATH --value "$KEYSTORE_PATH"
+              echo "Keystore downloaded to: $KEYSTORE_PATH"
+            else
+              echo "Warning: BITRISEIO_ANDROID_KEYSTORE_URL not set"
+            fi
+    - script@1:
         title: Debug keystore files
         inputs:
         - content: |
