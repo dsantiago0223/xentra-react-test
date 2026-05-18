@@ -40,7 +40,6 @@ workflows:
     - install-missing-android-tools@3:
         inputs:
         - gradlew_path: "$PROJECT_LOCATION/gradlew"
-    - android-keystore-download@1: {}
     - script@1:
         title: Debug keystore files
         inputs:
