@@ -117,10 +117,18 @@ android {
       }
 
       release {
-          storeFile file(System.getenv("HOME") + "/keystores/xentra-react-test.keystore")
-          storePassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-          keyAlias System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
-          keyPassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+          def keystoreDir = System.getenv("HOME") + "/keystores"
+          def keystoreFiles = fileTree(keystoreDir).matching {
+              include "*.jks"
+              include "*.keystore"
+          }.files
+
+          if (!keystoreFiles.isEmpty()) {
+              storeFile keystoreFiles.first()
+              storePassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
+              keyAlias System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
+              keyPassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+          }
       }
   }
 
