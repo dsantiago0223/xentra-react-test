@@ -3,7 +3,7 @@ format_version: '26'
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: react-native
 workflows:
-  deploy:
+  android-deploy:
     description: |
       Tests, builds and deploys the app using *Deploy to bitrise.io* Step.
 
@@ -138,6 +138,49 @@ workflows:
         - command: test
     - save-npm-cache@1: {}
     - deploy-to-bitrise-io@2: {}
+
+# iOS workflow (commented out) — requires Apple Developer account and
+# code signing assets. Uncomment when you have a paid Apple Developer
+# account and have uploaded certificates/provisioning profiles to
+# Bitrise (or configured an Apple service connection).
+#  ios-deploy:
+#    description: |
+#      iOS build workflow — commented out until you have an Apple Developer account.
+#    steps:
+#    - git-clone@8: {}
+#    - script@1:
+#        title: Generate .env from Bitrise env vars
+#        inputs:
+#        - content: |
+#            #!/bin/bash
+#            set -e
+#            cat > .env <<EOF
+#            API_BASE_URL=${API_BASE_URL}
+#            API_VERSION=${API_VERSION}
+#            API_KEY=${API_KEY}
+#            LOG_API_RESPONSE=${LOG_API_RESPONSE}
+#            EOF
+#
+#            echo ".env generated:"
+#            cat .env
+#    - npm@3:
+#        title: npm install
+#        inputs:
+#        - workdir: "$WORKDIR"
+#        - command: install
+#    - npm@3:
+#        title: npm test
+#        inputs:
+#        - workdir: "$WORKDIR"
+#        - command: test
+#    - cocoapods-install@2: {}
+#    - certificate-and-profile-installer@1: {}
+#    - xcode-archive@3:
+#        inputs:
+#        - project_path: "$BITRISE_PROJECT_PATH"
+#        - scheme: "$BITRISE_SCHEME"
+#        - export_method: "$BITRISE_DISTRIBUTION_METHOD"
+#    - deploy-to-bitrise-io@2: {}
 meta:
   bitrise.io:
     stack: osx-xcode-26.5.x
