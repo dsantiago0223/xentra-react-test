@@ -117,19 +117,21 @@ android {
       }
 
       release {
-          def keystoreDir = System.getenv("HOME") + "/keystores"
-          def keystoreFiles = fileTree(keystoreDir).matching {
-              include "*.jks"
-              include "*.keystore"
-          }.files
+        def keystoreDir = System.getenv("HOME") + "/keystores"
+        def keystoreFiles = fileTree(keystoreDir).matching {
+            include "*.jks"
+            include "*.keystore"
+        }.files
 
-          if (!keystoreFiles.isEmpty()) {
-              storeFile keystoreFiles.first()
-              storePassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-              keyAlias System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
-              keyPassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-          }
-      }
+        if (!keystoreFiles.isEmpty()) {
+            storeFile keystoreFiles.first()
+            storePassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
+            keyPassword System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+        } else {
+            println("No Bitrise keystore found")
+        }
+    }
   }
 
   buildTypes {

@@ -40,6 +40,20 @@ workflows:
     - install-missing-android-tools@3:
         inputs:
         - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - script@1:
+        title: Debug keystore files
+        inputs:
+        - content: |
+            #!/bin/bash
+            set -ex
+
+            echo "HOME=$HOME"
+
+            echo "Listing keystores directory..."
+            ls -la $HOME/keystores || true
+
+            echo "BITRISEIO_ANDROID_KEYSTORE_URL=$BITRISEIO_ANDROID_KEYSTORE_URL"
+            echo "BITRISEIO_ANDROID_KEYSTORE_ALIAS=$BITRISEIO_ANDROID_KEYSTORE_ALIAS"
     - android-build@1:
         title: Build Release APK
         inputs:
