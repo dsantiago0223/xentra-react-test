@@ -37,6 +37,33 @@ workflows:
           inputs:
             - workdir: '$WORKDIR'
             - command: test
+      - script@1:
+          title: Bump Android versionCode/versionName
+          inputs:
+            - content: |
+                #!/bin/bash
+                set -e
+
+                BUILD_GRADLE="android/app/build.gradle"
+                if [ ! -f "$BUILD_GRADLE" ]; then
+                  echo "Error: $BUILD_GRADLE not found"
+                  exit 1
+                fi
+
+                if [ -n "$ANDROID_VERSION_CODE" ]; then
+                  perl -pi -e "s/^(\s*versionCode\s+)\d+/\$1$ANDROID_VERSION_CODE/" "$BUILD_GRADLE"
+                  echo "Set Android versionCode to: $ANDROID_VERSION_CODE"
+                else
+                  CURRENT_CODE=$(grep -E '^[[:space:]]*versionCode [0-9]+' "$BUILD_GRADLE" | head -n 1 | awk '{print $2}')
+                  NEXT_CODE=$((CURRENT_CODE + 1))
+                  perl -pi -e "s/^(\s*versionCode\s+)\d+/\$1$NEXT_CODE/" "$BUILD_GRADLE"
+                  echo "Auto-incremented Android versionCode: $CURRENT_CODE -> $NEXT_CODE"
+                fi
+
+                if [ -n "$ANDROID_VERSION_NAME" ]; then
+                  perl -pi -e "s/^(\s*versionName\s+)\"[^\"]+\"/\$1\"$ANDROID_VERSION_NAME\"/" "$BUILD_GRADLE"
+                  echo "Set Android versionName to: $ANDROID_VERSION_NAME"
+                fi
       - install-missing-android-tools@3:
           inputs:
             - gradlew_path: '$PROJECT_LOCATION/gradlew'
@@ -90,9 +117,6 @@ workflows:
             - module: '$MODULE'
             - variant: '$VARIANT'
             - build_type: aab
-      #- gradle-runner@2:
-      #inputs:
-      #- gradle_task: assembleRelease bundleRelease
       - slack@4:
           inputs:
             - webhook_url: '$SLACK_WEBHOOK_URL'
@@ -139,62 +163,81 @@ workflows:
       - save-npm-cache@1: {}
       - deploy-to-bitrise-io@2: {}
 
-  ios-build:
-    description: |
-      Tests, builds and deploys the iOS app as an .ipa file.
-      This workflow is ready to enable once you have a paid Apple Developer
-      account and have configured certificates/provisioning profiles or an
-      Apple Service connection in Bitrise.
-    steps:
-      - git-clone@8: {}
-      - script@1:
-          title: Generate .env from Bitrise env vars
-          inputs:
-            - content: |
-                #!/bin/bash
-                set -e
-                cat > .env <<EOF
-                API_BASE_URL=${API_BASE_URL}
-                API_VERSION=${API_VERSION}
-                API_KEY=${API_KEY}
-                LOG_API_RESPONSE=${LOG_API_RESPONSE}
-                EOF
+  # The iOS workflow is included as a reference for how to set up an iOS build, but is commented out by default since it requires additional configuration (Apple Developer account, certificates/provisioning profiles or Apple Service connection in Bitrise).
+  #ios-build:
+  #  description: |
+  #    Tests, builds and deploys the iOS app as an .ipa file.
+  #    This workflow is ready to enable once you have a paid Apple Developer
+  #    account and have configured certificates/provisioning profiles or an
+  #    Apple Service connection in Bitrise.
+  #  steps:
+  #    - git-clone@8: {}
+  #    - script@1:
+  #        title: Generate .env from Bitrise env vars
+  #        inputs:
+  #          - content: |
+  #              #!/bin/bash
+  #              set -e
+  #              cat > .env <<EOF
+  #              API_BASE_URL=${API_BASE_URL}
+  #              API_VERSION=${API_VERSION}
+  #              API_KEY=${API_KEY}
+  #              LOG_API_RESPONSE=${LOG_API_RESPONSE}
+  #              EOF
 
-                echo ".env generated:"
-                cat .env
-      - npm@3:
-          title: npm install
-          inputs:
-            - workdir: '$WORKDIR'
-            - command: install
-      - npm@3:
-          title: npm test
-          inputs:
-            - workdir: '$WORKDIR'
-            - command: test
-      - cocoapods-install@2: {}
-      - certificate-and-profile-installer@1: {}
-      - xcode-archive@3:
-          inputs:
-            - project_path: '$BITRISE_PROJECT_PATH'
-            - scheme: '$BITRISE_SCHEME'
-            - export_method: '$BITRISE_DISTRIBUTION_METHOD'
-      - deploy-to-bitrise-io@2: {}
-    triggers:
-      push:
-        - branch: main
-        - branch: QA
-      pull_request:
-        - source_branch: '*'
-          target_branch: main
-        - source_branch: '*'
-          target_branch: QA
+  #              echo ".env generated:"
+  #              cat .env
+  #    - npm@3:
+  #        title: npm install
+  #        inputs:
+  #          - workdir: '$WORKDIR'
+  #          - command: install
+  #    - npm@3:
+  #        title: npm test
+  #        inputs:
+  #          - workdir: '$WORKDIR'
+  #          - command: test
+  #    - script@1:
+  #        title: Bump iOS marketing version/build number
+  #        inputs:
+  #          - content: |
+  #              #!/bin/bash
+  #              set -e
+  #              cd ios
 
-# iOS workflow is now uncommented above. It will generate an .ipa when you
-# have a paid Apple Developer account and the required signing assets.
-# On Bitrise, android-build and ios-build can be configured to trigger on
-# the same branches/PRs, allowing both builds to start independently and
-# run in parallel.
+  #              if [ -n "$IOS_MARKETING_VERSION" ]; then
+  #                /usr/bin/agvtool new-marketing-version "$IOS_MARKETING_VERSION"
+  #                echo "Set iOS MARKETING_VERSION to: $IOS_MARKETING_VERSION"
+  #              else
+  #                echo "No IOS_MARKETING_VERSION set; leaving current iOS marketing version unchanged."
+  #              fi
+
+  #              if [ -n "$IOS_BUILD_NUMBER" ]; then
+  #                /usr/bin/agvtool new-version -all "$IOS_BUILD_NUMBER"
+  #                echo "Set iOS CURRENT_PROJECT_VERSION to: $IOS_BUILD_NUMBER"
+  #              else
+  #                /usr/bin/agvtool next-version -all
+  #                echo "Incremented iOS CURRENT_PROJECT_VERSION"
+  #              fi
+  #              cd ..
+  #    - cocoapods-install@2: {}
+  #    - certificate-and-profile-installer@1: {}
+  #    - xcode-archive@3:
+  #        inputs:
+  #          - project_path: '$BITRISE_PROJECT_PATH'
+  #          - scheme: '$BITRISE_SCHEME'
+  #          - export_method: '$BITRISE_DISTRIBUTION_METHOD'
+  #    - deploy-to-bitrise-io@2: {}
+  #  triggers:
+  #    push:
+  #      - branch: main
+  #      - branch: QA
+  #    pull_request:
+  #      - source_branch: '*'
+  #        target_branch: main
+  #      - source_branch: '*'
+  #        target_branch: QA
+
 meta:
   bitrise.io:
     stack: osx-xcode-26.5.x
@@ -211,6 +254,18 @@ app:
       opts:
         is_expand: false
     - VARIANT: Release
+      opts:
+        is_expand: false
+    - ANDROID_VERSION_CODE: ''
+      opts:
+        is_expand: false
+    - ANDROID_VERSION_NAME: ''
+      opts:
+        is_expand: false
+    - IOS_MARKETING_VERSION: ''
+      opts:
+        is_expand: false
+    - IOS_BUILD_NUMBER: ''
       opts:
         is_expand: false
     - BITRISE_PROJECT_PATH: ios/XentraReactTest.xcworkspace
