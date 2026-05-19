@@ -3,7 +3,7 @@ format_version: '26'
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: react-native
 workflows:
-  android-deploy:
+  android-build:
     description: |
       Tests, builds and deploys the app using *Deploy to bitrise.io* Step.
 
@@ -11,112 +11,112 @@ workflows:
       - Set up an [Apple service with API key](https://docs.bitrise.io/en/bitrise-platform/integrations/apple-services-connection/connecting-to-an-apple-service-with-api-key.html).
       - Check out [Getting started with React Native apps](https://docs.bitrise.io/en/bitrise-ci/getting-started/quick-start-guides/getting-started-with-react-native-projects.html).
     steps:
-    - git-clone@8: {}
-    - script@1:
-        title: Generate .env from Bitrise env vars
-        inputs:
-        - content: |
-            #!/bin/bash
-            set -e
-            cat > .env <<EOF
-            API_BASE_URL=${API_BASE_URL}
-            API_VERSION=${API_VERSION}
-            API_KEY=${API_KEY}
-            LOG_API_RESPONSE=${LOG_API_RESPONSE}
-            EOF
+      - git-clone@8: {}
+      - script@1:
+          title: Generate .env from Bitrise env vars
+          inputs:
+            - content: |
+                #!/bin/bash
+                set -e
+                cat > .env <<EOF
+                API_BASE_URL=${API_BASE_URL}
+                API_VERSION=${API_VERSION}
+                API_KEY=${API_KEY}
+                LOG_API_RESPONSE=${LOG_API_RESPONSE}
+                EOF
 
-            echo ".env generated:"
-            cat .env
-    - npm@3:
-        title: npm install
-        inputs:
-        - workdir: "$WORKDIR"
-        - command: install
-    - npm@3:
-        title: npm test
-        inputs:
-        - workdir: "$WORKDIR"
-        - command: test
-    - install-missing-android-tools@3:
-        inputs:
-        - gradlew_path: "$PROJECT_LOCATION/gradlew"
-    - script@1:
-        title: Download and setup release keystore
-        inputs:
-        - content: |
-            #!/bin/bash
-            set -ex
+                echo ".env generated:"
+                cat .env
+      - npm@3:
+          title: npm install
+          inputs:
+            - workdir: '$WORKDIR'
+            - command: install
+      - npm@3:
+          title: npm test
+          inputs:
+            - workdir: '$WORKDIR'
+            - command: test
+      - install-missing-android-tools@3:
+          inputs:
+            - gradlew_path: '$PROJECT_LOCATION/gradlew'
+      - script@1:
+          title: Download and setup release keystore
+          inputs:
+            - content: |
+                #!/bin/bash
+                set -ex
 
-            # Create keystores directory if it doesn't exist
-            mkdir -p $HOME/keystores
+                # Create keystores directory if it doesn't exist
+                mkdir -p $HOME/keystores
 
-            # Download keystore from Bitrise
-            if [ -n "$BITRISEIO_ANDROID_KEYSTORE_URL" ]; then
-              KEYSTORE_PATH="$HOME/keystores/release.keystore"
-              curl -fLo "$KEYSTORE_PATH" "$BITRISEIO_ANDROID_KEYSTORE_URL"
-              
-              # Export the path for the build step to use
-              envman add --key BITRISEIO_ANDROID_KEYSTORE_PATH --value "$KEYSTORE_PATH"
-              echo "Keystore downloaded to: $KEYSTORE_PATH"
-            else
-              echo "Warning: BITRISEIO_ANDROID_KEYSTORE_URL not set"
-            fi
-    - script@1:
-        title: Debug keystore files
-        inputs:
-        - content: |
-            #!/bin/bash
-            set -ex
+                # Download keystore from Bitrise
+                if [ -n "$BITRISEIO_ANDROID_KEYSTORE_URL" ]; then
+                  KEYSTORE_PATH="$HOME/keystores/release.keystore"
+                  curl -fLo "$KEYSTORE_PATH" "$BITRISEIO_ANDROID_KEYSTORE_URL"
+                  
+                  # Export the path for the build step to use
+                  envman add --key BITRISEIO_ANDROID_KEYSTORE_PATH --value "$KEYSTORE_PATH"
+                  echo "Keystore downloaded to: $KEYSTORE_PATH"
+                else
+                  echo "Warning: BITRISEIO_ANDROID_KEYSTORE_URL not set"
+                fi
+      - script@1:
+          title: Debug keystore files
+          inputs:
+            - content: |
+                #!/bin/bash
+                set -ex
 
-            echo "HOME=$HOME"
+                echo "HOME=$HOME"
 
-            echo "Listing keystores directory..."
-            ls -la $HOME/keystores || true
+                echo "Listing keystores directory..."
+                ls -la $HOME/keystores || true
 
-            echo "BITRISEIO_ANDROID_KEYSTORE_URL=$BITRISEIO_ANDROID_KEYSTORE_URL"
-            echo "BITRISEIO_ANDROID_KEYSTORE_ALIAS=$BITRISEIO_ANDROID_KEYSTORE_ALIAS"
-            echo "BITRISEIO_ANDROID_KEYSTORE_PATH=$BITRISEIO_ANDROID_KEYSTORE_PATH"
-    - android-build@1:
-        title: Build Release APK
-        inputs:
-        - project_location: "$PROJECT_LOCATION"
-        - module: "$MODULE"
-        - variant: "$VARIANT"
-        - build_type: apk
-    - android-build@1:
-        title: Build Release AAB
-        inputs:
-        - project_location: "$PROJECT_LOCATION"
-        - module: "$MODULE"
-        - variant: "$VARIANT"
-        - build_type: aab
-    #- gradle-runner@2:
-        #inputs:
-        #- gradle_task: assembleRelease bundleRelease
-    - slack@4:
-        inputs:
-        - webhook_url: "$SLACK_WEBHOOK_URL"
-        - channel: "$SLACK_CHANNEL"
-        - message: Build <$BITRISE_BUILD_URL|#$BITRISE_BUILD_NUMBER> for
-            $BITRISE_APP_TITLE finished on branch $BITRISE_GIT_BRANCH.
-        - send_only_on_failure: 'no'
-    - deploy-to-bitrise-io@2: {}
+                echo "BITRISEIO_ANDROID_KEYSTORE_URL=$BITRISEIO_ANDROID_KEYSTORE_URL"
+                echo "BITRISEIO_ANDROID_KEYSTORE_ALIAS=$BITRISEIO_ANDROID_KEYSTORE_ALIAS"
+                echo "BITRISEIO_ANDROID_KEYSTORE_PATH=$BITRISEIO_ANDROID_KEYSTORE_PATH"
+      - android-build@1:
+          title: Build Release APK
+          inputs:
+            - project_location: '$PROJECT_LOCATION'
+            - module: '$MODULE'
+            - variant: '$VARIANT'
+            - build_type: apk
+      - android-build@1:
+          title: Build Release AAB
+          inputs:
+            - project_location: '$PROJECT_LOCATION'
+            - module: '$MODULE'
+            - variant: '$VARIANT'
+            - build_type: aab
+      #- gradle-runner@2:
+      #inputs:
+      #- gradle_task: assembleRelease bundleRelease
+      - slack@4:
+          inputs:
+            - webhook_url: '$SLACK_WEBHOOK_URL'
+            - channel: '$SLACK_CHANNEL'
+            - message: Build <$BITRISE_BUILD_URL|#$BITRISE_BUILD_NUMBER> for
+                $BITRISE_APP_TITLE finished on branch $BITRISE_GIT_BRANCH.
+            - send_only_on_failure: 'no'
+      - deploy-to-bitrise-io@2: {}
     triggers:
       push:
-      - branch: main
-      - branch: QA
+        - branch: main
+        - branch: QA
       pull_request:
-      - source_branch: "*"
-        target_branch: main
-      - source_branch: "*"
-        target_branch: QA
+        - source_branch: '*'
+          target_branch: main
+        - source_branch: '*'
+          target_branch: QA
     envs:
-    - API_VERSION: v1
-      opts:
-        is_expand: false
-    - LOG_API_RESPONSE: false
-      opts:
-        is_expand: false
+      - API_VERSION: v1
+        opts:
+          is_expand: false
+      - LOG_API_RESPONSE: false
+        opts:
+          is_expand: false
   primary:
     description: |
       Runs tests.
@@ -124,87 +124,101 @@ workflows:
       Next steps:
       - Check out [Getting started with React Native apps](https://docs.bitrise.io/en/bitrise-ci/getting-started/quick-start-guides/getting-started-with-react-native-projects.html).
     steps:
-    - git-clone@8: {}
-    - restore-npm-cache@3: {}
-    - npm@3:
-        title: npm install
-        inputs:
-        - workdir: "$WORKDIR"
-        - command: install
-    - npm@3:
-        title: npm test
-        inputs:
-        - workdir: "$WORKDIR"
-        - command: test
-    - save-npm-cache@1: {}
-    - deploy-to-bitrise-io@2: {}
+      - git-clone@8: {}
+      - restore-npm-cache@3: {}
+      - npm@3:
+          title: npm install
+          inputs:
+            - workdir: '$WORKDIR'
+            - command: install
+      - npm@3:
+          title: npm test
+          inputs:
+            - workdir: '$WORKDIR'
+            - command: test
+      - save-npm-cache@1: {}
+      - deploy-to-bitrise-io@2: {}
 
-# iOS workflow (commented out) — requires Apple Developer account and
-# code signing assets. Uncomment when you have a paid Apple Developer
-# account and have uploaded certificates/provisioning profiles to
-# Bitrise (or configured an Apple service connection).
-#  ios-deploy:
-#    description: |
-#      iOS build workflow — commented out until you have an Apple Developer account.
-#    steps:
-#    - git-clone@8: {}
-#    - script@1:
-#        title: Generate .env from Bitrise env vars
-#        inputs:
-#        - content: |
-#            #!/bin/bash
-#            set -e
-#            cat > .env <<EOF
-#            API_BASE_URL=${API_BASE_URL}
-#            API_VERSION=${API_VERSION}
-#            API_KEY=${API_KEY}
-#            LOG_API_RESPONSE=${LOG_API_RESPONSE}
-#            EOF
-#
-#            echo ".env generated:"
-#            cat .env
-#    - npm@3:
-#        title: npm install
-#        inputs:
-#        - workdir: "$WORKDIR"
-#        - command: install
-#    - npm@3:
-#        title: npm test
-#        inputs:
-#        - workdir: "$WORKDIR"
-#        - command: test
-#    - cocoapods-install@2: {}
-#    - certificate-and-profile-installer@1: {}
-#    - xcode-archive@3:
-#        inputs:
-#        - project_path: "$BITRISE_PROJECT_PATH"
-#        - scheme: "$BITRISE_SCHEME"
-#        - export_method: "$BITRISE_DISTRIBUTION_METHOD"
-#    - deploy-to-bitrise-io@2: {}
+  ios-build:
+    description: |
+      Tests, builds and deploys the iOS app as an .ipa file.
+      This workflow is ready to enable once you have a paid Apple Developer
+      account and have configured certificates/provisioning profiles or an
+      Apple Service connection in Bitrise.
+    steps:
+      - git-clone@8: {}
+      - script@1:
+          title: Generate .env from Bitrise env vars
+          inputs:
+            - content: |
+                #!/bin/bash
+                set -e
+                cat > .env <<EOF
+                API_BASE_URL=${API_BASE_URL}
+                API_VERSION=${API_VERSION}
+                API_KEY=${API_KEY}
+                LOG_API_RESPONSE=${LOG_API_RESPONSE}
+                EOF
+
+                echo ".env generated:"
+                cat .env
+      - npm@3:
+          title: npm install
+          inputs:
+            - workdir: '$WORKDIR'
+            - command: install
+      - npm@3:
+          title: npm test
+          inputs:
+            - workdir: '$WORKDIR'
+            - command: test
+      - cocoapods-install@2: {}
+      - certificate-and-profile-installer@1: {}
+      - xcode-archive@3:
+          inputs:
+            - project_path: '$BITRISE_PROJECT_PATH'
+            - scheme: '$BITRISE_SCHEME'
+            - export_method: '$BITRISE_DISTRIBUTION_METHOD'
+      - deploy-to-bitrise-io@2: {}
+    triggers:
+      push:
+        - branch: main
+        - branch: QA
+      pull_request:
+        - source_branch: '*'
+          target_branch: main
+        - source_branch: '*'
+          target_branch: QA
+
+# iOS workflow is now uncommented above. It will generate an .ipa when you
+# have a paid Apple Developer account and the required signing assets.
+# On Bitrise, android-build and ios-build can be configured to trigger on
+# the same branches/PRs, allowing both builds to start independently and
+# run in parallel.
 meta:
   bitrise.io:
     stack: osx-xcode-26.5.x
     machine_type_id: g2.mac.large
 app:
   envs:
-  - WORKDIR: "."
-    opts:
-      is_expand: false
-  - PROJECT_LOCATION: android
-    opts:
-      is_expand: false
-  - MODULE: app
-    opts:
-      is_expand: false
-  - VARIANT: Release
-    opts:
-      is_expand: false
-  - BITRISE_PROJECT_PATH: ios/XentraReactTest.xcworkspace
-    opts:
-      is_expand: false
-  - BITRISE_SCHEME: XentraReactTest
-    opts:
-      is_expand: false
-  - BITRISE_DISTRIBUTION_METHOD: development
-    opts:
-      is_expand: false
+    - WORKDIR: '.'
+      opts:
+        is_expand: false
+    - PROJECT_LOCATION: android
+      opts:
+        is_expand: false
+    - MODULE: app
+      opts:
+        is_expand: false
+    - VARIANT: Release
+      opts:
+        is_expand: false
+    - BITRISE_PROJECT_PATH: ios/XentraReactTest.xcworkspace
+      opts:
+        is_expand: false
+    - BITRISE_SCHEME: XentraReactTest
+      opts:
+        is_expand: false
+    - BITRISE_DISTRIBUTION_METHOD: development
+      opts:
+        is_expand: false
