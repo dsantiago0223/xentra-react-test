@@ -40,37 +40,6 @@ workflows:
           inputs:
             - workdir: '$WORKDIR'
             - command: test
-      - script@1:
-          title: Bump Android versionCode/versionName
-          inputs:
-            - content: |
-                #!/bin/bash
-                set -e
-
-                BUILD_GRADLE="android/app/build.gradle"
-                if [ ! -f "$BUILD_GRADLE" ]; then
-                  echo "Error: $BUILD_GRADLE not found"
-                  exit 1
-                fi
-
-                if [ -n "$ANDROID_VERSION_CODE" ]; then
-                  CURRENT_CODE=$(grep -E '^[[:space:]]*versionCode [0-9]+' "$BUILD_GRADLE" | head -n 1 | awk '{print $2}')
-                  perl -pi -e "s/^(\s*versionCode\s+)\d+/\$1$ANDROID_VERSION_CODE/" "$BUILD_GRADLE"
-                  echo "Set Android versionCode to: $ANDROID_VERSION_CODE (was $CURRENT_CODE)"
-                else
-                  CURRENT_CODE=$(grep -E '^[[:space:]]*versionCode [0-9]+' "$BUILD_GRADLE" | head -n 1 | awk '{print $2}')
-                  NEXT_CODE=$((CURRENT_CODE + 1))
-                  perl -pi -e "s/^(\s*versionCode\s+)\d+/\$1$NEXT_CODE/" "$BUILD_GRADLE"
-                  echo "Auto-incremented Android versionCode: $CURRENT_CODE -> $NEXT_CODE"
-                fi
-
-                if [ -n "$ANDROID_VERSION_NAME" ]; then
-                  perl -pi -e "s/^(\s*versionName\s+)\"[^\"]+\"/\$1\"$ANDROID_VERSION_NAME\"/" "$BUILD_GRADLE"
-                  echo "Set Android versionName to: $ANDROID_VERSION_NAME"
-                fi
-
-                echo "Updated Android version values:"
-                grep -nE '^[[:space:]]*(versionCode|versionName) ' "$BUILD_GRADLE"
       - install-missing-android-tools@3:
           inputs:
             - gradlew_path: '$PROJECT_LOCATION/gradlew'
@@ -204,29 +173,6 @@ workflows:
   #        inputs:
   #          - workdir: '$WORKDIR'
   #          - command: test
-  #    - script@1:
-  #        title: Bump iOS marketing version/build number
-  #        inputs:
-  #          - content: |
-  #              #!/bin/bash
-  #              set -e
-  #              cd ios
-
-  #              if [ -n "$IOS_MARKETING_VERSION" ]; then
-  #                /usr/bin/agvtool new-marketing-version "$IOS_MARKETING_VERSION"
-  #                echo "Set iOS MARKETING_VERSION to: $IOS_MARKETING_VERSION"
-  #              else
-  #                echo "No IOS_MARKETING_VERSION set; leaving current iOS marketing version unchanged."
-  #              fi
-
-  #              if [ -n "$IOS_BUILD_NUMBER" ]; then
-  #                /usr/bin/agvtool new-version -all "$IOS_BUILD_NUMBER"
-  #                echo "Set iOS CURRENT_PROJECT_VERSION to: $IOS_BUILD_NUMBER"
-  #              else
-  #                /usr/bin/agvtool next-version -all
-  #                echo "Incremented iOS CURRENT_PROJECT_VERSION"
-  #              fi
-  #              cd ..
   #    - cocoapods-install@2: {}
   #    - certificate-and-profile-installer@1: {}
   #    - xcode-archive@3:
@@ -261,18 +207,6 @@ app:
       opts:
         is_expand: false
     - VARIANT: Release
-      opts:
-        is_expand: false
-    - ANDROID_VERSION_CODE: ''
-      opts:
-        is_expand: false
-    - ANDROID_VERSION_NAME: ''
-      opts:
-        is_expand: false
-    - IOS_MARKETING_VERSION: ''
-      opts:
-        is_expand: false
-    - IOS_BUILD_NUMBER: ''
       opts:
         is_expand: false
     - BITRISE_PROJECT_PATH: ios/XentraReactTest.xcworkspace
