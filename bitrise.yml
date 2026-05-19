@@ -7,6 +7,9 @@ workflows:
     description: |
       Tests, builds and deploys the app using *Deploy to bitrise.io* Step.
 
+      Note: This workflow will auto-increment Android versionCode and will set
+      versionName if you provide ANDROID_VERSION_NAME as a Bitrise env var.
+
       Next steps:
       - Set up an [Apple service with API key](https://docs.bitrise.io/en/bitrise-platform/integrations/apple-services-connection/connecting-to-an-apple-service-with-api-key.html).
       - Check out [Getting started with React Native apps](https://docs.bitrise.io/en/bitrise-ci/getting-started/quick-start-guides/getting-started-with-react-native-projects.html).
@@ -51,8 +54,9 @@ workflows:
                 fi
 
                 if [ -n "$ANDROID_VERSION_CODE" ]; then
+                  CURRENT_CODE=$(grep -E '^[[:space:]]*versionCode [0-9]+' "$BUILD_GRADLE" | head -n 1 | awk '{print $2}')
                   perl -pi -e "s/^(\s*versionCode\s+)\d+/\$1$ANDROID_VERSION_CODE/" "$BUILD_GRADLE"
-                  echo "Set Android versionCode to: $ANDROID_VERSION_CODE"
+                  echo "Set Android versionCode to: $ANDROID_VERSION_CODE (was $CURRENT_CODE)"
                 else
                   CURRENT_CODE=$(grep -E '^[[:space:]]*versionCode [0-9]+' "$BUILD_GRADLE" | head -n 1 | awk '{print $2}')
                   NEXT_CODE=$((CURRENT_CODE + 1))
@@ -64,6 +68,9 @@ workflows:
                   perl -pi -e "s/^(\s*versionName\s+)\"[^\"]+\"/\$1\"$ANDROID_VERSION_NAME\"/" "$BUILD_GRADLE"
                   echo "Set Android versionName to: $ANDROID_VERSION_NAME"
                 fi
+
+                echo "Updated Android version values:"
+                grep -nE '^[[:space:]]*(versionCode|versionName) ' "$BUILD_GRADLE"
       - install-missing-android-tools@3:
           inputs:
             - gradlew_path: '$PROJECT_LOCATION/gradlew'
@@ -274,6 +281,6 @@ app:
     - BITRISE_SCHEME: XentraReactTest
       opts:
         is_expand: false
-    - BITRISE_DISTRIBUTION_METHOD: development
+    - BITRISE_DISTRIBUTION_METHOD: ad-hoc
       opts:
         is_expand: false
